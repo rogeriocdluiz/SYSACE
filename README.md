@@ -1,6 +1,8 @@
 Django-SysAce - Sistema de Administração de Cabeamento Estruturado e Infraestrutura de TI
 =============================================================================
 
+[![Documentation Status](https://readthedocs.org/projects/django-sysace/badge/?version=latest)](http://django-sysace.readthedocs.io/en/latest/?badge=latest)
+
 Sistema desenvolvido em Django para controle de pontos de rede (voz, dados, voip), ramais, telefones, switches, racks, patchpanels, equipamentos, redes, serviços e endereços IP.
 
 O ACE permite um controle centralizado de várias informações da infraestrutura de TI de uma organização  tais como:
