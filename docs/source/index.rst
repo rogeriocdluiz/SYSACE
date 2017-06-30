@@ -21,6 +21,8 @@ Instalação
 
 Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.
 
+Compatível com **Django 1.8**
+
 1. Instale o ACE com o comando a seguir::
 
     pip install django-sysace
@@ -31,29 +33,46 @@ Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamen
 2. Add "ace" and other apps to your INSTALLED_APPS setting like this::
 
 	INSTALLED_APPS = [
-	    'django.contrib.admin',
+	    ...
+	    'django.contrib.admin',    
 	    ...
 	    'ace',
+	    'smart_selects',
 	    'simple_history',
 	    'django_modalview',
 	    'dal',
 	    'dal_select2',
 	    'mail_templated',
 	    'solo',
+	    'import_export',
+	    'massadmin',
+	    'django_extensions', 
+	    'widget_tweaks',
+	    'pagination', 
+
+
+3. Inclua em MIDDLEWARE_CLASSES a linha 'pagination.middleware.PaginationMiddleware'::
+
+	MIDDLEWARE_CLASSES = (
+ 		...
+	    'pagination.middleware.PaginationMiddleware',
+	    ...
+	)
+
         
 
-2. Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
+4. Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
 
 	url(r'^ace/', include('ace.urls')),
 
-3. Rode o comando abaixo para criar os modelos do ace::
+5. Rode o comando abaixo para criar os modelos do ace::
 
 	python manage.py migrate
 
-4. Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
+6. Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
    (vocẽ precisará do app Admin habilitado).
     
-5. Acesse http://127.0.0.1:8000/ace/ para iniciar a inclusão dos componentes da infraestrutura de TI.
+7. Acesse http://127.0.0.1:8000/ace/ para iniciar a inclusão dos componentes da infraestrutura de TI.
 
 
 

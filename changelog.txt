@@ -245,3 +245,9 @@ Changelog
     - correções diversas em VLAN
     - inclusão do modelo hostupdate
     - ajustes gerais em botões de ações em objetos.
+
+   1.0.9.1
+     - correções diversas em documentação.
+
+   1.0.9.2
+     - correções diversas em documentação.     

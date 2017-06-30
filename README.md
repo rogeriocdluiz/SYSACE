@@ -19,6 +19,7 @@ O ACE permite um controle centralizado de várias informações da infraestrutur
 
 Documentação
 ------------
+Compatível com **Django 1.8**
 
 A documentação está disponível no [Readthedocs](http://django-sysace.readthedocs.io).
 
