@@ -25,5 +25,23 @@ A documentação está disponível no [Readthedocs](http://django-sysace.readthe
 
 
 
+Requisitos (Requirements)
+------------
+
+- Python 2.7
+- Django 1.8
 
 
+
+Resources
+---------
+
+- `Git graciously hosted
+  <https://github.com/rogeriocdluiz/Django-SysAce/>`_ by `GitHub
+  <http://github.com>`_,
+- `Documentation graciously hosted
+  <http://django-sysace.readthedocs.io/>`_ by `RTFD
+  <http://rtfd.org>`_,
+- `Package graciously hosted
+  <https://pypi.python.org/pypi/django-sysace/>`_ by `PyPi
+  <http://pypi.python.org/pypi>`_,
