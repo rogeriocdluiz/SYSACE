@@ -1,72 +1,75 @@
-Django-SysAce
-=====
+Sistema Django-SysAce - Administração de Cabeamento Estruturadao e Infraestrutura de TI
+=============================================================================
 
-Django-Sys-Ace is a Django app to administrate networks hosts, ip address, services, racks, patchpanels, phones e phone passwords. The system objective is turn the IT Infraestructure adminsitration easyer.
+Sistema desenvolvido em Django para controle de pontos de rede (voz, dados, voip), ramais, telefones, switches, racks, patchpanels, equipamentos, redes, serviços e endereços IP.
+
+O ACE permite um controle centralizado de várias informações da infraestrutura de TI de uma organização  tais como:
+
+* Listagem de todos os servidores, sejam físicos ou virtuais em uso ou não;
+* Localização dos equipamentos (computadores, impressoras, switches, accesspoints, equipamentos de segurança e outros);
+* Controle de bens;
+* Conexões de rede de equipamentos em tomadas, patchpanels e portas de switches;
+* Controle de VLANs e suas associações a redes e portas de switch;
+* Controle de switches e pilhas (stacks);
+* Controle de redes e endereçamentos IP;
+* Controle de linhas telefônicas sejam elas analógicas, digitais ou VoIP.
 
 
+Instalação
+----------
 
-Detailed documentation is in the "docs" directory.
+Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.
 
-Quick start
------------
-1. Install ace with command pip install django-sysace. Need development packages like gcc (build-essential in Debian and Ubuntu) and python-dev.
+1. Instale o ACE com o comando a seguir::
+
+    pip install django-sysace
+
+
 
 
 2. Add "ace" and other apps to your INSTALLED_APPS setting like this::
 
-    INSTALLED_APPS = [
-        ...
-        'ace',
-        'simple_history',
-        'django_modalview',
-        'dal',
-        'dal_select2',
-        'mail_templated',
-        'solo',
-        'widget_tweaks',
-        'pagination',
-        'import_export'            
-        'widget_tweaks',
+	INSTALLED_APPS = [
+	    ...
+	    'django.contrib.admin',    
+	    ...
+	    'ace',
+	    'smart_selects',
+	    'simple_history',
+	    'django_modalview',
+	    'dal',
+	    'dal_select2',
+	    'mail_templated',
+	    'solo',
+	    'import_export',
+	    'massadmin',
+	    'django_extensions', 
+	    'widget_tweaks',
+	    'pagination', 
+
+
+3. Inclua em MIDDLEWARE_CLASSES a linha 'pagination.middleware.PaginationMiddleware'::
+
+	MIDDLEWARE_CLASSES = (
+ 		...
+	    'pagination.middleware.PaginationMiddleware',
+	    ...
+	)
+
         
-        
 
-2. Include the polls URLconf in your project urls.py like this::
+4. Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
 
-   u rl(r'^ace/', include('ace.urls')),
+	url(r'^ace/', include('ace.urls')),
 
-3. Run `python manage.py migrate` to create the ace models.
+5. Rode o comando abaixo para criar os modelos do ace::
 
-4. Start the development server and visit http://127.0.0.1:8000/admin/
-   (you'll need the Admin app enabled).
+	python manage.py migrate
+
+6. Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
+   (vocẽ precisará do app Admin habilitado).
     
-5. Visit http://127.0.0.1:8000/ace/ to start to include IT infraestructure components.
+7. Acesse http://127.0.0.1:8000/ace/ para iniciar a inclusão dos componentes da infraestrutura de TI.
 
-
-
-6. Install the pagination middleware. Your settings file might look something like:
-
-    MIDDLEWARE_CLASSES = (
-        # ...
-        'pagination.middleware.PaginationMiddleware',
-    )
-
-7. If it’s not already added in your setup, add the request context processor. Note that context processors are set by default implicitly, so to set them explicitly, you need to copy and paste this code into your under the value TEMPLATE_CONTEXT_PROCESSORS:
-
-    ("django.core.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request")
-
-
-
-
-
-
-PT-BR
-
-ACE - Administração de cabeamento estruturado.
-
-Sistema desenvolvido em Django para controle de pontos de rede (voz, dados, voip), ramais, senhas para ligações telefonicas, switches, patchpanels, equipamentos, redes, serviços e endereços IP.
 
 
