@@ -18,7 +18,7 @@ O ACE permite um controle centralizado de várias informações da infraestrutur
 Documentação
 ------------
 
-A documentação está disponível no `Readthedocs <http://django-sysace.readthedocs.io/>`_
+A documentação está disponível no `Readthedocs <http://django-sysace.readthedocs.io/>`_.
 
 
 
