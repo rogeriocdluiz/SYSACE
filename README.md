@@ -1,8 +1,7 @@
-=====
-ACE
+Django-SysAce
 =====
 
-ACE is a Django app to administrate networks hosts, ip address, services, racks, patchpanels, phones e phone passwords. The system objective is turn the IT Infraestructure adminsitration easyer.
+Django-Sys-Ace is a Django app to administrate networks hosts, ip address, services, racks, patchpanels, phones e phone passwords. The system objective is turn the IT Infraestructure adminsitration easyer.
 
 
 
