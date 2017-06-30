@@ -1,0 +1,230 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sistema ACE - Administração de Cabeamento Estruturadao e Infraestrutura de TI &#8212; documentação Sistema ACE 1.0.9</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="Licença" href="licence.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegação</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice Geral"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="licence.html" title="Licença"
+             accesskey="N">próximo</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">documentação Sistema ACE 1.0.9</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Tabela de Conteúdo</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Sistema ACE - Administração de Cabeamento Estruturadao e Infraestrutura de TI</a><ul>
+<li><a class="reference internal" href="#instalacao">Instalação</a></li>
+<li><a class="reference internal" href="#secoes">Seções</a><ul>
+<li><a class="reference internal" href="#painel">Painel</a></li>
+<li><a class="reference internal" href="#controle-de-bens">Controle de bens</a></li>
+<li><a class="reference internal" href="#equipamentos-e-servicos">Equipamentos e serviços</a></li>
+<li><a class="reference internal" href="#locais-e-setores">Locais e setores</a></li>
+<li><a class="reference internal" href="#rede">Rede</a></li>
+<li><a class="reference internal" href="#telefonia">Telefonia</a></li>
+<li><a class="reference internal" href="#usuarios">Usuários</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Próximo tópico</h4>
+  <p class="topless"><a href="licence.html"
+                        title="próximo capítulo">Licença</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Essa Página</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Exibir Fonte</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Busca rápida</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Ir" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sistema-ace-administracao-de-cabeamento-estruturadao-e-infraestrutura-de-ti">
+<h1>Sistema ACE - Administração de Cabeamento Estruturadao e Infraestrutura de TI<a class="headerlink" href="#sistema-ace-administracao-de-cabeamento-estruturadao-e-infraestrutura-de-ti" title="Link permanente para este título">¶</a></h1>
+<p>Sistema desenvolvido em Django para controle de pontos de rede (voz, dados, voip), ramais, telefones, switches, racks, patchpanels, equipamentos, redes, serviços e endereços IP.</p>
+<p>O ACE permite um controle centralizado de várias informações da infraestrutura de TI de uma organização  tais como:</p>
+<ul class="simple">
+<li>Listagem de todos os servidores, sejam físicos ou virtuais em uso ou não;</li>
+<li>Localização dos equipamentos (computadores, impressoras, switches, accesspoints, equipamentos de segurança e outros);</li>
+<li>Controle de bens;</li>
+<li>Conexões de rede de equipamentos em tomadas, patchpanels e portas de switches;</li>
+<li>Controle de VLANs e suas associações a redes e portas de switch;</li>
+<li>Controle de switches e pilhas (stacks);</li>
+<li>Controle de redes e endereçamentos IP;</li>
+<li>Controle de linhas telefônicas sejam elas analógicas, digitais ou VoIP.</li>
+</ul>
+<div class="section" id="instalacao">
+<h2>Instalação<a class="headerlink" href="#instalacao" title="Link permanente para este título">¶</a></h2>
+<p>Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.</p>
+<ol class="arabic">
+<li><p class="first">Instale o ACE com o comando a seguir:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">django</span><span class="o">-</span><span class="n">sysace</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add «ace» and other apps to your INSTALLED_APPS setting like this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;ace&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;simple_history&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_modalview&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dal&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dal_select2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mail_templated&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;solo&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="2">
+<li><p class="first">Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ace/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;ace.urls&#39;</span><span class="p">)),</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Rode o comando abaixo para criar os modelos do ace:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">migrate</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Inicie o servidor e acesse pelo endereço <a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a>
+(vocẽ precisará do app Admin habilitado).</p>
+</li>
+<li><p class="first">Acesse <a class="reference external" href="http://127.0.0.1:8000/ace/">http://127.0.0.1:8000/ace/</a> para iniciar a inclusão dos componentes da infraestrutura de TI.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="secoes">
+<h2>Seções<a class="headerlink" href="#secoes" title="Link permanente para este título">¶</a></h2>
+<div class="section" id="painel">
+<h3>Painel<a class="headerlink" href="#painel" title="Link permanente para este título">¶</a></h3>
+<p>O painel exibe informações gerais sobre quantitativos de itens como equipamentos, impressoras, telefones e outros.</p>
+<a class="reference internal image-reference" href="_images/painel.jpg"><img alt="_images/painel.jpg" src="_images/painel.jpg" style="width: 550.0px; height: 424.0px;" /></a>
+</div>
+<div class="section" id="controle-de-bens">
+<h3>Controle de bens<a class="headerlink" href="#controle-de-bens" title="Link permanente para este título">¶</a></h3>
+<p>Na seção de controle de bens são listados os números de patrimônio de equipamentos.</p>
+</div>
+<div class="section" id="equipamentos-e-servicos">
+<h3>Equipamentos e serviços<a class="headerlink" href="#equipamentos-e-servicos" title="Link permanente para este título">¶</a></h3>
+<p>Nesta seção podem ser visualizados e cadastrados Equipamentos(hosts), impressoras/scanners e serviços.</p>
+<img alt="_images/equip.jpg" src="_images/equip.jpg" />
+</div>
+<div class="section" id="locais-e-setores">
+<h3>Locais e setores<a class="headerlink" href="#locais-e-setores" title="Link permanente para este título">¶</a></h3>
+<p>Onde é realizado o cadastro de locais como salas, salas técnicas e outros além dos setores da organização.</p>
+<img alt="_images/setores.jpg" src="_images/setores.jpg" />
+</div>
+<div class="section" id="rede">
+<h3>Rede<a class="headerlink" href="#rede" title="Link permanente para este título">¶</a></h3>
+<p>Aqui são cadastradas as redes, endereços IP, racks, patchpanels, pontos de rede, switches e pilhas.</p>
+<img alt="_images/rede.jpg" src="_images/rede.jpg" />
+</div>
+<div class="section" id="telefonia">
+<h3>Telefonia<a class="headerlink" href="#telefonia" title="Link permanente para este título">¶</a></h3>
+<p>Onde é feito o cadastro de telefones e a vinculação entre eles e os usuários.</p>
+</div>
+<div class="section" id="usuarios">
+<h3>Usuários<a class="headerlink" href="#usuarios" title="Link permanente para este título">¶</a></h3>
+<p>Nesta seção são listados os usuários do sistema.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licença</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html#contato">Contato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Ajuda</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link permanente para este título">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Índice</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Página de Busca</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegação</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice Geral"
+             >índice</a></li>
+        <li class="right" >
+          <a href="licence.html" title="Licença"
+             >próximo</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">documentação Sistema ACE 1.0.9</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Rogerio da Costa Dantas Luiz.
+      Criado usando <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.1.
+    </div>
+  </body>
+</html>

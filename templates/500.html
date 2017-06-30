@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% block title %}{% endblock %}
+
+    <!-- Bootstrap Core CSS -->
+
+    {% load staticfiles %}   
+
+
+    <link href="{% static "bower_components/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
+
+    <link href="{% static "css/ace.css"   %}"rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static "bower_components/font-awesome/css/font-awesome.min.css"   %}"rel="stylesheet" type="text/css">
+
+    
+
+
+    {% block extra-css %}{% endblock %}
+ 
+    
+
+</head>
+
+<body>
+
+    
+	<div class="container">
+
+
+
+	    <div class="row">
+	    <div class="error-template">
+
+            <div class="logo">
+                <img alt="" src="{% static "img/logo_preto.png" %}" > 
+            </div> 
+
+		    <h1>Oops!</h1>
+		    <h2>500 Erro interno</h2>
+		    <div class="error-details">
+			Desculpe, ocorreu um erro no servidor.<br>
+		    </div>
+		    <div class="error-actions">
+		    
+			<a href="{% url 'painel' %}" class="btn btn-primary">
+			    <i class="icon-home icon-white"></i> Voltar para a p&aacute;gina inicial </a>
+			<!-- <a href="mailto:me@null-byte.info" class="btn btn-default">
+			    <i class="icon-envelope"></i> Contact Support </a> -->
+		    </div>
+		</div>
+	    </div>
+	</div>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "bower_components/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+
+
+
+
+    {% block extra-js %}{% endblock %}
+
+
+
+
+</body>
+
+</html>

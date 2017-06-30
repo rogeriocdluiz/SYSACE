@@ -1,0 +1,178 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do ponto</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa  fa-sitemap  fa-fw"></i>Ponto de rede - {{ ponto.num }} </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+				<div class="col-lg-12">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+
+
+                        <div class="iteminfo"> 
+                                
+                            <p><b>N&uacute;mero:</b> {{ ponto.num }}</p>
+                            <p><b>Tipo:</b> {{ ponto.pointtype }}</p>
+
+                        </div>                                
+
+                        <div class="iteminfo"> 
+
+                            <p><b>Localiza&ccedil;&atilde;o:</b><a href="{% url 'placedetail' ponto.place.id %}"> {{ ponto.place }} </a></p>
+                            {% if ponto.patchpanelport %}    
+                            <p><b>Porta do patchpanel:</b> {{ ponto.patchpanelport.num }} - {{ ponto.patchpanelport.patchpanel.num }}</p>
+                            {% endif %}
+                            <!-- p><b>Rack:</b> {{ ponto.patchpanelport.patchpanel.rack.name }} - {{ ponto.patchpanelport.patchpanel.rack.place }}</p> -->
+                            {% if ponto.rack %}  
+                            <b>Rack:</b> <a href="{% url 'rackdetail' ponto.rack.id %}"> {{ ponto.rack.name }} - {{ ponto.rack.place }} </a></p> 
+                            {% endif %}
+
+
+                            {% if ponto.pointtype == 'dados' %}
+                            <p><b>Switch:</b><a href="{% url 'switchdetail' ponto.switch.id %}"> {{ ponto.switch.name |default_if_none:"" }}</a></p>
+                            <p><b>Porta do Switch:</b><a href="{% url 'swport' ponto.swport.id %}"> {{ ponto.swport.num |default_if_none:"" }}</a></p>
+                            {% endif %}   
+                        </div>                                
+
+                        <div class="iteminfo"> 
+
+
+                        {% if ponto.pointtype == 'voz' %}
+                        {% if ponto.phone %}
+                        <p><b>Telefone/ramal - Usu&aacute;rio:</b><a href="{% url 'phonedetail' ponto.phone.id %}"> {{ ponto.phone|default_if_none:"" }}</a> {{ ponto.phone.user.get_full_name|default_if_none:""  }} </p>
+                        {% endif %} 
+                        {% endif %} 
+
+                        </div>
+
+
+
+                        <p><b>Data de cadastro</b> {{ ponto.creation_date }}</p>
+                        <p><b>Data de modifica&ccedil;&atilde;o</b> {{ ponto.modification_date }}</p>
+
+
+                        {% if ponto.comments %}
+                        <p><b>Observa&ccedil;&otilde;es:</b>{{ ponto.comments }}</p>
+                        {% endif %}
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+
+                    <div class="btn-group">
+                        <a href="{% url 'netpointlist' %}" alt="Todos os pontos" title="Todos os pontos">
+                            <button class="btn btn-default" type="button">Todos os pontos</button>
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'netpoint_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a>                         
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'netpoint_edit' ponto.id %}" alt="Editar" title="Editar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>                         
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'netpoint_delete' ponto.id %}" alt="Excluir" title="Excluir">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>                                                         
+                    </div>                                            
+                    
+                </div>
+                <!-- /.col-lg-12 -->
+           
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+                                   
+
+    <script type="text/javascript">
+        $(function () {
+            $('#pontos').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Utilização de pontos - {{ local.tipo }} - {{ local.nome }}'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Percentagem',
+                    data: [
+                        ['Pontos de dados',     {{ pd }} ],
+                        ['Pontos de voz',      {{ pv }} ],
+                        {
+                            name: 'Pontos VoIP',
+                            y: {{ pvoip }},
+                            sliced: true,
+                            selected: true
+                        },
+                        ['Pontos desativados', {{ pdesat }} ]
+                    ]
+                }]
+            });
+        });
+    </script>
+
+
+{% endblock %}

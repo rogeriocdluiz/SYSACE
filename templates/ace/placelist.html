@@ -1,0 +1,162 @@
+
+{% extends "ace/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load pagination_tags %}
+
+
+{% block title %}
+    <title>Sistema Ace - Listagem de {{ title }}</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+    
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-map-marker fa-fw"></i>{{ title }}</h1>    
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.name.id_for_label }}">Nome:</label>
+                                        {{ filter.form.name|add_class:"form-control"}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.placetype.id_for_label }}">Tipo:</label> 
+                                        {{ filter.form.placetype|add_class:"form-control"}}
+                                    </div>                                  
+                                    
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.floor.id_for_label }}">Andar:</label>
+                                        {{ filter.form.floor|add_class:"form-control" }}    
+                                    </div>  
+
+									<div class="form-group">
+                                        <label for="{{ filter.form.sector.id_for_label }}">Setor:</label>
+                                        {{ filter.form.sector|add_class:"form-control" }}    
+                                    </div>                                                                                
+									
+                                
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+		                            <a href="{% url 'placelist' %}" alt="Limpar filtro" title="Limpar filtro">
+		                                <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+		                            </a> 	
+
+                                </form>
+                            </div>
+                            </br>
+
+								{% if filter %}
+
+                                <table class="table table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Id/Nome/Num</th>
+											<th>Andar</th>
+											<th>Tipo</th>
+											<th>Setor</th>
+                                            {% if perms.ace.change_place or perms.ace.delete_place %}
+                                            <th>A&ccedil;&otilde;es</th> 
+                                            {% endif %}                                             
+										</tr>
+									</thead>
+
+									<tbody>
+
+                                    {% autopaginate filter placelist_results as filter_list %} 									
+
+                                    {% for place in filter_list %}
+										<tr>
+											<td><a href="{% url 'placedetail' place.id %}">{{ place.name }}</a></td>
+											<td>{{ place.floor}} </td>
+											<td>{{ place.placetype}} </td>
+											<td>{{ place.sector|default_if_none:"" }} </td>
+                                            {% if perms.ace.change_place %} 
+                                            <td>
+                                                <a href="{% url 'place_edit' pk=place.pk %}" alt="Editar" title="Editar"><i class="glyphicon glyphicon-pencil  text-info"></i></a>&nbsp;
+                                                {% if perms.ace.delete_place %}
+                                                <a href="{% url 'place_delete' pk=place.pk %}" alt="Excluir" title="Excluir"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                                                {% endif %}   
+                                            </td>                              
+                                            {% endif %}                                             
+										</tr>
+                                    {% endfor %}
+                                    </tbody>                                    
+                                            
+                                </table>
+
+                                <div align="center"> {% paginate %} </div> 
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de {{ title }}: <b>{{ total }}</b></p>
+                                </div>
+
+
+                           		{% else %}
+
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        
+                                        Nenhum local cadastrado.
+                                </div>
+                
+                                {% endif %} 
+
+                            </br>                                               
+
+                            {% if perms.ace.add_place %}
+                            <a href="{% url 'place_new' %}" alt="Adicionar" title="Adicionar">
+                                <button class="btn btn-info" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                            </a> 
+
+                            {% endif %} 
+
+ 
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+
+
+{% endblock %}

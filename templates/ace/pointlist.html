@@ -1,0 +1,207 @@
+
+{% extends "ace/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load pagination_tags %}
+
+
+{% block title %}
+    <title>Sistema Ace - Listagem de {{ title }}</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-sitemap fa-fw"></i>{{ title }}</h1>    
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <!-- <div class="form-control" -->
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.name.id_for_label }}">Número/id:</label>
+                                        {{ filter.form.num|add_class:"form-control"}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.pointtype.id_for_label }}">Tipo:</label>
+                                        {{ filter.form.pointtype|add_class:"form-control" }}
+                                    </div>                                      
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.place.id_for_label }}">Local:</label> 
+                                        {{ filter.form.place|add_class:"form-control"}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.rackid_for_label }}">Rack:</label> 
+                                        {{ filter.form.rack|add_class:"form-control"}}
+                                    </div>                                    
+
+                                    </br></br>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.patchpanel.id_for_label }}">Patchpanel:</label>
+                                        {{ filter.form.patchpanel|add_class:"form-control" }}    
+                                    </div>  
+
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.switch.id_for_label }}">Switch:</label>
+                                        {{ filter.form.switch|add_class:"form-control" }}    
+                                    </div>    
+
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.swport.id_for_label }}">Porta do switch:</label>
+                                        {{ filter.form.swport|add_class:"form-control" }}    
+                                    </div>
+                                    </br></br>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.o.id_for_label }}">Ordenar:</label>
+                                        {{ filter.form.o|add_class:"form-control" }}    
+                                    </div>                                    
+
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+                                    <a href="{% url 'netpointlist' %}" alt="Limpar filtro" title="Limpar filtro">
+                                        <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+                                    </a>                                     
+
+                                </form>
+                            </div>
+                            </br>
+
+
+                            {% if filter %}
+
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Num</th>
+                                            <th>Local</th>
+                                            <th>Rack</th>
+                                            <th>Tipo</th>
+                                            <th>Porta Switch</th>
+                                            {% if perms.ace.can_change_netpoint %}
+                                            <th>A&ccedil;&otilde;es</th> 
+                                            {% endif %}                                            
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                    {% autopaginate filter netpointlist_results as filter_list %}
+
+                                    {% for ponto in filter_list %}
+                                        <tr>
+                                            <td><a href="{% url 'pointdetail' ponto.id %}">{{ ponto.num }}</a></td>
+                                            <!-- <td>{{ ponto.num }}</td> -->
+                                            <td>{{ ponto.place }}</td>
+                                            <td>{{ ponto.rack|default_if_none:""  }}</td>
+                                            <td>{{ ponto.pointtype }}</td>
+                                            <td>{{ ponto.swport|default_if_none:""  }}</td>
+                                            {% if perms.ace.change_netpoint %}
+                                            <td>
+                                                <a href="{% url 'netpoint_edit' pk=ponto.pk %}" alt="Editar" title="Editar"><i class="glyphicon glyphicon-pencil  text-info"></i></a>&nbsp;
+                                                
+                                                {% if perms.ace.delete_netpoint %}
+                                                <a href="{% url 'netpoint_delete' pk=ponto.pk %}" alt="Excluir" title="Excluir"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                                                {% endif %}                                 
+
+                                            </td>                              
+                                            {% endif %}                                                 
+                                        </tr>
+
+                                    {% endfor %}
+                                    
+
+                                    </tbody>
+                                </table>
+
+                                <div align="center"> {% paginate %} </div> 
+
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de {{ title }}: <b>{{ total }}</b></p>
+                                </div>
+
+
+                                {% else %}
+
+                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        
+                                        Nenhum ponto de rede cadastrado.
+                                </div>
+                
+                                {% endif %}                                
+
+                               
+
+                                </br>                                               
+                                {% if perms.ace.add_netpoint%}
+                                <!-- formulario de adição -->
+                                <div class="btn-group">
+                                    <a href="{% url 'netpoint_new' %}">
+                                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>Adicionar</button>
+                                    </a> 
+                                </div>
+                                <!-- formulario de adição -->
+                                {% endif %}                  
+
+                                {% if free %}        
+                                <div class="btn-group">    
+                                    <a href="{% url 'freepointsreport' %}" alt="Relat&oacute;rio de pontos livres" title="Relat&oacute;riode pontos livres" target="blank">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;riode pontos livres</button>
+                                    </a>    
+                                </div>
+                                {% endif %}
+                                <div class="btn-group">
+                                    <a href="{% url 'netpointsreport' %}" alt="Relat&oacute;rio de pontos de rede " title="Relat&oacute;rio de pontos de rede" target="blank">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de pontos de rede</button>
+                                    </a>   
+                                </div>
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+
+
+
+{% endblock %}

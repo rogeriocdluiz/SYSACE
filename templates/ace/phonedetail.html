@@ -1,0 +1,280 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do ramal</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+    
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        {% if ramal.password == True %}
+        <h1 class="page-header"><i class="fa fa-lock fa-fw"></i>Senha telef&ocirc;nica</h1>
+        {% else %}
+        <h1 class="page-header"><i class="fa fa-phone fa-fw"></i>Telefone</h1>
+        {% endif %}
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+          <div class="row">
+				    <div class="col-lg-8">
+
+
+              {% if send = 'ok' %}
+              <div class="alert alert-success alert-dismissable">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  Senha enviada para o usuário <b>{{ ramal.user.get_full_name |upper }}</b> no email <b>{{ ramal.user.email }}</b> 
+              </div>
+              {% endif %}
+
+              <div class="panel panel-default">
+
+                  <div class="panel-body">
+
+
+
+                    <div class="iteminfo"> 
+
+  		                <p><b>Número:</b> {{ ramal }}</p>
+
+                      {% if ramal.active == True %}
+                      <p><b>Ativo:</b>&nbsp;<i class="fa fa-check fa-1x text-success"></i>{{ ramal.active|yesno:"Sim,Não" }}</p>
+                      {% else %}
+                      <p><b>Ativo:</b>&nbsp;<i class="fa fa-times fa-1x text-danger"></i> {{ ramal.active|yesno:"Sim,Não" }}</p>
+                      {% endif %}
+
+
+                      {% if ramal.user !=  None %}
+  		                <p><b>Usuário:</b> {{ ramal.user.get_full_name |upper}} - {{ ramal.user.email }} </p>
+                      {% endif %}
+
+                    </div>                                
+
+                    <div class="iteminfo"> 
+                    
+                      {% if ramal.newpassword == True %}
+                      <b>Data de criação:</b> {{ ramal.date_creation }}</p>
+                      {% endif %}
+
+                      {% if ramal.password == False %}
+  			              <p><b>Localização:</b> {{ ramal.place|default_if_none:"N/A" }}</p>
+                      <p><b>Tipo:</b> {{ ramal.telephonetype|default_if_none:"N/A" }}</p>
+                      {% endif %}
+
+                      <p><b>Categoria:</b> {{ ramal.phonecategory|default_if_none:"N/A" }}</p> 
+                      {% if ponto %}
+                      <p><b>Ponto de rede:</b> <a href="{% url 'pointdetail' ponto.id %}">{{ ponto }}</a> </p>
+                      <p><b>Rack:</b><a href="{% url 'rackdetail' ponto.rack.id %}"> {{ ponto.rack }}</a></p>
+                      {% endif %}
+
+                    </div>                                
+
+                    <div class="iteminfo"> 
+
+                      <p><b>Cadastro em:</b> {{ ramal.date_creation|default_if_none:"N/A" }}</p> 
+                      <p><b>Modifica&ccedil;&atilde;o em:</b> {{ ramal.date_modification|default_if_none:"N/A" }}</p>                           
+
+                      {% if ramal.comments %}
+                      <b>Obs:</b> {{ ramal.comments }}</p>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- /.panel-body -->
+              </div>
+                 
+        
+
+              <div class="btn-group">
+                  <a href="{% url 'phonelist' %}" alt="Todos os telefones/ramais" title="Todos os telefones/ramais">
+                      <button class="btn btn-default" type="button">Todos os telefones/ramais</button>
+                  </a>
+              </div>
+
+              {% if ramal.active == False %}
+              <div class="btn-group">
+                  
+                  <a href="{% url 'phoneownership_new' ramal.pk %}" alt="Vincular ao usu&aacute;rio" title="Vincular ao usu&aacute;rio">  
+                      <button class="btn btn-default" type="button"><i class="fa fa-user fa-fw"></i>Vincular ao usu&aacute;rio</button>
+                  </a>
+
+              </div> 
+
+              {% else %}
+  
+              <!-- Button trigger modal -->
+              <button class="btn btn-default" data-toggle="modal" data-target="#myModal">
+                  <i class="fa fa-times fa-fw"></i>Desvincular do usu&aacute;rio
+              </button>
+
+
+
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" id="myModalLabel">Desvincular telefone do usu&aacute;rio</h4>
+                          </div>
+                          <div class="modal-body">
+                                A desvinculação permite que o número fique livre para ser utilizado
+                                por outro usuário.
+                                <br>
+                                As datas de vinculação e desvinculação ficam registradas nos
+                                históricos do usuário e do telefone.<br>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+                              <a href="{% url 'phoneownership_disable' ramal.id  %}" alt="Desvincular do usu&aacute;rio" title="Desvincular do usu&aacute;rio">
+                                  <button class="btn btn-default" type="button"><i class="fa fa-times fa-fw"></i>Desvincular do usu&aacute;rio</button>
+                              </a>
+
+
+                          </div>
+                      </div>
+                      <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
+             {% endif %}
+
+
+
+
+
+              {% if ramal.user.email and ramal.password == True and ramal.active == True %}
+              <div class="btn-group">
+                  <a href="{% url 'sendpassword' pk=ramal.id  %}" alt="Enviar senha por email" title="Enviar senha por email">
+                      <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-envelope"></i>&nbsp;Enviar senha por email</button>
+                  </a>
+              </div>
+              {% endif %}                    
+
+              <div class="btn-group">
+                  <a href="{% url 'phone_new' %}" alt="Adicionar" title="Adicionar">
+                      <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                  </a>
+              </div>
+
+              <div class="btn-group">
+                  <a href="{% url 'phone_edit' pk=ramal.pk %}" alt="Editar" title="Editar">
+                      <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                  </a>
+              </div>              
+
+              <div class="btn-group">
+                  <a href="{% url 'phone_delete' ramal.id %}" alt="Excluir" title="Excluir">
+                      <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                  </a>
+              </div>  
+           
+
+              <!-- /.panel -->
+            </div>
+          <!-- /.col-lg-6 -->      
+
+
+            {% if ramal.dist or ramal.bloco or ramal.par or ramal.dg %}
+            <div class="col-lg-6">  
+              <div class="panel panel-default">
+                <div class="panel-heading">&nbsp;Mais informa&ccedil;&otilde;es</strong></div> 
+
+                  <div class="panel-body">
+
+                    {% if ramal.dist %}
+                    <p><b>Dist:</b> {{ ramal.dist|default_if_none:"" }}</p>
+                    {% endif %} 
+                    {% if ramal.bloco %}
+                    <p><b>Bloco:</b> {{ ramal.bloco|default_if_none:"" }}</p>
+                    {% endif %} 
+                    {% if ramal.par %}
+                    <p><b>Par:</b> {{ ramal.par|default_if_none:"" }} </p>
+                    {% endif %} 
+                    {% if ramal.dg %}
+                    <p><b>DG:</b> {{ ramal.dg|default_if_none:"" }} </p>
+                    {% endif %} 
+                  </div>
+                  <!-- /.panel-body -->
+              </div>                   
+            </div>
+            {% endif %}
+                
+
+            </div>
+            <!-- /.row -->
+</br>
+
+            {% if phoneownership %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-info">
+
+                      <div class="panel-heading"><i class="fa  fa-phone fa-fw"></i> Hist&oacute;rico de uso</div> 
+                        
+                        
+                        
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <th>Usu&aacute;rio</th>                                            
+                                    <th>Ativa&ccedil;&atilde;o em</th> 
+                                    <th>Desativa&ccedil;&atilde;o em</th>                                    
+                                </thead>
+                                <tbody>
+                                {% for item in phoneownership %}
+                                    <tr>
+                                        {% if item.user %}
+                                        <td><a href="{% url 'userdetail' item.user.id %}">{{ item.user.get_full_name |default_if_none:"" |upper }}</a></td>
+                                        {% else %}
+                                        <td> </td>
+                                        {% endif %}
+
+                                        <td>{{ item.date_activation |default_if_none:"---"}}</td>
+                                        <td>{{ item.date_deactivation |default_if_none:"---"}}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+            <!-- /.row -->
+            {% endif %} 
+            
+
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+
+
+{% endblock %}

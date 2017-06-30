@@ -1,0 +1,232 @@
+
+{% extends "ace/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load pagination_tags %}
+
+
+
+
+{% block title %}
+    <title>Sistema Ace - Listagem de {{ title }}</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-phone fa-fw"></i>{{ title }}</h1>    
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <!-- <div class="form-control" -->
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.num.id_for_label }}">N&uacute;mero:</label>
+                                        {{ filter.form.num|add_class:"form-control"}}
+                                    </div>&nbsp;
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.active.id_for_label }}">Ativo:</label> 
+                                        {{ filter.form.active|add_class:"form-control"}}
+                                    </div>&nbsp;
+                                    <!-- <div class="form-group">
+                                        <label for="{{ filter.form.user__username.id_for_label }}">Usu&aacute;rio:</label> 
+                                        {{ filter.form.user__username|add_class:"form-control"}}
+                                    </div> -->
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.user__first_name.id_for_label }}">Usu&aacute;rio:</label> 
+                                        {{ filter.form.user__first_name|add_class:"form-control"}}
+                                    </div>                  
+                                    <!-- <div class="form-group">
+                                        <label for="{{ filter.form.user__last_name.id_for_label }}">Usu&aacute;rio:</label> 
+                                        {{ filter.form.user__last_name|add_class:"form-control"}} 
+                                    </div>                                                                               
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.user__first_name.id_for_label }}">Usu&aacute;rio:</label> 
+                                        {{ filter.form.user__first_name|add_class:"form-control"}}
+                                    </div>   -->                                                                     
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.telephonetype.id_for_label }}">Tipo:</label>
+                                        {{ filter.form.telephonetype|add_class:"form-control" }}
+                                    </div> 
+                                    
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.phonecategory.id_for_label }}">Categoria:</label>
+                                        {{ filter.form.phonecategory|add_class:"form-control" }}
+                                    </div>                                      
+                                    </br></br>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.place.id_for_label }}">Local:</label>
+                                        {{ filter.form.place|add_class:"form-control" }}    
+                                    </div>                                      
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.password.id_for_label }}">Senha:</label>
+                                        {{ filter.form.password|add_class:"form-control" }}
+                                    </div> &nbsp;
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.newpassword.id_for_label }}">Senha nova:</label>
+                                        {{ filter.form.newpassword|add_class:"form-control" }}
+                                    </div>                                      
+
+                                    </br></br>
+
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.o.id_for_label }}">Ordenar:</label> 
+                                        {{ filter.form.o|add_class:"form-control"}}
+                                    </div>   
+
+
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+                                    <a href="{% url 'phonelist' %}" alt="Limpar filtro" title="Limpar filtro">
+                                        <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+                                    </a>                                                                     
+
+                                </form>
+                            </div>
+                            </br>
+
+
+
+                                {% if filter %}
+
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                            <th>N&uacute;mero</th>
+                                            <th>Usu&aacute;rio</th>
+                                            <th>Local</th>                                            
+                                            <th>Categoria</th>
+                                            <th>Ativo</th>
+                                            <th>Senha</th>
+                                            <th>Tipo</th>
+                                            {% if perms.ace.change_phone or perms.ace.delete_phone %}
+                                            <th>A&ccedil;&otilde;es</th> 
+                                            {% endif %}                                      
+                                    </thead>
+
+                                    <tbody>
+
+                                    {% autopaginate filter phonelist_results as filter_list %}
+
+                                    {% for ramal in filter_list %}
+                                        <tr>
+
+                                            {% if ramal.password = True %}
+                                                
+                                                <td><i class="fa fa-lock fa-1x">&nbsp;</i><a href="{% url 'phonedetail' ramal.id %}">************</a></td>
+                                                
+                                            {% else %}
+                                                <td><i class="fa fa-phone fa-1x">&nbsp;</i><a href="{% url 'phonedetail' ramal.id %}">{{ ramal }}</a></td>
+                                            {% endif %}
+                                            <td>{{ ramal.user.get_full_name |default_if_none:"" |upper }}</td>
+
+                                            {% if ramal.password = True %}
+                                            <td>N/A</td>
+                                            {% else %}
+                                            <td>{{ ramal.place |default_if_none:"" }}</td>
+                                            {% endif %}
+
+                                            <td>{{ ramal.phonecategory |default_if_none:"" }}</td>
+                                            {% if ramal.active = True %}
+                                            <td><i class="fa fa-check-circle fa-1x text-success"><span style="display:none;">True</span></td>
+                                            {% else %}
+                                            <td><i class="fa fa-times-circle fa-1x text-danger"><span style="display:none;">False</span></td>
+                                            {% endif %}
+                                            {% if ramal.password = True %}
+                                            <td><i class="fa fa-check-circle fa-1x text-success"><span style="display:none;">True</span></td>
+                                            {% else %}
+                                            <td><i class="fa fa-times-circle fa-1x text-danger"><span style="display:none;">False</span></td>
+                                            {% endif %} 
+                                            <td>{{ ramal.telephonetype |default_if_none:""}}</td>                                           
+
+                                            {% if perms.ace.change_phone %}
+                                            <td>
+                                                <a href="{% url 'phone_edit' ramal.id %}" alt="Editar" title="Editar"><i class="glyphicon glyphicon-pencil  text-info"></i></a>&nbsp;
+                                                {% if perms.ace.delete_phone %}
+                                                <a href="{% url 'phone_delete' ramal.id %}" alt="Excluir" title="Excluir"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                                                {% endif %}                                              
+                                            </td> 
+                                            {% endif %}            
+                                        </tr>
+                                    {% endfor %}
+                                    
+
+                                    </tbody>
+                                </table>
+
+                                <p><i class="fa fa-check-circle fa-1x text-success"></i> Ativo/Em uso | <i class="fa fa-times-circle fa-1x text-danger"></i> Desativado</p>    
+
+
+                                <div align="center"> {% paginate %} </div>                                     
+                                  
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de telefones: <b>{{ total }}</b></p>
+                                </div>
+
+                            {% else %}
+
+                            <br>
+                            <div class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    
+                                    Nenhum telefone cadastrado.
+                            </div>
+            
+                            {% endif %}                              
+
+                            </br>                                               
+                            {% if perms.ace.add_phone %}
+                            <a href="{% url 'phone_new' %}" alt="Adicionar" title="Adicionar">
+                                    <button class="btn btn-info" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                            </a> 
+
+
+                            <div class="btn-group">
+                                <a href="{% url 'pwreport' %}" alt="Relat&oacute;rio de senhas" title="Relat&oacute;rio de senhas" target="blank">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de senhas</button>
+                                </a>
+                            </div>                             
+                            
+                            {% endif %}                                           
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+{% endblock %}

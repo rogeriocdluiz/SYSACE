@@ -1,0 +1,122 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do servi&ccedil;o</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+{% block conteudo1 %}
+    
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+                     <h1 class="page-header"><i class="fa fa-wrench fa-fw"></i>Cria&ccedil;&atilde;o/Ediç&atilde;o de servi&ccedil;o</h1>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Dados do servi&ccedil;o
+
+                                <div class="dropdown pull-right">
+                                  <button class="btn btn-default dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Adicionar
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                    <li>
+
+                                        <a id="my_modal_runner" href='{% url "networkmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Rede
+                                        </a> 
+
+                                    </li>                                    
+                                    <li>
+                                        <a id="my_modal_runner2" href='{% url "ipmodal" %}' alt="Adicionar" title="Adicionar">
+                                            IP
+                                        </a> 
+                                    </li>
+                                    <li>
+                                        <a id="my_modal_runner3" href='{% url "servicecategorymodal" %}' alt="Adicionar" title="Adicionar">
+                                            Categoria de servi&ccedil;o
+                                        </a> 
+                                    </li>                                                                       
+                                  </ul>
+                                </div>  
+                            </br></br>
+
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                    {% if form.subject.errors %}
+                                        <ol>
+                                        {% for error in form.subject.errors %}
+                                            <li><strong>{{ error|escape }}</strong></li>
+                                        {% endfor %}
+                                        </ol>
+                                    {% endif %}
+
+                                    <!-- form-django -->      
+                                    
+                                    <form method="POST" class="service-form">{% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit" class="save btn btn-info">Salvar</button>
+
+                                        <a href="{% url 'servicelist' %}">
+                                                <button class="btn btn-danger" type="button">Cancelar</button>
+                                        </a>                  
+
+                                        <!-- <a id="my_modal_runner" href='{% url "servicecategorymodal" %}' alt="Adicionar" title="Adicionar">
+                                                <button class="btn btn-info" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar Categoria de Servi&ccedil;o</button>
+                                        </a>    -->  
+
+                                    </form>
+                                    <!-- form-django -->                                      
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+{{ form.media }}
+
+{% endblock %}
+

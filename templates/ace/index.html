@@ -1,0 +1,914 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+    <title>Sistema ACE - Página Inicial</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}  
+    
+
+{% endblock %}
+    
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Painel</h2>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+
+
+{% block conteudo-superior %}
+
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-2 col-md-6">
+                    <div class="panel dashbox">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ total_switches }}</div>
+                                    <div>Switches</div>
+                                    <div>&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'switchlist' %}""{% url 'hostlist' %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Detalhes</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <div class="panel dashbox">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-wrench fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ total_service }}</div>
+                                    <div>Servi&ccedil;os</div>
+                                    <div>&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'servicelist' %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Detalhes</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="panel dashbox">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-desktop fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ total_host }}</div>
+                                    <div>Equipamentos (Hosts)</div>
+                                    <div>&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'hostlist' %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Detalhes</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <div class="panel dashbox">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-print fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ total_printer }}</div>
+                                    <div>Impressoras</div>
+                                    <div>&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'printerlist' %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Detalhes</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+                 <div class="col-lg-2 col-md-6">
+                    <div class="panel dashbox">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-sitemap fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ total_pontos }}</div>
+                                    <div>Pontos de rede</div>
+                                    <div>&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'netpointlist' %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Detalhes</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="panel dashbox">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-phone fa-3x"></i>
+                                </div>
+                                <div class="col-xs-8 text-right">
+                                    <div class="huge">{{ total_phone }}</div>
+
+                                    {% if total_senha %}
+                                    <div>Telefones: {{ total_ramal }}     
+                                        Senhas: {{ total_senha }}
+                                    </div>
+                                    {% else %}
+                                    <div>Telefones: {{ total_ramal }}     
+                                    </div>                                    
+                                    <div>&nbsp;</div>
+                                    {% endif %}
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'phonelist' %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Detalhes</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>                                                            
+
+            </div>
+            <!-- /.row -->            
+{% endblock %}
+
+
+
+
+{% block conteudo-index1 %}
+            <div class="row">
+
+                <!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        </br>
+                            <b><p class="text-center"> Categorias de servi&ccedil;os </p></b>
+                        </br>                        
+                        <!-- /.panel-heading -->                        
+                        <div class="panel-body">
+                            {% if servicecategories %}
+                            <center>
+                                    <div id="categorias">
+                                    {% for s in servicecategories %}
+                                      <a href="{% url 'servicecatdetail' s.id %}" rel="{{ s.id }}">{{ s }} {{ s.num_serv }} </a>
+                                    {% endfor %}                                      
+                                    </div>
+                            </center>
+                            {% else %}
+                                    <p class="text-center"> Sem informa&ccedil;&otilde;es</p>
+                            {% endif %}
+
+                        </div>
+                        <!-- /.panel-body -->
+                        
+                    </div>
+                        
+                        
+                 
+                    <!-- /.panel -->
+                  
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <b><p class="text-center"> Telefones por categoria </p></b>
+                        </br>        
+                            {% if phonecats %}
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Categoria</th>
+                                        <th>total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for phonecat in phonecats %}
+                                    <tr>
+                                        <td>{{ phonecat.name }}</td>
+                                        <td>{{ phonecat.num_phones }}</td> 
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table> 
+
+                            {% else %}
+                                </br>                            
+                                    <p class="text-center"> Sem informa&ccedil;&otilde;es</p>
+
+                            {% endif %}                            
+                        </div>
+                        <!-- /.panel-body -->           
+                    </div>
+                </div>               
+
+
+                <!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <b><p class="text-center"> Telefones por tipo/tecnologia </p></b>
+                        </br>        
+                            {% if phonecats %}
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for phonetype in phonetypes %}
+                                    <tr>
+                                        <td>{{ phonetype.name }}</td>
+                                        <td>{{ phonetype.num_phones }}</td> 
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>  
+                            {% else %}
+                            </br>
+                                    <p class="text-center"> Sem informa&ccedil;&otilde;es</p>
+                                
+                            {% endif %}
+
+                        </div>
+                        <!-- /.panel-body -->           
+                    </div>
+                </div>                              
+
+
+            </div>
+
+
+{% endblock %}
+
+
+{% block conteudo-index2 %}
+{% endblock %}
+
+
+{% block titulo2 %}
+
+{% endblock %}
+
+{% block conteudo-superior2 %}
+           
+{% endblock %}
+
+{% block conteudo-index3 %}
+         
+         
+            <div class="row">
+
+                <!-- /.col-lg-4 -->
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        </br>
+                            <b><p class="text-center"> Hosts por plataforma </p></b>
+                        </br>                        
+                        
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            {% if total_host != 0 %}
+                            <div id="hosts" style="min-width: 200px; height: 250px; max-width: 500px; margin: 0 auto"></div>
+                            
+                            {% else %}
+                                    <p class="text-center"> Sem informa&ccedil;&otilde;es</p>
+                            {% endif %}
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->   
+                </div>
+                <!-- /.col-lg-4 -->  
+
+                <div class="col-lg-3"> 
+                    {% if total_ramal > 0 %}
+                    <div class="panel panel-default">
+                        </br>
+                            <b><p class="text-center"> Utiliza&ccedil;&atilde;o de telefones/ramais </p></b>
+                        </br>                         
+                         
+                        <div class="panel-body">
+
+                             <div id="phones" style="min-width: 200px; height: 250px; max-width: 500px; margin: 0 auto"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                        
+                        
+                        
+                    </div>
+                    {% else %}
+                    <div class="panel panel-default">
+                        </br>
+                            <b><p class="text-center"> Utiliza&ccedil;&atilde;o de telefones/ramais </p></b>
+                        </br>                         
+                                                                          
+
+                        <div class="panel-body">
+                                <p class="text-center"> Sem informa&ccedil;&otilde;es</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!-- /.panel -->
+                  
+                </div>
+                <!-- /.col-lg-4 -->
+
+                <div class="col-lg-3">
+                    {% if total_pontos > 0 %} 
+                    <div class="panel panel-default">
+
+                        </br>
+                            <b><p class="text-center"> Utiliza&ccedil;&atilde;o de pontos </p></b>
+                        </br>                         
+
+                        <div class="panel-body">
+                                                      
+                            <div id="netpoints" style="min-width: 200px; height: 250px; max-width: 500px; margin: 0 auto"></div>
+                                                      
+                        </div>
+
+                         
+                        <!-- /.panel-body -->
+                    </div>
+                    
+                    {% else %}
+
+                    <div class="panel panel-default">
+                        </br>
+                            <b><p class="text-center"> Utiliza&ccedil;&atilde;o de pontos </p></b>
+                        </br>                         
+                         
+                        <div class="panel-body">
+                                                      
+                            <p class="text-center"> Sem informa&ccedil;&otilde;es</p>
+                                                      
+                        </div>
+
+                         
+                        <!-- /.panel-body -->
+                    </div>                    
+                    {% endif %} 
+
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+
+                <div class="col-lg-3">
+
+                    {% if total_senha > 0 %}
+                    <div class="panel panel-default">
+
+                    
+
+                        </br>
+                            <b><p class="text-center"> Utiliza&ccedil;&atilde;o de senhas </p></b>
+                        </br>                        
+
+                        <div class="panel-body">
+                            <div id="senhas" style="min-width: 200px; height: 250px; max-width: 500px; margin: 0 auto"></div>
+                        </div>
+
+                        
+                        <!-- /.panel-body -->
+                    </div>
+                    {% else %}
+                    <div class="panel panel-default"> 
+                        </br>
+                            <b><p class="text-center"> Utiliza&ccedil;&atilde;o de senhas </p></b>
+                        </br>                                        
+
+                        <div class="panel-body">
+                                <p class="text-center"> Sem informa&ccedil;&otilde;es </p>
+                        </div>  
+                    </div>
+                    {% endif %}
+                    <!-- /.panel -->
+                </div>
+
+
+            </div>
+            <!-- /.row -->
+
+
+
+
+<div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-clock-o fa-fw"></i> Altera&ccedil;&otilde;es recentes
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="timeline">
+                                 {% if host_modificados %}
+                                    {% for host in host_modificados %}
+                                        <li>
+                                            <div class="timeline-badge warning"><i class="fa fa-desktop"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title"><a href="{% url 'hostdetail' host.id %}">Equipamento - {{ host.name }}</a></h4>
+                                                    <p><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ host.modification_date|default_if_none:"" }} </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+                                 {% endif %}
+
+                                {% if switch_modificados %}
+                                    {% for switch in switch_modificados %}
+                                        <li class="timeline-inverted">
+                                            <div class="timeline-badge success"><i class="fa fa-tasks"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title"><a href="{% url 'switchdetail' switch.id %}">Switch - {{ switch.name }}</a></h4>
+                                                    <p><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ switch.modification_date|default_if_none:"" }} </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+                                 {% endif %}                                 
+
+                                 {% if service_modificados %}
+                                    {% for service in service_modificados %}
+                                        <li>
+                                            <div class="timeline-badge danger"><i class="fa fa-wrench"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title"><a href="{% url 'servicedetail' service.id %}">Servi&ccedil;o - {{ service.name }}</a></h4>
+                                                    <p><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ service.modification_date|default_if_none:"" }} </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+                                 {% endif %} 
+
+                                 {% if ip_modificados %}
+                                    {% for ip in ip_modificados %}
+                                        <li class="timeline-inverted">
+                                            <div class="timeline-badge"><i class="fa fa-globe"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title"><a href="{% url 'ipdetail' ip.id %}">IP - {{ ip.address }}</a></h4>
+                                                    <p><small class="text-muted"><i class="fa fa-clock-o"></i> Ip em {{ ip.modification_date|default_if_none:"" }} </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+                                 {% endif %}                                 
+
+                                 {% if senha_modificados %}
+                                    {% for senha in senha_modificados %}
+                                      
+
+                                        <li>
+                                            <div class="timeline-badge danger"><i class="fa fa-lock"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    {% if senha.user %}
+                                                    <h4 class="timeline-title"><a href="{% url 'phonedetail' senha.id %}">Senha usu&aacute;rio {{ senha.user.get_full_name |upper }}</a>  
+                                                    </h4>
+                                                    {% else %}
+                                                    <h4 class="timeline-title"><a href="{% url 'phonedetail' senha.id %}">Senha dispon&iacute;vel</a>
+                                                    </h4>
+                                                    {% endif %}
+                                                    <p><small class="text-muted"><i class="fa fa-clock-o"></i> Modificada em {{ senha.date_modification|default_if_none:"" }} </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+
+                                 {% endif %}
+
+                                 {% if ramal_modificados %}
+                                    {% for ramal in ramal_modificados %}
+                                      
+
+                                        <li class="timeline-inverted">
+                                            <div class="timeline-badge warning"><i class="fa fa-phone"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title"><a href="{% url 'phonedetail' ramal.id %}">{{ ramal }}</a></h4>
+                                                    <p><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ ramal.date_modification|default_if_none:"" }} </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+
+                                 {% endif %}    
+
+
+                                 {% if pontodados_modificados %}
+                                    {% for ponto in pontodados_modificados %}
+                                      
+
+                                        <li>
+                                            <div class="timeline-badge info"><i class="fa fa-sitemap"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title"><a href="{% url 'pointdetail' ponto.id %}">Ponto de rede nº {{ ponto.num }}</a></h4>
+                                                    <p><small class="text-muted"><i class="fa fa-map-marker">&nbsp;{{ ponto.place }}</i></small>&nbsp;<small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ ponto.modification_date|default_if_none:"" }} </small>                                                        
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+                                 {% endif %}
+
+
+                                 {% if pontovoz_modificados %}
+                                    {% for ponto in pontovoz_modificados %}
+                                      
+
+                                        <li class="timeline-inverted">
+                                            <div class="timeline-badge primary"><i class="fa fa-volume-up"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title"><a href="{% url 'pointdetail' ponto.id %}">Ponto de voz nº {{ ponto.num }}</a></h4>
+                                                    <p><small class="text-muted"><i class="fa fa-map-marker">&nbsp;{{ ponto.place }}</i> </small>&nbsp;<small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ ponto.modification_date|default_if_none:"" }} </small>             
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p></b></p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% endfor %}
+                                 {% endif %}                                 
+                        <!-- /.panel-body -->
+                        </div>
+
+
+                        {{ pw }}
+
+
+
+            </div>        
+{% endblock %}     
+
+
+
+   
+
+{% block conteudo5 %}
+
+{% endblock %}
+
+
+
+
+
+
+{% block conteudo7 %}
+
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}  
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js" %}"></script>
+    <script src="{% static "js/jquery.tagcloud.js" %}"></script>
+
+
+
+    <script type="text/javascript">
+    $(function () {
+        $('#senhas').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            exporting: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Percentagem',
+                data: [
+                    {
+                        name: 'Em uso',
+                        y:{{ total_senha_ativos }},
+                        sliced: true,
+                        selected: true
+                    },
+                    ['Desativadas',   {{ total_senha_d }}],
+                    ['Livres',   {{ senha_livres }}]
+
+                ]
+            }]
+        });
+    });
+    </script>  
+
+    <script type="text/javascript">
+    $(function () {
+        $('#hosts').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            exporting: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Percentagem',
+                data: [
+                    ['Windows',   {{ host_win }}],
+                    ['BSD/MAC',   {{ host_bsd }}],
+                    {
+                        name: 'Linux',
+                        y: {{ host_linux }},
+                        sliced: true,
+                        selected: true
+                    },
+                    ['OUTROS',   {{ host_other }}]
+
+                ]
+            }]
+        });
+    });
+    </script>   
+   
+
+<script type="text/javascript">
+    $.fn.tagcloud.defaults = {
+      size: {start: 10, end: 18, unit: 'pt'},
+      color: {start: '#cde', end: '#f52'}
+    };
+
+    $(function () {
+      $('#categorias a').tagcloud();
+    });
+</script>  
+
+
+<!-- NOVOS -->
+
+    <script type="text/javascript">
+    $(function () {
+        $('#netpoints').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            exporting: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Percentagem',
+                data: [
+                    ['Ativos',   {{ ponto_ativos }}],
+                    {
+                        name: 'Livres',
+                        y: {{ ponto_livres }},
+                        dataLabels: {
+                            enabled: true,
+                            sliced: true,
+                            selected: true                            
+                        }
+                    }
+
+                ]
+            }]
+        });
+    });
+    </script> 
+
+
+
+    <script type="text/javascript">
+    $(function () {
+        $('#phones').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            exporting: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Percentagem',
+                data: [
+                    ['Ativos',   {{ total_ramal_ativos }}],
+                    {
+                        name: 'Livres',
+                        y: {{ total_ramal_livres }},
+                        dataLabels: {
+                            enabled: true,
+                            sliced: true,
+                            selected: true                            
+                        }
+                    }
+
+                ]
+            }]
+        });
+    });
+    </script> 
+
+
+
+{% endblock %}
+

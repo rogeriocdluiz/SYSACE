@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Sistema ACE - {{ title }}</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+        </style>
+
+        {% load staticfiles %}  
+        <link href="{% static "css/ace.css"   %}"rel="stylesheet">
+
+    </head>
+    <body>
+        <h1 style="text-align: center;"> Sistema ACE - {{title}} </h1>
+        <h2 style="text-align: center;"> {{ org }}</h2>
+                    
+            <table border="1" cellpadding="5">
+              <thead>
+                <tr style=" background-color: rgb(192, 192, 192);">
+                    <th>Nome</th>
+                    <th>Fabricante</th>
+                    <th>Modelo</th>                    
+                    <th>N&uacute;mero de s&eacute;rie</th>
+                    <th>Sistema operacional</th>
+                    <th>Tipo</th>
+                    <th>M&aacute;quina Virtual</th>
+                    <th>Mem&oacute;ria instalada</th>
+                    <th>Nº CPU</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for item in mylist %}
+                <tr style="text-align: center;">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.manufactorer|default_if_none:" " }}</td>  
+                    <td>{{ item.devicemodel|default_if_none:" " }}</td>                    
+                    <td>{{ item.serial_number|default_if_none:" " }}</td>
+                    <td>{{ item.os|default_if_none:" " }}</td>
+                    <td>{{ item.hwtype|default_if_none:" " }}</td>
+                    <td>{{ item.vm |yesno:"Sim,Não"}}</td>
+                    <td>{{ item.mem|default_if_none:" " }}</td>
+                    <td>{{ item.cpu|default_if_none:" " }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+
+<p> Total de {{ total }} impressora(s) -  Gerado em {% now "j / m / Y - H:i" %} </p>
+        <div id="footerContent" style="text-align: center;">
+            
+            
+            {%block page_foot%}
+                P&aacute;gina <pdf:pagenumber>  
+            {%endblock%}
+            
+        </div>
+
+
+
+
+    </body>
+</html>
+

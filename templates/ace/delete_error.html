@@ -1,0 +1,91 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Exclus&atilde;o Host/Equipamento</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+{% endblock %}
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+
+{% block conteudo1 %}
+    
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                     <h1 class="page-header"><i class="glyphicon glyphicon-alert text-default "></i> Imposs&iacute;vel excluir</h1>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Exclus&atilde;o de {{ obj }}
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                   
+			                            <div class="alert alert-danger">
+                                			Não foi possível apagar o item<span class="alert-link"> {{ obj }} </span>. 
+                                        
+                                            </br></br>
+                                            <p>Existem itens relacionados que impedem a exclusão. </p>
+
+
+                                            {% for item in itens %}
+
+                                            <ul>
+                                                <li> {{ tipo_item }}: {{ item }} </li>
+                                            </ul>
+
+                                            {% endfor %}
+
+                            			</div>
+
+                        </br>
+
+                        <div class="btn-group">
+                            <a href="/ace">
+                                <button class="btn btn-default btn-info" type="button">P&aacute;gina inicial</button>
+                            </a>                         
+                        </div>       
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+{% endblock %}
+

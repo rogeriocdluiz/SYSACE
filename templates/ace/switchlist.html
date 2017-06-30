@@ -1,0 +1,203 @@
+
+{% extends "ace/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load pagination_tags %}
+
+
+{% block title %}
+    <title>Sistema Ace - Listagem de {{ title }}</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+    
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-tasks fa-fw"></i>{{ title }}</h1>    
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.name.id_for_label }}">Nome:</label>
+                                        {{ filter.form.name|add_class:"form-control"}}
+                                    </div>&nbsp;&nbsp;
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.active.id_for_label }}">Ativo:</label> 
+                                        {{ filter.form.active|add_class:"form-control"}}
+                                    </div>                                  
+                                    
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.manufactorer.id_for_label }}">Fabricante:</label>
+                                        {{ filter.form.manufactorer|add_class:"form-control" }}    
+                                    </div>  
+
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.devicemodel.id_for_label }}">Modelo:</label>
+                                        {{ filter.form.devicemodel|add_class:"form-control" }}    
+                                    </div>                                            
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.stack.id_for_label }}">Pilha:</label>
+                                        {{ filter.form.stack|add_class:"form-control" }}    
+                                    </div>                                     
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.rack.id_for_label }}">Pilha:</label>
+                                        {{ filter.form.rack|add_class:"form-control" }}    
+                                    </div>                                     
+                                    </br></br>
+                                                                               
+                                                                                                                   
+									<div class="form-group">
+                                        <label for="{{ filter.form.place.id_for_label }}">Local:</label>
+                                        {{ filter.form.place|add_class:"form-control" }}    
+                                    </div>                                                     
+                                
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+                                    <a href="{% url 'switchlist' %}" alt="Limpar filtro" title="Limpar filtro">
+                                        <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+                                    </a>                                     
+
+                                </form>
+                            </div>
+                            </br>
+
+                            	{% if filter %}
+
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <th></th>                                                            
+                                        <th>Nome</th>
+                                        <th>Ativo/Em uso</th>
+                                        <th>Fabricante</th>
+                                        <th>Modelo</th>
+                                        <th>Nº s&eacute;rie</th>
+                                        <th>Patrim&ocirc;nio</th>
+                                        {% if perms.ace.change_switch or perms.ace.delete_switch %} 
+                                        <th>A&ccedil;&otilde;es</th> 
+                                        {% endif %}                                       
+                                    </thead>
+
+                                    <tbody>
+
+                                    {% autopaginate filter switchlist_results as filter_list %}                                         
+
+                                    {% for switch in filter_list %}
+                                            <tr>
+                                                <td class="text-center"><i class="fa fa-tasks fa-2x"></i><span style="display: none;" >13</span></td>
+                                                
+                                                <td><a href="{% url 'switchdetail' switch.id %}">{{ switch.name }}</a></td>
+
+                                                {% if switch.active = True %}
+                                                <td><i class="fa fa-check-circle fa-1x text-success"><span style="display: none;" >1</span></td>
+                                                {% else %}
+                                                <td><i class="fa fa-minus-circle fa-1x text-danger"><span style="display: none;" >0</span></td>
+                                                {% endif %}
+
+                                                <td>{{ switch.manufactorer|default_if_none:""  }}</td>
+
+                                                <td>{{ switch.devicemodel|default_if_none:""  }}</td>
+
+                                                <td>{{ switch.serial|default_if_none:""  }}</td>
+                                                
+                                                <td>{{ switch.ownerid|default_if_none:"" }} </td>
+
+                                                {% if perms.ace.change_switch or perms.ace.delete_switch %} 
+                                                <td>
+                                                    <a href="{% url 'switch_edit' pk=switch.pk %}" alt="Editar" title="Editar" ><i class="glyphicon glyphicon-pencil  text-info"></i></a>&nbsp;
+
+                                                    {% if perms.ace.delete_switch %} 
+                                                    <a href="{% url 'switch_delete' switch.id %}" alt="Excluir" title="Excluir" alt="Excluir" title="Excluir" ><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                                                    {% endif %}
+                                                </td>                              
+                                                {% endif %}                                                 
+                                            </tr>
+
+                                    {% endfor %}
+                                    
+
+                                    </tbody>
+                                </table>
+
+                                <div align="center"> {% paginate %} </div>    
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de hosts: <b>{{ total }}</b></p>
+                                </div>
+
+                            	{% else %}	                            
+
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        
+                                        Nenhum switch cadastrado.
+                                </div>
+                
+                                {% endif %}                             
+
+                            </br>                                               
+                            {% if perms.ace.add_switch %}  
+	            			
+	                            <!-- formulario de adição -->
+                                <div class="btn-group"> 
+    	                            <a href="{% url 'switch_new' %}">
+    	                                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>Adicionar</button>
+    	                            </a> 
+                                </div>
+	                            <!-- formulario de adição -->
+
+
+	                            {% endif %}   
+                                <div class="btn-group">                           
+    	                            <a href="/ace/switchreport" alt="Relat&oacute;rio de switches" title="Relat&oacute;rio de switches" target="blank">
+    	                                <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de switches</button>
+    	                            </a>    
+                                </div>
+	                       
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+    
+
+
+{% endblock %}

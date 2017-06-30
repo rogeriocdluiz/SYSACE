@@ -1,0 +1,184 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+    <title>Detalhes do usu&aacute;rio</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-user fa-fw"></i>Usu&aacute;rio: {{ usr.get_full_name |upper }}</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                                      
+
+                            <div class="iteminfo">                             
+                                <p><b>Usu&aacute;rio:</b> {{ usr.username |upper}}</p>
+                                <p><b>Nome completo:</b> {{ usr.get_full_name |upper }} </p>
+                                <p><b>E-mail:</b> {{ usr.email }}</p> 
+
+                            </div>                                
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+            {% if perms.auth.change_user %}
+            <div class="btn-group">
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    A&ccedil;&otilde;es
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    
+                    <li>
+                        <a href="{% url 'user_new' %}" alt="Adicionar" title="Adicionar">
+                                <i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar
+                        </a> 
+                    </li>
+                    <li>
+                        <a href="{% url 'user_edit' pk=usr.pk %}" alt="Editar" title="Editar">
+                                <i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar
+                        </a>                                 
+                    </li>
+                    
+                     <li role="separator" class="divider"></li>
+                    <li>
+                           <a href="/admin/auth/user/{{ usr.id }}" alt="Editar na interface de administra&ccedil;&atilde;o" title="Editar na interface de administra&ccedil;&atilde;o" target="blank"><i class="glyphicon glyphicon-pencil text-danger"></i>
+                            Editar na interface de administra&ccedil;&atilde;o
+                        </a> 
+                    </li>
+                    <li>
+                        <a href="/admin/auth/user/{{ usr.id }}/password/" alt="Mudar senha" title="Mudar senha" target="blank"><i class="glyphicon glyphicon-pencil text-danger"></i>
+                            Mudar senha
+                        </a> 
+                    </li>
+
+
+
+
+
+                  </ul>
+                </div>
+            </div>
+            {% endif %}          
+
+            {% if request.user.id == usr.id %}
+            <!-- <div class="btn-group">
+                <a href="/admin/auth/user/{{ usr.id }}/password/" alt="Mudar senha" title="Mudar senha" target="blank">
+                    <button class="btn btn-danger" type="button">Mudar senha</button>
+                </a> 
+            </div> -->
+            {% endif %}             
+
+            <div class="btn-group">
+                <a href="{% url 'userlist' %}" alt="Todos os usu&aacute;rios" title="Todos os usu&aacute;rios">
+                    <button class="btn btn-primary" type="button">Todos os usu&aacute;rios</button>
+                </a>
+            </div>        
+
+            </br>
+            </br>                
+            
+
+            {% if phoneownership %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-info">
+                        
+                        <div class="panel-heading"><i class="fa  fa-phone fa-fw"></i> Telefones/Senhas do usu&aacute;rio (Hist&oacute;rico de uso)</div> 
+                        
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <th></th>
+                                    <th>Num</th>
+                                    <th>Local</th>                                            
+                                    <th>Categoria</th>
+                                    <th>Tipo</th>
+                                    <th>Ativa&ccedil;&atilde;o em</th>
+                                    <th>Desativa&ccedil;&atilde;o em</th>                                    
+                                </thead>
+                                <tbody>
+                                {% for phone in phoneownership %}
+                                    <tr>
+                                        <td>
+                                            {% if phone.date_deactivation = None %}
+                                                <span class="text-success" title="Ativo"><center><i class="fa fa-check fa-1x"></i></center></span>
+                                            {% else %}                                                
+                                                <span class="text-default" title="Inativo"><center><i class="fa fa-times fa-1x"></i></center></span>
+                                            {% endif %}
+                                        </td>
+
+
+                                        {% if phone.phone.password = True %}
+                                            <td><i class="fa fa-lock fa-1x">&nbsp;</i><a href="{% url 'phonedetail' phone.phone.id %}" title="visualizar" alt="visualizar" >******</a></td>
+                                        {% else %}
+                                            <td><i class="fa fa-phone fa-1x">&nbsp;</i><a href="{% url 'phonedetail' phone.phone.id %}" title="visualizar" alt="visualizar">{{ phone.phone }}</a></td>
+                                        {% endif %}
+
+                                        <td>{{ phone.phone.place |default_if_none:"" }}</td>
+                                        <td>{{ phone.phone.phonecategory | default_if_none:"" }}</td>                                    
+
+                                        <td>{{ phone.phone.telephonetype |default_if_none:""}}</td>
+                                        <td>{{ phone.date_activation |default_if_none:" --- "}}</td>
+                                        <td>{{ phone.date_deactivation |default_if_none:" --- "}}</td>
+
+                                        {{ date_activation }}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+            <!-- /.row -->
+            {% endif %}            
+
+            
+ 
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+{% endblock %}

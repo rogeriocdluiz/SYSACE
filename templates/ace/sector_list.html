@@ -1,0 +1,147 @@
+
+{% extends "ace/base.html" %}
+
+{% load widget_tweaks %}
+
+{% load pagination_tags %}
+
+
+
+
+{% block title %}
+    <title>Sistema Ace - Listagem de {{ title }}</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-map-marker fa-fw"></i>{{ title }}</h1>    
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.name.id_for_label }}">Nome:</label>
+                                        {{ filter.form.name|add_class:"form-control"}}
+                                    </div>                                                                             
+									
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+		                            <a href="{% url 'sectorlist' %}" alt="Limpar filtro" title="Limpar filtro">
+		                                <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+		                            </a> 	
+
+                                </form>
+                            </div>
+                            </br>
+
+								{% if filter %}
+
+                                <table class="table table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Id/Nome/Num</th>
+											<th>Obs</th>
+                                            {% if perms.ace.change_sector or perms.ace.delete_sector %} 
+                                            <th>A&ccedil;&otilde;es</th> 
+                                            {% endif %}                                             
+										</tr>
+									</thead>
+
+									<tbody>
+
+                                    {% autopaginate filter sectorlist_results as filter_list %}                                        
+
+                                    {% for sector in filter_list %}
+										<tr>
+											<td><a href="{% url 'sectordetail' sector.id %}">{{ sector.name }}</a></td>
+											<td>{{ sector.comments}} </td>
+                                            {% if perms.ace.change_sector %} 
+                                            <td>
+                                                <a href="{% url 'sector_edit' pk=sector.pk %}" alt="Editar" title="Editar"><i class="glyphicon glyphicon-pencil  text-info"></i></a>&nbsp;
+                                                {% if perms.ace.delete_sector %}
+                                                <a href="{% url 'sector_delete' pk=sector.pk %}" alt="Excluir" title="Excluir"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+                                                {% endif %}   
+                                            </td>                              
+                                            {% endif %}                                             
+										</tr>
+                                        {% endfor %}
+                                    </tbody>                                    
+                                            
+                                </table>
+
+                                <div align="center"> {% paginate %} </div>                                
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de hosts: <b>{{ total }}</b></p>
+                                </div>
+
+
+
+                           		{% else %}
+
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        
+                                        Nenhum setor/departamento cadastrado.
+                                </div>
+                
+                                {% endif %} 
+
+                            </br>                                               
+
+                            {% if perms.ace.add_sector %} 
+
+                            <div class="btn-group">
+                                <a href="{% url 'sector_new' %}" alt="Adicionar" title="Adicionar">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                                </a> 
+                            </div>
+                            {% endif %} 
+
+ 
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+
+
+{% endblock %}

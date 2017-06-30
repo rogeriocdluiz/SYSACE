@@ -1,0 +1,412 @@
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+    <title>Sistema Ace - Resultados da busca</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Resultados da pesquisa</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- <div class="panel-heading">
+                            <i class="fa  fa-search  fa-fw"></i> Resultados
+                        </div> -->
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                           
+                        	{% if error %}
+                                    
+       	                            <div class="alert alert-danger" role="alert">
+		                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		                              <span class="sr-only">Erro:</span>
+		                              Por favor adicione um termo para a pesquisa.
+		                            </div>
+                            {% else %}
+
+                        	{% if not pontos and not locais and not ramais and not hosts and not switchs and not stacks and not services and not ips and not passwords and not ownerids and not users and not phonetypes and not phonecat and not networks %}
+	                            <div class="alert alert-danger" role="alert">
+	                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+	                              <span class="sr-only">Erro:</span>
+	                              Termo pesquisado: <strong>{{ query }}</strong> - Nenhum item encontrado.
+	                            </div> 
+                            {% endif %}                           
+
+
+
+                            <!-- Pontos de rede - Network points -->
+                            <div class="dataTable_wrapper">                             
+									{% if pontos %}
+									<div class="alert alert-success">
+                                		Encontrado(s) {{ pontos|length }} ponto{{ pontos|pluralize }}.
+                                	</div>
+				                          
+		                            <table class="table table-striped">
+		                              <thead>
+		                                <tr>
+		                                  <th>Ponto</th>
+		                                  <th>Local</th>
+		                                  <th>Tipo</th>
+		                                </tr>
+		                              </thead>
+		                              <tbody>
+		                                {% for ponto in pontos %}
+		                                <tr>
+		                                  <td><a href="{% url 'pointdetail' ponto.id %}">{{ ponto.num }}</a></td>
+		                                  <td>{{ ponto.place }}</td>
+		                                  <td>{{ ponto.pointtype }}</td>
+		                                </tr>
+		                                {% endfor %}
+		                              </tbody>
+		                            </table>
+				                    {% endif %}
+                            </div>
+                            <!-- /.table-responsive -->
+
+                            <!-- Locais - Places -->
+                            <div class="dataTable_wrapper">                             
+							{% if locais %}
+							<div class="alert alert-success">
+							  Encontrado(s) {{ locais|length }} locais.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Local</th>
+							          <th>Andar</th>						          
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for local in locais %}
+							        <tr>
+							          <td><a href="{% url 'placedetail' local.id %}">{{ local.placetype }} - {{ local.name }}</a></td>
+							          <td>{{local.floor}} </td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+							{% endif %}
+                            </div>
+                            <!-- /.table-responsive -->
+
+                            <!-- Ramais - Phones -->
+                           <div class="dataTable_wrapper">                             
+							{% if ramais  %} 
+							<div class="alert alert-success">
+							  Encontrado(s) {{ ramais|length }} telefone(s) {{ telefones|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Num</th>
+							          <th>Ativo</th>
+							          <th>Usu&aacute;rio</th>
+							          <th>Local</th>
+							          <th>Tipo</th>
+							          <th>Categoria</th>							          
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for ramal in ramais %}
+							        <tr>
+										{% if ramal.password = True %}
+										<td><a href="{% url 'phonedetail' ramal.id %}">************</a></td>
+										{% else %}
+										<td><a href="{% url 'phonedetail' ramal.id %}">{{ ramal }}</a></td>
+										{% endif %}							          
+										{% if ramal.active = True %}
+										<td><i class="fa fa-check-circle fa-1x text-success"><span style="display:none;">True</span></td>
+										{% else %}
+										<td><i class="fa fa-times-circle fa-1x text-danger"><span style="display:none;">False</span></td>
+										{% endif %}
+
+										{% if ramal.user =  None %}
+										<td> --- </td>
+										{% else %}
+										<td>{{ ramal.user.get_full_name |default_if_none:"" | upper }}</td>
+
+											
+
+										{% endif %}
+										{% if ramal.password == False %}
+										<td>{{ ramal.place |default_if_none:""}} </td>
+										{% else %}
+										<td> N&atilde;o se aplica</td>
+										{% endif %}							       	  
+										{% if ramal.password == False %}
+										<td>{{ ramal.telephonetype |default_if_none:""}}</td>
+										{% else %}
+										<td> N&atilde;o se aplica</td>
+										{% endif %}
+										<td> {{ ramal.phonecategory }} </td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+
+							{% endif %}
+
+                            </div>
+                            <!-- /.table-responsive -->     
+
+
+                           <div class="dataTable_wrapper">                             
+                                
+							{% if hosts %}
+							<div class="alert alert-success">
+							  Encontrado(s) {{ hosts|length }} equipamento{{ hosts|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Nome</th>
+							          <th>Tipo</th>						          
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for host in hosts %}
+							        <tr>
+							          <td><a href="{% url 'hostdetail' host.id %}">{{ host.name }}</a></td>
+							         <!-- <td>{{ host.get_hwtype_display }} </td> -->
+							         <td> {{ host.get_hwtype_display }} </td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+
+							{% else %}
+
+							{% endif %}
+
+                            </div>
+                            <!-- /.table-responsive -->   
+
+
+                           <div class="dataTable_wrapper">                             
+                                
+							{% if switchs %}
+							<div class="alert alert-success">
+							  Encontrado(s) {{ switchs|length }} switch{{ switchs|pluralize:"es" }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Nome</th>					          
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for switch in switchs %}
+							        <tr>
+							          <td><a href="{% url 'switchdetail' switch.id %}">{{ switch.name }}</a></td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+
+							{% else %}
+
+
+							{% endif %}
+
+                            </div>
+                            <!-- /.table-responsive -->   
+
+
+                           <div class="dataTable_wrapper">                             
+                                
+							{% if stacks %}
+							<div class="alert alert-success">
+							  Encontrada(s) {{ stacks|length }} pilha{{ pilhas|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Nome</th>					          
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for stack in stacks %}
+							        <tr>
+							          <td><a href="{% url 'stackdetail' stack.id %}">{{ stack.name }}</a></td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+
+							{% else %}
+
+							{% endif %}
+
+                            </div>
+                            <!-- /.table-responsive -->  
+
+
+
+                           <div class="dataTable_wrapper">                             
+                                
+							{% if services %}
+							<div class="alert alert-success">
+							  Encontrado(s) {{ services|length }} Servi&ccedil;o{{ services|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Nome</th>					          
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for service in services %}
+							        <tr>
+							          <td><a href="{% url 'servicedetail' service.id %}">{{ service.name }}</a></td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+
+							{% else %}
+
+							{% endif %}
+
+                            </div>
+                            <!-- /.table-responsive -->       
+
+                           <div class="dataTable_wrapper">                             
+                                
+							{% if ips %}
+							<div class="alert alert-success">
+							  Encontrado(s) {{ ips|length }} IP{{ ips|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Endere&ccedil;o</th>		
+									  <th>Host</th>					          							          			
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for ip in ips %}
+							        <tr>
+							          <td><a href="{% url 'ipdetail' ip.id %}">{{ ip.address }}</a></td>
+							          <td>{{ ip.device }}</a></td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+							
+							{% endif %}
+
+							{% if networks %}
+							<div class="alert alert-success">
+							  Encontrada(s) {{ networks|length }} rede{{ redes|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Rede</th>		
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for network in networks %}
+							        <tr>
+							          <td><a href="{% url 'networkdetail' network.id %}">{{ network.name }}</a></td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+							
+							{% endif %}							
+
+
+							{% if ownerids %}
+							<div class="alert alert-success">
+							  Encontrado(s) {{ ownerids|length }} Patrim&ocirc;nio{{ ownerids|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Patrim&ocirc;nio</th>		
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for ownerid in ownerids %}
+							        <tr>
+							          <td><a href="{% url 'owneriddetail' ownerid.id %}">{{ ownerid }}</a></td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+							
+							{% endif %}	
+
+
+							{% if users %}
+							<div class="alert alert-success">
+							  Encontrado(s) {{ users|length }} Usu&aacute;rio{{ users|pluralize }}.
+							</div>
+							    <table class="table table-striped">
+							      <thead>
+							        <tr>
+							          <th>Usu&aacute;rio</th>		
+							          <th>Email</th>
+							        </tr>
+							      </thead>
+							      <tbody>
+							        {% for user in users %}
+							        <tr>
+							          <td><a href="{% url 'userdetail' user.id %}">{{ user.get_full_name |default_if_none:"" | upper }}</a></td>						          
+							          <td>{{ user.email }}</td>
+							        </tr>
+							        {% endfor %}
+							      </tbody>
+							    </table>
+							
+							{% endif %}								
+
+
+                            </div>
+                            <!-- /.table-responsive -->                                                       
+
+                            
+
+                            {% endif %}
+
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+{% endblock %}

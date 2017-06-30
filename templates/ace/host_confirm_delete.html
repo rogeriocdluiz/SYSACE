@@ -1,0 +1,93 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Exclus&atilde;o Host/Equipamento</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+{% endblock %}
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+
+{% block conteudo1 %}
+    
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                     {% if t = "printer" %}
+                     <h1 class="page-header"><i class="fa fa-print fa-fw"></i>Exclus&atilde;o Host/Equipamento</h1>
+                     {% else %}
+                     <h1 class="page-header"><i class="fa fa-desktop fa-fw"></i>Exclus&atilde;o Host/Equipamento</h1>
+                     {% endif %}
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Exclus&atilde;o de Host
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                    <!-- form-django -->      
+									<form method="post">{% csrf_token %}
+			                            <div class="alert alert-danger">
+                                			Certeza que quer apagar o host/equipamento <span class="alert-link"> {{ host }}? </span> 
+                            			</div>
+
+									    <input class="btn btn-danger" type="submit" value="Sim. Tenho certeza" /> 
+                                        {% if t = "printer" %}
+									    <a href="{% url 'printerdetail' host.id %}">
+				                            <button class="btn btn-default" type="button"><i class="fa fa-chevron-left "></i>&nbsp;N&atilde;o</button>
+				                    	</a> 
+                                        {% else %}
+                                        <a href="{% url 'hostdetail' host.id %}">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-chevron-left "></i>&nbsp;N&atilde;o</button>
+                                        </a> 
+                                        {% endif %}
+
+
+									</form>                                    
+                                    <!-- form-django -->  
+
+                                    </br> 
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+{% endblock %}
+

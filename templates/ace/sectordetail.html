@@ -1,0 +1,84 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do setor/departamento</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-map-marker fa-fw"></i>Setor/Departamento:&nbsp;{{ sector.name }} </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+				<div class="col-lg-8">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                      
+                        <p><b>Nome:&nbsp;</b> {{ sector.name }}</p>
+                        {% if sector.comments %}
+                        <p><b>Obs:&nbsp;</b>{{ sector.comments }}</p>
+                        {% endif %}                                                
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+
+                    <div class="btn-group">
+                        <a href="{% url 'sectorlist' %}" alt="Todos os setores/departamentos" title="Todos os locais">
+                            <button class="btn btn-default" type="button">Todos os Setores/Departamentos</button>
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'sector_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a>                         
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'sector_edit' pk=sector.pk %}" alt="Editar" title="Editar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>                                                         
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'sector_delete' sector.id %}" alt="Excluir" title="Excluir">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>                                                         
+                    </div>                                        
+
+                   <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->      
+
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+{% endblock %}

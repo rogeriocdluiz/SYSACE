@@ -1,0 +1,139 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do usu&aacute;rio</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+{% block conteudo1 %}
+    
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+                     <h1 class="page-header"><i class="fa fa-user  fa-fw"></i>Cria&ccedil;&atilde;o/Ediç&atilde;o de usu&aacute;rio</h1>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Dados do usu&aacute;rio
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+
+
+                                        {% if form.subject.errors %}
+                                            <ol>
+                                            {% for error in form.subject.errors %}
+                                                <li><strong>{{ error|escape }}</strong></li>
+                                            {% endfor %}
+                                            </ol>
+                                        {% endif %}
+                                        
+
+                                            
+                                            
+                                           <form method="POST" class="service-form">{% csrf_token %}
+
+                                                {{ form.non_field_errors }}
+
+                                                <p class="fieldWrapper"> 
+                                                    {{ form.username.label_tag }}
+                                                    {{ form.username.errors }}
+                                                    {{ form.username }} <p id="error"></p>
+                                                    {{ form.username.help_text }}
+                                                </p> 
+
+                                                <p class="fieldWrapper"> 
+                                                    {{ form.first_name.label_tag }}
+                                                    {{ form.first_name.errors }}
+                                                    {{ form.first_name }}
+                                                </p> 
+
+                                                <p class="fieldWrapper"> 
+                                                    {{ form.last_name.label_tag }}
+                                                    {{ form.last_name.errors }}
+                                                    {{ form.last_name }}
+                                                </p>             
+
+                                                <p class="fieldWrapper"> 
+                                                    {{ form.password.label_tag }}
+                                                    {{ form.password.errors }}
+                                                    {{ form.password }}
+                                                </p>                                                                                                             
+
+                                                <p class="fieldWrapper"> 
+                                                    {{ form.email.label_tag }}
+                                                    {{ form.email.errors }}
+                                                    {{ form.email }}
+                                                    {{ form.username.email }}
+                                                </p>                                                                                                             
+
+                                                <p class="fieldWrapper"> 
+                                                    {{ form.is_active.label_tag }}
+                                                    {{ form.is_active.errors }}
+                                                    {{ form.is_active }}
+                                                    {{ form.is_active.help_text }}
+                                                </p>  
+
+                                                <p class="fieldWrapper"> 
+                                                    {{ form.groups.label_tag }}
+                                                    {{ form.groups.errors }}
+                                                    {{ form.groups }}
+                                                    {{ form.groups.help_text }}
+                                                </p>     
+                                                </br>                                  
+
+                                                <button type="submit" class="save btn btn-info" id="register">Salvar</button>
+
+                                                <a href="{% url 'userlist' %}">
+                                                        <button class="btn btn-danger" type="button">Cancelar</button>
+                                                </a>                                          
+                                           </form> 
+                                            <!-- form-django -->                                      
+
+
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+
+{% endblock %}
+

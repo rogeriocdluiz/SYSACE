@@ -1,0 +1,142 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do servi&ccedil;o</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-wrench fa-fw"></i>Servi&ccedil;o: {{ service.name }}</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+				<div class="col-lg-12">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+            
+
+                            <div class="iteminfo">                             
+                
+                                <p><b>Nome:</b> {{ service.name }}</p>
+                                <p><b>IP:</b> {{ service.ip }}</p> 
+                                <p><b>Host:</b> {{ service.ip.device }}</a></p>
+
+                            </div>                                
+
+                            <div class="iteminfo">                                 
+
+                            <p><b>Categorias:</b>
+                                {% if categories %}
+                                  <ul>
+                                  {% for cat in categories %}
+                                    <!-- <li>{{ cat.name }}</li> -->
+
+                                    <li><a href="{% url 'servicecatdetail' cat.id %}">{{ cat.name }}</a></li> 
+
+                                  {% endfor %}
+                                  </ul>
+                                {% endif %} 
+                            </p>
+
+                            </div>                                
+
+                        
+
+                        </div>
+
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->   
+                {% if service.obs  %}   
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Observa&ccedil;&otilde;es:</b>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                        <p> {{ service.obs }}</p>                            
+                        </div>
+
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                {% endif %}
+                <!-- /.col-lg-6 -->                 
+                
+
+            </div>
+            <!-- /.row -->
+
+
+
+
+            <div class="btn-group">
+                <a href="{% url 'servicelist' %}" alt="Todos os servi&ccedil;os" title="Todos os servi&ccedil;os">
+                        <button class="btn btn-default" type="button">Todos os servi&ccedil;os</button>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'service_new' %}" alt="Adicionar" title="Adicionar">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                </a>                 
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'service_edit' pk=service.pk %}" alt="Editar" title="Editar">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                </a>                              
+            </div>
+            <div class="btn-group">                             
+                <a href="{% url 'service_delete' service.id %}" alt="Excluir" title="Excluir">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                </a>                                                 
+            </div>
+                  
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+                                 
+
+
+
+{% endblock %}

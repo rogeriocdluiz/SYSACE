@@ -1,0 +1,128 @@
+
+{% extends "ace/base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do host</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block conteudo1 %}
+    
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+                     {% if t = "printer" %}
+                     <h1 class="page-header"><i class="fa fa-print fa-fw"></i>Cria&ccedil;&atilde;o/Ediç&atilde;o de Impressora</h1>
+                     {% else %}
+                     <h1 class="page-header"><i class="fa fa-desktop fa-fw"></i>Cria&ccedil;&atilde;o/Ediç&atilde;o de Host/Equipamento</h1>
+                     {% endif %}
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Dados do host
+
+                                <div class="dropdown pull-right">
+                                  <button class="btn btn-default dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Adicionar
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                    <li>
+                                        <a id="my_modal_runner" href='{% url "owneridmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Patrim&ocirc;nio
+                                        </a> 
+                                    </li>   
+                                    {% if t != "printer" %}                                  
+                                    <li>
+                                        <a id="my_modal_runner2" href='{% url "osmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Sistema operacional
+                                        </a> 
+
+                                    </li>                                    
+                                    <li>
+                                        <a id="my_modal_runner3" href='{% url "hosttypemodal" %}' alt="Adicionar" title="Adicionar">
+                                            Tipo de equipamento
+                                        </a> 
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <a id="my_modal_runner4" href='{% url "devicemodelmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Modelo de equipamento
+                                        </a> 
+                                    </li>                                    
+                                    <li>
+                                        <a id="my_modal_runner5" href='{% url "manufactorermodal" %}' alt="Adicionar" title="Adicionar">
+                                            Fabricante
+                                        </a> 
+                                    </li>
+                                                                       
+                                  </ul>
+                                </div>  
+                            </br></br>
+
+                        </div>                        
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                    <!-- form-django -->      
+                                    
+                                    <form method="POST" class="host-form">{% csrf_token %}
+                                        {{ form.as_p }} 
+<!--
+                                        <table>
+                                            {{ form.as_table }}
+                                        </table> -->
+
+                                        <button type="submit" class="save btn btn-info">Salvar</button>
+
+                                    {% if t = "printer" %}
+                                    <a href="{% url 'printerlist' %}">
+                                            <button class="btn btn-danger" type="button">Cancelar</button>
+                                    </a> 
+                                    {% else %}
+                                    <a href="{% url 'hostlist' %}">
+                                            <button class="btn btn-danger" type="button">Cancelar</button>
+                                    </a>                                     
+                                    {% endif %}
+
+                                    </form>
+                                    <!-- form-django -->  
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+{% endblock %}
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+{{ form.media }}
+
+
+{% endblock %}
