@@ -47,9 +47,11 @@
 
                             <p><b>Localiza&ccedil;&atilde;o:</b><a href="{% url 'placedetail' ponto.place.id %}"> {{ ponto.place }} </a></p>
                             {% if ponto.patchpanelport %}    
-                            <p><b>Porta do patchpanel:</b> {{ ponto.patchpanelport.num }} - {{ ponto.patchpanelport.patchpanel.num }}</p>
+                            <p><b>Porta do patchpanel:</b> {{ ponto.patchpanelport.num }}</p>
                             {% endif %}
-                            <!-- p><b>Rack:</b> {{ ponto.patchpanelport.patchpanel.rack.name }} - {{ ponto.patchpanelport.patchpanel.rack.place }}</p> -->
+                            {% if ponto.patchpanelport.patchpanel %}    
+                            <p><b>Patchpanel:</b> {{ ponto.patchpanelport.patchpanel.num }}</p>
+                            {% endif %}                            
                             {% if ponto.rack %}  
                             <b>Rack:</b> <a href="{% url 'rackdetail' ponto.rack.id %}"> {{ ponto.rack.name }} - {{ ponto.rack.place }} </a></p> 
                             {% endif %}

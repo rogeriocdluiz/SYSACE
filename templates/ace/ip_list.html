@@ -133,7 +133,6 @@
                             {% endif %}                              
 
                             </br>                                               
-                            {% if perms.ace.can_add_ip %}
                             <!-- formulario de adição -->
                             <div class="btn-group">
                                 <a href="{% url 'ip_new' %}" alt="Adicionar" title="Adicionar">
@@ -141,6 +140,7 @@
                                 </a> 
                             </div>
                             <!-- formulario de adição -->
+                            {% if filter %}
                             <div class="btn-group">
                                 <a href="{% url 'ipreport' %}" alt="Relat&oacute;rio de IPs" title="Relat&oacute;rio de IPs" target="blank">
                                 <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de IPs</button>

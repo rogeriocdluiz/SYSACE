@@ -82,6 +82,13 @@ class HostForm(forms.ModelForm):
         required=False
     )   
 
+    place = forms.ModelChoiceField(
+        queryset=Place.objects.all(),
+        widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
+        label=u'Local',
+        required=False
+    )
+
     devicemodel = forms.ModelChoiceField(
         queryset=Devicemodel.objects.all(),
         widget=autocomplete.ModelSelect2(url='devicemodel-autocomplete',attrs={'class': u'form-control'},),
@@ -105,7 +112,7 @@ class HostForm(forms.ModelForm):
     class Meta:
 		model = Host
 		#fields = '__all__'
-		fields = ['name','active','vm','supplierhw', 'ownerid','serial_number','devicemodel','osplatform','os','hwtype','manufactorer', 'url', 'admuser','admpass','mem','cpu','comments'] 
+		fields = ['name','active','vm','supplierhw', 'ownerid','serial_number','devicemodel','osplatform','os','hwtype','manufactorer','place','url', 'admuser','admpass','mem','cpu','comments'] 
 		widgets = {
         'name': TextInput(attrs={'class': u'form-control'}),
         'active': CheckboxInput(attrs={'class': u'form-control'}),
@@ -116,6 +123,7 @@ class HostForm(forms.ModelForm):
         'url':URLInput(attrs={'class': u'form-control'}),  
         'serial_number':TextInput(attrs={'class': u'form-control'}),
         'devicemodel':Select(attrs={'class': u'form-control'}),
+        'place':Select(attrs={'class': u'form-control'}),
         'mem':TextInput(attrs={'class': u'form-control'}),
         'cpu':NumberInput(attrs={'class': u'form-control'}),
         'manufactorer':Select(attrs={'class': u'form-control'}),
@@ -139,7 +147,16 @@ class PrinterForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(url='manufactorer-autocomplete',attrs={'class': u'form-control'},),
         label=u'Fabricante',
         required=False
-    )          
+    )       
+
+    place = forms.ModelChoiceField(
+        queryset=Place.objects.all(),
+        widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
+        label=u'Local',
+        required=False
+    )
+
+       
     admuser = forms.CharField(
         widget=forms.TextInput(attrs={'class': u'form-control'},),
         required=False,
@@ -197,7 +214,7 @@ class HostFormModal(forms.ModelForm):
 
     class Meta:
         model = Host
-        fields = ['name','supplierhw','ownerid','serial_number','osplatform','os','hwtype','manufactorer','vm', 'url', 'admuser','admpass','mem','cpu','comments'] 
+        fields = ['name','supplierhw','ownerid','serial_number','osplatform','os','hwtype','manufactorer','place','vm', 'url', 'admuser','admpass','mem','cpu','comments'] 
         widgets = {
         'name': TextInput(attrs={'class': u'form-control'}),
         'ownerid':Select(attrs={'class': u'form-control'}),
@@ -206,6 +223,7 @@ class HostFormModal(forms.ModelForm):
         'url':URLInput(attrs={'class': u'form-control'}),  
         'serial_number':TextInput(attrs={'class': u'form-control'}),
         'model':TextInput(attrs={'class': u'form-control'}),
+        'place':Select(attrs={'class': u'form-control'}),
         'os':Select(attrs={'class': u'form-control'}),
         'mem':TextInput(attrs={'class': u'form-control'}),
         'cpu':NumberInput(attrs={'class': u'form-control'}),

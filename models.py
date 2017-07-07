@@ -204,7 +204,7 @@ class Vlan(models.Model):
             verbose_name_plural = 'VLANs'
             ordering = ['vlanid']
 
-    vlanid = models.CharField(verbose_name=u'Id da VLAN', max_length=10, help_text="Ex: 1 , 5, 100", unique=True)
+    vlanid = models.CharField(verbose_name=u'Id da VLAN', max_length=10, help_text="Ex: 1 , 5, 100", unique=True, default="1")
     name = models.CharField(verbose_name=u'Nome da VLAN', max_length=50, help_text="Ex: Vlan dos servidores")
     comments = models.TextField(u'Observações',max_length=2000,blank=True,null=True)
 
@@ -605,7 +605,7 @@ class Host(Device):
     manufactorer = models.ForeignKey(Manufactorer, blank=True, null=True, verbose_name=u'Fabricante')
     mem = models.CharField(u'Memória instalada. Ex: 2GB',max_length=20, blank=True, null=True)
     cpu = models.IntegerField(u'Quantidade de CPUS',blank=True, null=True)
-    #place = models.ForeignKey(Place,verbose_name=u'Localização', null=True, blank=True)
+    place = models.ForeignKey(Place,verbose_name=u'Localização', null=True, blank=True)
     #diskspace
     #lastupdate = = models.DateTimeField('Ultima atualização', blank=True, null=True)
     #warranty = models.DateTimeField('Garantia', blank=True, null=True)
@@ -1074,7 +1074,7 @@ class Switchport(models.Model):
 
     """
     def clean(self):
-        portas_cadastradas = Switchport.objects.all().filter(switch = self.switch).count()
+        portas_cadastradas = Switchport.objects.filter(switch = self.switch).count()
         portas_disponiveis = self.switch.ports
         if portas_disponiveis <= portas_cadastradas:
             raise ValidationError("O switch selecionado ja possui todas as portas ocupadas")
@@ -1082,6 +1082,10 @@ class Switchport(models.Model):
         porta = Switchport.objects.all().filter(num = self.num, switch=self.switch, tipo=self.tipo).exclude(pk = self.id)
         if porta:
                 raise ValidationError("Já existe uma porta com este número neste switch")
+
+        p = Switchport.objects.filter(host=self.host)
+        if p:
+            raise ValidationError("Já existe uma porta associada a este host")
 
     def __unicode__(self):
         return u'%s (%s)' % (self.num, self.switch.name)

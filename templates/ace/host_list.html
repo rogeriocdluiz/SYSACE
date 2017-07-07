@@ -133,6 +133,7 @@
                                         <th>Sistema operacional</th>
                                         <th>M&aacute;quina virtual</th>
                                         <th>Patrim&ocirc;nio</th>
+                                        <th>Local</th>
                                         <th>Obs</th>
                                         {% if perms.ace.change_host or perms.ace.delete_host %}
                                         <th>A&ccedil;&otilde;es</th> 
@@ -217,6 +218,7 @@
                                                 <td><i class="fa fa-minus-circle fa-1x text-danger"><span style="display: none;" >0</span></td>
                                                 {% endif %}
                                                 <td>{{ host.ownerid|default_if_none:"" }} </td>
+                                                <td>{{ host.place|default_if_none:"" }} </td>
                                                 <td>{{ host.comments|default_if_none:"" }} </td>
 
                                                 {% if perms.ace.change_host or perms.ace.change_printer %} 
@@ -293,7 +295,7 @@
 
 
                             
-
+                            {% if filter %}
                             {% if t == "printer" %}
                             <a href="{% url 'printerreport' %}" alt="Relat&oacute;rio de impressoras" title="Relat&oacute;rio de impressoras" target="blank">
                                 <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de impressoras</button>
@@ -303,6 +305,7 @@
                                 <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de equipamentos</button>
                             </a>    
                             {% endif %}       
+                            {% endif %} 
 
                                                       
 

@@ -34,35 +34,15 @@
                 <div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover">
-                                    <tbody>
-
-                                       <tr>
-                                            <th>N&uacute;mero/Identifica&ccedil;&atilde;o:</th>
-                                            <td>{{ patchpanel.num }}</td>
-                                        </tr>
-                                       <tr>
-                                            <th>Rack</th>
-                                            <td>{{ patchpanel.rack.name }} - {{ patchpanel.rack.place }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Portas</th>
-                                            <td>{{ patchpanel.ports }}</td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                          
+                            <div class="iteminfo"> 
+                                <p><b>N&uacute;mero/Id:</b> {{ patchpanel.num }}</p>
+                                <p><b>Rack:</b> {{ patchpanel.rack }} </p>                            
+                                <p><b>Portas:</b> {{ patchpanel.ports }} </p>
+                            </div>                            
                         </div>
                         <!-- /.panel-body -->
-
-
                     </div>
                     <!-- /.panel -->              
-
                 </div>
                
 
@@ -73,25 +53,25 @@
                
                     <div class="btn-group">
                         <a href="{% url 'patchpanellist' %}" alt="Todos os patchpanels" title="Todos os patchpanels">
-                            <button class="btn btn-primary" type="button">Todos os patchpanels</button>
+                            <button class="btn btn-default" type="button">Todos os patchpanels</button>
                         </a>
                     </div>
 
                     <div class="btn-group">
                         <a href="{% url 'patchpanel_new' %}" alt="Adicionar" title="Adicionar">
-                            <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
                         </a>                         
                     </div>
 
                     <div class="btn-group">
                         <a href="{% url 'patchpanel_edit' pk=patchpanel.pk %}" alt="Editar" title="Editar">
-                            <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
                         </a>                               
                     </div>
 
                     <div class="btn-group">
                         <a href="{% url 'patchpanel_delete' patchpanel.id %}" alt="Excluir" title="Excluir">
-                            <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
                         </a>                               
                     </div>                                        
                                    
@@ -142,16 +122,15 @@
                         {% endif %}
 
 
-                    {% if request.user.is_superuser %} 
-
+                    </br>
                     <!-- formulario de adição -->
                     <a href="{% url 'patchpanelport_new' %}" alt="Adicionar" title="Adicionar">
                             <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
                     </a> 
                     <!-- formulario de adição -->
+                    </br></br>
 
 
-                    {% endif %}  
 
 
                     </div>

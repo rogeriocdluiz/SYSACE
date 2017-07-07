@@ -122,8 +122,7 @@
                             {% endif %}                             
 
                             </br>                                               
-
-                            {% if perms.ace.add_netpoint %}                            
+                         
                             <!-- formulario de adição -->
                             <div class="btn-group">
                                 <a href="{% url 'service_new' %}">
@@ -132,10 +131,11 @@
                             </div>
                             <!-- formulario de adição -->
 
-                            {% endif %}    
+                            {% if filter %}
                             <a href="{% url 'servicereport' %}" alt="Relat&oacute;rio de servi&ccedil;os" title="Relat&oacute;rio de servi&ccedil;os" target="blank">
                                 <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de servi&ccedil;os</button>
                             </a> 
+                            {% endif %}
 
  
 

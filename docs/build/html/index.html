@@ -36,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Buscar" href="search.html"/>
     <link rel="top" title="documentação Sistema ACE 1.0.9" href="#"/>
-        <link rel="next" title="Licença" href="licence.html"/> 
+        <link rel="next" title="Instalação" href="install.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,6 +91,14 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Instalação</a></li>
+<li class="toctree-l1"><a class="reference internal" href="painel.html">Painel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bens.html">Controle de bens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equipamentos.html">Equipamentos e serviços</a></li>
+<li class="toctree-l1"><a class="reference internal" href="locais.html">Locais e setores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rede.html">Rede</a></li>
+<li class="toctree-l1"><a class="reference internal" href="telefonia.html">Telefonia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usuarios.html">Usuários</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licence.html">Licença</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contato.html">Contato</a></li>
 </ul>
@@ -162,6 +170,7 @@
 <p>O ACE permite um controle centralizado de várias informações da infraestrutura de TI de uma organização  tais como:</p>
 <ul class="simple">
 <li>Listagem de todos os servidores, sejam físicos ou virtuais em uso ou não;</li>
+<li>Controle de atualizações aplicadas;</li>
 <li>Localização dos equipamentos (computadores, impressoras, switches, accesspoints, equipamentos de segurança e outros);</li>
 <li>Controle de bens;</li>
 <li>Conexões de rede de equipamentos em tomadas, patchpanels e portas de switches;</li>
@@ -170,110 +179,29 @@
 <li>Controle de redes e endereçamentos IP;</li>
 <li>Controle de linhas telefônicas sejam elas analógicas, digitais ou VoIP.</li>
 </ul>
-<div class="section" id="instalacao">
-<h2>Instalação<a class="headerlink" href="#instalacao" title="Link permanente para este título">¶</a></h2>
-<p>Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.</p>
-<p>Compatível com <strong>Django 1.8</strong></p>
-<ol class="arabic">
-<li><p class="first">Instale o ACE com o comando a seguir:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">django</span><span class="o">-</span><span class="n">sysace</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Add «ace» and other apps to your INSTALLED_APPS setting like this:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="o">...</span>
-    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
-    <span class="o">...</span>
-    <span class="s1">&#39;ace&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;smart_selects&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;simple_history&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django_modalview&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;dal&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;dal_select2&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mail_templated&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;solo&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;import_export&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;massadmin&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;django_extensions&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;widget_tweaks&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pagination&#39;</span><span class="p">,</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Inclua em MIDDLEWARE_CLASSES a linha “pagination.middleware.PaginationMiddleware”:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="o">...</span>
-    <span class="s1">&#39;pagination.middleware.PaginationMiddleware&#39;</span><span class="p">,</span>
-    <span class="o">...</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ace/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;ace.urls&#39;</span><span class="p">)),</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Rode o comando abaixo para criar os modelos do ace:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">migrate</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Inicie o servidor e acesse pelo endereço <a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a>
-(vocẽ precisará do app Admin habilitado).</p>
-</li>
-<li><p class="first">Acesse <a class="reference external" href="http://127.0.0.1:8000/ace/">http://127.0.0.1:8000/ace/</a> para iniciar a inclusão dos componentes da infraestrutura de TI.</p>
-</li>
-</ol>
-</div>
-<div class="section" id="secoes">
-<h2>Seções<a class="headerlink" href="#secoes" title="Link permanente para este título">¶</a></h2>
-<div class="section" id="painel">
-<h3>Painel<a class="headerlink" href="#painel" title="Link permanente para este título">¶</a></h3>
-<p>O painel exibe informações gerais sobre quantitativos de itens como equipamentos, impressoras, telefones e outros.</p>
-<a class="reference internal image-reference" href="_images/painel.jpg"><img alt="_images/painel.jpg" src="_images/painel.jpg" style="width: 550.0px; height: 424.0px;" /></a>
-</div>
-<div class="section" id="controle-de-bens">
-<h3>Controle de bens<a class="headerlink" href="#controle-de-bens" title="Link permanente para este título">¶</a></h3>
-<p>Na seção de controle de bens são listados os números de patrimônio de equipamentos.</p>
-</div>
-<div class="section" id="equipamentos-e-servicos">
-<h3>Equipamentos e serviços<a class="headerlink" href="#equipamentos-e-servicos" title="Link permanente para este título">¶</a></h3>
-<p>Nesta seção podem ser visualizados e cadastrados Equipamentos(hosts), impressoras/scanners e serviços.</p>
-<img alt="_images/equip.jpg" src="_images/equip.jpg" />
-</div>
-<div class="section" id="locais-e-setores">
-<h3>Locais e setores<a class="headerlink" href="#locais-e-setores" title="Link permanente para este título">¶</a></h3>
-<p>Onde é realizado o cadastro de locais como salas, salas técnicas e outros além dos setores da organização.</p>
-<img alt="_images/setores.jpg" src="_images/setores.jpg" />
-</div>
-<div class="section" id="rede">
-<h3>Rede<a class="headerlink" href="#rede" title="Link permanente para este título">¶</a></h3>
-<p>Aqui são cadastradas as redes, endereços IP, racks, patchpanels, pontos de rede, switches e pilhas.</p>
-<img alt="_images/rede.jpg" src="_images/rede.jpg" />
-</div>
-<div class="section" id="telefonia">
-<h3>Telefonia<a class="headerlink" href="#telefonia" title="Link permanente para este título">¶</a></h3>
-<p>Onde é feito o cadastro de telefones e a vinculação entre eles e os usuários.</p>
-</div>
-<div class="section" id="usuarios">
-<h3>Usuários<a class="headerlink" href="#usuarios" title="Link permanente para este título">¶</a></h3>
-<p>Nesta seção são listados os usuários do sistema.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Instalação</a></li>
+<li class="toctree-l1"><a class="reference internal" href="painel.html">Painel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bens.html">Controle de bens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equipamentos.html">Equipamentos e serviços</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="equipamentos.html#equipamentos">Equipamentos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="equipamentos.html#servicos">Serviços</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="locais.html">Locais e setores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rede.html">Rede</a></li>
+<li class="toctree-l1"><a class="reference internal" href="telefonia.html">Telefonia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usuarios.html">Usuários</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licence.html">Licença</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contato.html">Contato</a></li>
 </ul>
 </div>
 </div>
-</div>
-</div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link permanente para este título">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Índice</span></a></li>
 <li><a class="reference internal" href="search.html"><span class="std std-ref">Página de Busca</span></a></li>
 </ul>
 </div>
@@ -288,7 +216,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="licence.html" class="btn btn-neutral float-right" title="Licença" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="install.html" class="btn btn-neutral float-right" title="Instalação" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

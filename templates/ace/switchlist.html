@@ -159,7 +159,6 @@
                                 {% endif %}                             
 
                             </br>                                               
-                            {% if perms.ace.add_switch %}  
 	            			
 	                            <!-- formulario de adição -->
                                 <div class="btn-group"> 
@@ -169,13 +168,13 @@
                                 </div>
 	                            <!-- formulario de adição -->
 
-
-	                            {% endif %}   
+                                {% if filter %}
                                 <div class="btn-group">                           
     	                            <a href="/ace/switchreport" alt="Relat&oacute;rio de switches" title="Relat&oacute;rio de switches" target="blank">
     	                                <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de switches</button>
     	                            </a>    
                                 </div>
+                                {% endif %}
 	                       
 
                         </div>

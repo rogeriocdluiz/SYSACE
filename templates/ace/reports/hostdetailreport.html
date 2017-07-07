@@ -57,6 +57,10 @@
     <p><b>Modelo:</b> {{ host.devicemodel }}</p>&nbsp;&nbsp;&nbsp;
     {% endif %}                        
 
+    {% if host.place %}
+    <p><b>Local:</b> {{ host.place }}</p>&nbsp;&nbsp;&nbsp;
+    {% endif %}
+
     {% if host.manufactorer %}
     <p><b>Fabricante:</b> {{ host.manufactorer }}</p>&nbsp;&nbsp;&nbsp;
     {% endif %}

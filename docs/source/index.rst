@@ -6,6 +6,7 @@ Sistema desenvolvido em Django para controle de pontos de rede (voz, dados, voip
 O ACE permite um controle centralizado de várias informações da infraestrutura de TI de uma organização  tais como:
 
 * Listagem de todos os servidores, sejam físicos ou virtuais em uso ou não;
+* Controle de atualizações aplicadas;
 * Localização dos equipamentos (computadores, impressoras, switches, accesspoints, equipamentos de segurança e outros);
 * Controle de bens;
 * Conexões de rede de equipamentos em tomadas, patchpanels e portas de switches;
@@ -16,118 +17,6 @@ O ACE permite um controle centralizado de várias informações da infraestrutur
 
 
 
-Instalação
-----------
-
-Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.
-
-Compatível com **Django 1.8**
-
-1. Instale o ACE com o comando a seguir::
-
-    pip install django-sysace
-
-
-
-
-2. Add "ace" and other apps to your INSTALLED_APPS setting like this::
-
-	INSTALLED_APPS = [
-	    ...
-	    'django.contrib.admin',    
-	    ...
-	    'ace',
-	    'smart_selects',
-	    'simple_history',
-	    'django_modalview',
-	    'dal',
-	    'dal_select2',
-	    'mail_templated',
-	    'solo',
-	    'import_export',
-	    'massadmin',
-	    'django_extensions', 
-	    'widget_tweaks',
-	    'pagination', 
-
-
-3. Inclua em MIDDLEWARE_CLASSES a linha 'pagination.middleware.PaginationMiddleware'::
-
-	MIDDLEWARE_CLASSES = (
- 		...
-	    'pagination.middleware.PaginationMiddleware',
-	    ...
-	)
-
-        
-
-4. Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
-
-	url(r'^ace/', include('ace.urls')),
-
-5. Rode o comando abaixo para criar os modelos do ace::
-
-	python manage.py migrate
-
-6. Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
-   (vocẽ precisará do app Admin habilitado).
-    
-7. Acesse http://127.0.0.1:8000/ace/ para iniciar a inclusão dos componentes da infraestrutura de TI.
-
-
-
-Seções
-------
-
-Painel
-^^^^^^
-
-O painel exibe informações gerais sobre quantitativos de itens como equipamentos, impressoras, telefones e outros.
-
-.. image:: painel.jpg
-   :scale: 50 %
-
-
-Controle de bens
-^^^^^^^^^^^^^^^^
-
-Na seção de controle de bens são listados os números de patrimônio de equipamentos.
-
-
-
-Equipamentos e serviços
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Nesta seção podem ser visualizados e cadastrados Equipamentos(hosts), impressoras/scanners e serviços.
-
-.. image:: equip.jpg
-
-
-Locais e setores
-^^^^^^^^^^^^^^^^
-
-Onde é realizado o cadastro de locais como salas, salas técnicas e outros além dos setores da organização.
-
-.. image:: setores.jpg
-   
-
-
-Rede
-^^^^
-Aqui são cadastradas as redes, endereços IP, racks, patchpanels, pontos de rede, switches e pilhas.
-
-.. image:: rede.jpg
-
-
-Telefonia
-^^^^^^^^^
-
-Onde é feito o cadastro de telefones e a vinculação entre eles e os usuários.
-
-
-Usuários
-^^^^^^^^
-Nesta seção são listados os usuários do sistema.
 
 
 
@@ -135,8 +24,17 @@ Nesta seção são listados os usuários do sistema.
    :maxdepth: 2
    :caption: Contents:
 
+   install
+   painel
+   bens
+   equipamentos
+   locais
+   rede
+   telefonia
+   usuarios
    licence
    contato
+
    
 
 
@@ -145,5 +43,4 @@ Nesta seção são listados os usuários do sistema.
 Indices and tables
 ==================
 
-* :ref:`genindex`
 * :ref:`search`
