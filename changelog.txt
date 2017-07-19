@@ -250,7 +250,13 @@ Changelog
 1.0.9.2
 - correções diversas em documentação. 
 
-1.0.9.2
+1.0.9.3
 - inclusão de campo localização em modelo host
 - removida o requisito de django 1.8 do arquivo setup.py
 - melhorias na documentação
+
+
+1.0.9.4
+ - correção em template de locais
+ - atualização da domcumentação
+ - ajustes no fomulário de edição de pontos de rede.
