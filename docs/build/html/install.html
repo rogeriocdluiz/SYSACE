@@ -175,7 +175,7 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Add «ace» and other apps to your INSTALLED_APPS setting like this:</p>
+<li><p class="first">Adicione <strong>django.contrib.admin</strong>, <strong>ace</strong> e os outros apps necessários à seção <strong>INSTALLED_APPS</strong> do arquivos <strong>settings.py</strong>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="o">...</span>
     <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
@@ -193,20 +193,28 @@
     <span class="s1">&#39;django_extensions&#39;</span><span class="p">,</span>
     <span class="s1">&#39;widget_tweaks&#39;</span><span class="p">,</span>
     <span class="s1">&#39;pagination&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;session_security&#39;</span><span class="p">,</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Inclua em MIDDLEWARE_CLASSES a linha “pagination.middleware.PaginationMiddleware”:</p>
+<li><p class="first">Inclua no arquivo <strong>settings.py</strong> em <strong>MIDDLEWARE_CLASSES</strong> as linhas <strong>pagination.middleware.PaginationMiddleware</strong> e <strong>session_security.middleware.SessionSecurityMiddleware</strong>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
         <span class="o">...</span>
     <span class="s1">&#39;pagination.middleware.PaginationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;session_security.middleware.SessionSecurityMiddleware&#39;</span><span class="p">,</span>
     <span class="o">...</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir:</p>
+<li><p class="first">Inclua a linha abaixo no arquivo <strong>settings.py</strong> para habilitar a expiração de sessão:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SESSION_SECURITY_INSECURE</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Inclua no arquivo urls.py do projeto URLconf do ace no arquivo urls.py do projeto como mostrado a seguir:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ace/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;ace.urls&#39;</span><span class="p">)),</span>
+<span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;session_security/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;session_security.urls&#39;</span><span class="p">)),</span>
 </pre></div>
 </div>
 </li>

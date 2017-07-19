@@ -1,7 +1,7 @@
 [Dolphin]
 SortOrder=1
 SortRole=date
-Timestamp=2017,7,7,12,18,19
+Timestamp=2017,7,18,19,2,31
 Version=3
 ViewMode=1
 VisibleRoles=Details_text,Details_size,Details_date,Details_type,CustomizedDetails

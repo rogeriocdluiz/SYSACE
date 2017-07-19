@@ -691,7 +691,7 @@ def sectorlist(request):
 def placedetail(request, place_id):
     try:
         local = Place.objects.get(pk=place_id)
-        p = Netpoint.objects.all().filter(place=local)
+        p = Netpoint.objects.filter(place=local)
         ptotal = p.count()
         pd = Netpoint.objects.all().filter(place=local,pointtype='dados').count()
         pv = Netpoint.objects.all().filter(place=local,pointtype='voz').count()

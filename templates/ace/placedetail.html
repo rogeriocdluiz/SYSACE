@@ -153,7 +153,11 @@
                                         <tr>
                                           <td><a href="{% url 'pointdetail' ponto.id %}">{{ ponto.num }}</a></td> 
                                           <td>{{ ponto.pointtype }}</td>
+                                          {% if ponto.rack %}
                                           <td><a href="{% url 'rackdetail' ponto.rack.id %}">{{ ponto.rack|default_if_none:"" }}</a></td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}
                                           {% if ponto.switch %}
                                           <td><a href="{% url 'switchdetail' ponto.switch.id %}">{{ ponto.switch }}</a></td>
                                           <td>{{ ponto.swport.num }}</td>

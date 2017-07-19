@@ -810,6 +810,11 @@ class NetpointForm(forms.ModelForm):
     label=u'Local'
     )
 
+    rack = forms.ModelChoiceField(
+    queryset=Rack.objects.all(),
+    widget=autocomplete.ModelSelect2(url='rack-autocomplete',attrs={'class': u'form-control'},),
+    label=u'Rack'
+    )
 
     class Meta:
         model = Netpoint

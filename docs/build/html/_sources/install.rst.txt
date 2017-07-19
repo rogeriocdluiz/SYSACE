@@ -13,7 +13,7 @@ Compatível com **Django 1.8**
 
 
 
-2. Add "ace" and other apps to your INSTALLED_APPS setting like this::
+2. Adicione **django.contrib.admin**, **ace** e os outros apps necessários à seção **INSTALLED_APPS** do arquivos **settings.py**.  ::
 
 	INSTALLED_APPS = [
 	    ...
@@ -32,27 +32,36 @@ Compatível com **Django 1.8**
 	    'django_extensions', 
 	    'widget_tweaks',
 	    'pagination', 
+	    'session_security',
 
 
-3. Inclua em MIDDLEWARE_CLASSES a linha 'pagination.middleware.PaginationMiddleware'::
+
+
+3. Inclua no arquivo **settings.py** em **MIDDLEWARE_CLASSES** as linhas **pagination.middleware.PaginationMiddleware** e **session_security.middleware.SessionSecurityMiddleware**::
 
 	MIDDLEWARE_CLASSES = (
  		...
 	    'pagination.middleware.PaginationMiddleware',
+	    'session_security.middleware.SessionSecurityMiddleware',
 	    ...
 	)
 
-        
+4. Inclua a linha abaixo no arquivo **settings.py** para habilitar a expiração de sessão::
 
-4. Inclua a URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
+    SESSION_SECURITY_INSECURE = True
+
+
+5. Inclua no arquivo urls.py do projeto URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
 
 	url(r'^ace/', include('ace.urls')),
+	url(r'session_security/', include('session_security.urls')),
 
-5. Rode o comando abaixo para criar os modelos do ace::
+
+6. Rode o comando abaixo para criar os modelos do ace::
 
 	python manage.py migrate
 
-6. Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
+7. Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
    (vocẽ precisará do app Admin habilitado).
     
-7. Acesse http://127.0.0.1:8000/ace/ para iniciar a inclusão dos componentes da infraestrutura de TI.
+8. Acesse http://127.0.0.1:8000/ace/ para iniciar a inclusão dos componentes da infraestrutura de TI.
