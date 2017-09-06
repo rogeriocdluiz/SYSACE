@@ -124,7 +124,7 @@
 
 
 
-            {% if local.plcetype != 'sala-tecnica' %}
+            {% if local.placetype != 'sala-tecnica' %}
             </br>
             <div class="row">
                 <div class="col-lg-12">
@@ -142,7 +142,10 @@
                                         <tr>
                                           <th>N&uacute;mero</th>
                                           <th>Tipo</th>
+                                          <th>Telefone</th>
                                           <th>Rack</th>
+                                          <th>Patchpanel</th>
+                                          <th>Porta patchpanel</th>
                                           <th>Switch</th>
                                           <th>Porta do switch</th>
                                           <th>Obs</th>
@@ -153,13 +156,28 @@
                                         <tr>
                                           <td><a href="{% url 'pointdetail' ponto.id %}">{{ ponto.num }}</a></td> 
                                           <td>{{ ponto.pointtype }}</td>
+                                          {% if ponto.phone %}                                          
+                                          <td>{{ ponto.phone }}</td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}
                                           {% if ponto.rack %}
                                           <td><a href="{% url 'rackdetail' ponto.rack.id %}">{{ ponto.rack|default_if_none:"" }}</a></td>
                                           {% else %}
                                           <td></td>
                                           {% endif %}
+                                          {% if ponto.patchpanel %}
+                                            <td>{{ ponto.patchpanel.num }}</td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}                                          
+                                          {% if ponto.patchpanelport %}
+                                            <td>{{ ponto.patchpanelport.num }}</td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}
                                           {% if ponto.switch %}
-                                          <td><a href="{% url 'switchdetail' ponto.switch.id %}">{{ ponto.switch }}</a></td>
+                                          <td><a href="{% url 'switchdetail' ponto.switch.id %}">{{ ponto.switch.name }}</a></td>
                                           <td>{{ ponto.swport.num }}</td>
                                           {% else %}
                                           <td></td>

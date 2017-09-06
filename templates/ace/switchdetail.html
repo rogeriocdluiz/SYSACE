@@ -175,11 +175,11 @@
                                                 <td><a href="{% url 'swport' porta.id %}">{{ porta.num }}</a></td> 
                                                 <!-- <td><a>{{ porta.num }}</a></td> -->
                                                 <td>{{ porta.tipo }}</td>
-                                                {% if porta.vln %}
+                                                {% if porta.vlans %}
                                                 <td>
                                                     {% for v in porta.vlans.all %}   
                                                     <p>
-                                                        <a href="{% url 'vlandetail' porta.vln.pk %}">{{ v }} </a>
+                                                        <a href="{% url 'vlandetail' v.pk %}">{{ v }} </a>
                                                     </p>
                                                     {% endfor %}                                                     
                                                 </td>

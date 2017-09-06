@@ -473,7 +473,6 @@ class PlaceForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(url='floor-autocomplete',attrs={'class': u'form-control'},),
         label=u'Andar',
         required=True
-
     )
 
 
@@ -481,8 +480,7 @@ class PlaceForm(forms.ModelForm):
         queryset=Sector.objects.all(),
         widget=autocomplete.ModelSelect2(url='sector-autocomplete',attrs={'class': u'form-control'},),
         label=u'Setor/Departamento',
-        required=True
-
+        required=False
     )
 
 
@@ -603,7 +601,8 @@ class SwitchForm(forms.ModelForm):
     ownerid = forms.ModelChoiceField(
         queryset=Ownerid.objects.all(),
         widget=autocomplete.ModelSelect2(url='ownerid-autocomplete',attrs={'class': u'form-control'},),
-        label=u'Patrimônio'
+        label=u'Patrimônio',
+        required=False,
     )    
     manufactorer = forms.ModelChoiceField(
         queryset=Manufactorer.objects.all(),
@@ -851,8 +850,8 @@ class SwitchportForm(forms.ModelForm):
 
     host = forms.ModelChoiceField(
     queryset=Host.objects.all(),
-    widget=autocomplete.ModelSelect2(url='host-autocomplete',attrs={'class': u'form-control'},),
-    label=u'Equipemento (Host)',
+    widget=autocomplete.ModelSelect2(url='host-autocomplete2',attrs={'class': u'form-control'},),
+    label=u'Equipamento (Host)',
     required=False
     )
 

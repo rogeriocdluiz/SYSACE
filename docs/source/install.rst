@@ -20,7 +20,6 @@ Compatível com **Django 1.8**
 	    'django.contrib.admin',    
 	    ...
 	    'ace',
-	    'smart_selects',
 	    'simple_history',
 	    'django_modalview',
 	    'dal',

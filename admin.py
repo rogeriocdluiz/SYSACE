@@ -10,16 +10,12 @@ from django.contrib.admin import AdminSite
 
 from simple_history.admin import SimpleHistoryAdmin
 
-
 #django-import-export
 from import_export import resources
 
 from import_export.admin import ImportExportModelAdmin
 
 from .forms import HostForm, ServiceForm, SwitchForm,NetpointForm
-
-
-
 
 AdminSite.site_header = 'Administração de sistemas'
 
@@ -29,13 +25,11 @@ from ace.models import AceConfig
 
 admin.site.register(AceConfig, SingletonModelAdmin)
 
-
-
 #exportação CSV
-def export_csv(modeladmin, request, queryset):
-    import csv
-    from django.utils.encoding import smart_str
-    from django.http import HttpResponseRedirect, HttpResponse
+import csv
+from django.utils.encoding import smart_str
+from django.http import HttpResponseRedirect, HttpResponse
+def export_netpoint_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=netpoint.csv'
     writer = csv.writer(response, csv.excel)
@@ -45,9 +39,12 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"Tipo"),
         smart_str(u"Local"),
         smart_str(u"Rack"),
+        smart_str(u"Patchpanel"),
+        smart_str(u"Porta_Patchpanel"),        
         smart_str(u"Phone"),
         smart_str(u"Switch"),
         smart_str(u"Porta_Switch"),
+        smart_str(u"Modificação"),        
     ])
     for obj in queryset:
         writer.writerow([
@@ -55,12 +52,51 @@ def export_csv(modeladmin, request, queryset):
 			smart_str(obj.pointtype),            
             smart_str(obj.place),
             smart_str(obj.rack),
+            smart_str(obj.patchpanel),            
+            smart_str(obj.patchpanelport),                        
             smart_str(obj.phone),
             smart_str(obj.switch),
             smart_str(obj.swport),
+            smart_str(obj.modification_date),            
         ])
     return response
-export_csv.short_description = u"Exportar em CSV"
+export_netpoint_csv.short_description = u"Exportar em CSV"
+
+
+def export_phone_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=phone.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"Num"),
+        smart_str(u"Ativo"),
+        smart_str(u"Usuário"),
+        smart_str(u"Local"),
+        smart_str(u"Senha"),
+        smart_str(u"Categoria"),
+        smart_str(u"Tipo"),        
+        smart_str(u"Modificação"),        
+    ])
+    for obj in queryset:
+        writer.writerow([
+            smart_str(obj.num),
+            smart_str(obj.active),
+            smart_str(obj.user.first_name),            
+            smart_str(obj.place),
+            smart_str(obj.password),
+            smart_str(obj.phonecategory),            
+            smart_str(obj.telephonetype),                        
+            smart_str(obj.date_modification),            
+        ])
+    return response
+export_phone_csv.short_description = u"Exportar em CSV"
+
+
+
+
+
+
 
 
 
@@ -112,10 +148,10 @@ class SwitchAdmin(admin.ModelAdmin):
 
 
 class NetpointAdmin(admin.ModelAdmin):
-    list_display = ('num', 'place','rack', 'patchpanel', 'patchpanelport','pointtype','switch','swport','modification_date','creation_date')
-    list_filter = ( 'place','pointtype')
+    list_display = ('num', 'place','rack', 'patchpanel', 'patchpanelport','pointtype','phone','switch','swport','modification_date','creation_date')
+    list_filter = ( 'place','pointtype', 'rack')
     search_fields = ['num']
-    actions = [export_csv]
+    actions = [export_netpoint_csv]
 
     fieldsets = (
 	    (None, {
@@ -123,7 +159,7 @@ class NetpointAdmin(admin.ModelAdmin):
     	}),
     	('Informações de pontos de voz', {
             'classes': ('grp-collapse grp-open',),           
-            'fields': ('phone', 'dist', 'bloco', 'par', 'dg')
+            'fields': ('phone',)
         }),
         )
     form = NetpointForm
@@ -182,13 +218,14 @@ class PatchpanelAdmin(admin.ModelAdmin):
 
 
 class PhoneAdmin(SimpleHistoryAdmin,ImportExportModelAdmin):
-	list_display = ('num', 'user','telephonetype','phonecategory','place','active','password','newpassword')
-	list_filter = ('active','telephonetype','phonecategory','password','newpassword','place')
-	search_fields = ['num']
+    list_display = ('num', 'user','telephonetype','phonecategory','place','active','password','newpassword')
+    list_filter = ('active','telephonetype','phonecategory','password','newpassword','place')
+    search_fields = ['num']
+    actions = [export_phone_csv]
 
 class PhonecategoryAdmin(admin.ModelAdmin):
-	list_display = ('num', 'name')
-	search_fields = ['num', 'name']	
+    list_display = ('num', 'name')
+    search_fields = ['num', 'name']	
 
 
 class PhonetypeAdmin(admin.ModelAdmin):

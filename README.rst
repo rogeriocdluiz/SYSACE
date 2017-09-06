@@ -15,6 +15,15 @@ O ACE permite um controle centralizado de várias informações da infraestrutur
 * Controle de linhas telefônicas sejam elas analógicas, digitais ou VoIP.
 
 
+Requisitos (Requirements)
+------------
+
+- Python 2.7
+- Django 1.8, 1.10
+
+
+
+
 Instalação
 ----------
 
@@ -34,7 +43,6 @@ Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamen
 	    'django.contrib.admin',    
 	    ...
 	    'ace',
-	    'smart_selects',
 	    'simple_history',
 	    'django_modalview',
 	    'dal',

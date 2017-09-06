@@ -47,15 +47,13 @@
                                <p><b>Tipo:</b> {{ portaswitch.tipo }}</p>
                                {% if portaswitch.host %}
                                <p><b>Host:</b> <a href="{% url 'hostdetail' portaswitch.host.pk %}">{{ portaswitch.host|default_if_none:"" }}</a></p>
-                               {% endif %}
+                               {% endif %}                               
                            </br>
-                               {% if vlans %}
-                               <p><b>VLANs:</b> 
-                                {% if trunk = "OK" %}
-                                    <span class="text-danger">(Trunk)</span>
-                                {% endif %}
-
-
+                                {% if vlans %}
+                                <p><b>VLANs:</b> 
+                                    {% if trunk = "OK" %}
+                                        <span class="text-danger">(Trunk)</span>
+                                    {% endif %}
                                     <ul>
                                     {% for v in vlans %}                                       
                                         <li> {{ v }} </li>
@@ -63,14 +61,10 @@
                                     </ul>
                                 </p>
                                {% endif %}
-
-
-
-                               {% if portaswitch.obs %}
-                               <p><b>OBS:</b> {{ portaswitch.obs }}</p>
-                               {% endif %}                              
                             </div>
-
+                               {% if portaswitch.obs %}
+                                   <p><b>OBS:</b> {{ portaswitch.obs }}</p>
+                               {% endif %}                              
                         </div>
                         <!-- /.panel-body -->
 

@@ -40,8 +40,12 @@
                             {% if request.user.is_superuser %}                                        
                             {% if pilha.url %}
                             <p><b>Interface de gerenciamento</b> <a href="{{ pilha.url }}" target="blank">{{ pilha.url }}</a></p>
-                            <p><b>Usuário administrador:</b> {{ pilha.admuser }}</p>                                        
-                            <p><b>Senha do Usuário administrador:</b> <a href="/admin/ace/stack/{{ pilha.id }}/" alt="interface de administra&ccedil;&atilde;o do host" title="interface de administra&ccedil;&atilde;o do switch" target="blank">veja na interface de administra&ccedil;&atilde;o</a></p>
+                                {% if pilha.admuser %}
+                                <p><b>Usuário administrador:</b> {{ pilha.admuser }}</p>  
+                                {% endif %}
+                                {% if pilha.admpass %}
+                                <p><b>Senha do Usuário administrador:</b> <a href="/admin/ace/stack/{{ pilha.id }}/" alt="interface de administra&ccedil;&atilde;o do host" title="interface de administra&ccedil;&atilde;o do switch" target="blank">veja na interface de administra&ccedil;&atilde;o</a></p>
+                                {% endif %}
                             {% endif %}
                             {% endif %}
                             {% if pilha.comments %}

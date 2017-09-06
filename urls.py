@@ -287,7 +287,7 @@ urlpatterns = patterns('',
     url(r'^ownerid-autocomplete/$', OwneridAutocomplete.as_view(create_field='num'), name='ownerid-autocomplete',
     ),
 
-    url(r'^os-autocomplete/$', OsAutocomplete.as_view(create_field='name'), name='os-autocomplete',
+    url(r'^os-autocomplete/$', OsAutocomplete.as_view(), name='os-autocomplete',
     ),
 
     url(r'^hosttype-autocomplete/$', HosttypeAutocomplete.as_view(create_field='name'), name='hosttype-autocomplete',
@@ -309,6 +309,9 @@ urlpatterns = patterns('',
     ),    
 
     url(r'^host-autocomplete/$', HostAutocomplete.as_view(create_field='name'), name='host-autocomplete',
+    ),  
+
+    url(r'^host-autocomplete2/$', HostAutocomplete2.as_view(create_field='name'), name='host-autocomplete2',
     ),  
 
     url(r'^device-autocomplete/$', DeviceAutocomplete.as_view(), name='device-autocomplete',

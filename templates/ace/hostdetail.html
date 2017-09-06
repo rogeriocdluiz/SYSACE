@@ -256,7 +256,7 @@
                 </div>
             </div>
 
-
+            {% if host.vm = False %} 
             <div class="row">
                 <!-- PORTAS DE SWITCH -->
                 <div class="col-lg-6">
@@ -323,8 +323,55 @@
                 </div>
                 <!-- PORTAS DE SWITCH -->
                 
+                <!-- pontos de rede -->
+                <div class="col-lg-6">
+                {% if n %}                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-check fa-fw"></i> Pontos de rede
+                        </div>
+                        <!-- /.panel-heading -->
+                    
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <th>Num</th>
+                                        <th>Local</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for netpoint in n %}
+                                    <tr>
+                                        <td><a href="{% url 'pointdetail' netpoint.id %}">{{ netpoint.num }}</a></td>
+                                        <td><a href="{% url 'placedetail' netpoint.place.id %}">{{ netpoint.place }}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                    </div>
+                    <!-- /.panel-body -->
+                {% else %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-check fa-fw"></i> Pontos de rede
+                        </div>
+                        <!-- /.panel-heading -->
+                    
+                        <div class="panel-body">
+                            <p> Nenhum ponto de rede associado </p>
+                        </br>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->        
+                {% endif %}                     
+                </div>
+                <!-- /.panel -->         
+                <!-- /pontos de rede-->
                 
-                <!-- /.panel -->
+            </div>
+            {% endif %}
+
+
+            <div class="row">          
+
 
                 <!-- IPS -->
                 <div class="col-lg-6">                         
@@ -369,54 +416,7 @@
                                       
                 </div>
                 <!-- /IPS -->
-            </div>
 
-            <div class="row">          
-
-                <!-- pontos de rede -->
-                <div class="col-lg-6">
-                {% if n %}                    
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-check fa-fw"></i> Pontos de rede
-                        </div>
-                        <!-- /.panel-heading -->
-                    
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <th>Num</th>
-                                        <th>Local</th>
-                                    </thead>
-                                    <tbody>
-                                    {% for netpoint in n %}
-                                    <tr>
-                                        <td><a href="{% url 'pointdetail' netpoint.id %}">{{ netpoint.num }}</a></td>
-                                        <td><a href="{% url 'placedetail' netpoint.place.id %}">{{ netpoint.place }}</a></td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                    </div>
-                    <!-- /.panel-body -->
-                {% else %}
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-check fa-fw"></i> Pontos de rede
-                        </div>
-                        <!-- /.panel-heading -->
-                    
-                        <div class="panel-body">
-                            <p> Nenhum ponto de rede associado </p>
-                        </br>
-                        </div>
-                    </div>
-                    <!-- /.panel-body -->        
-                {% endif %}                     
-                </div>
-                <!-- /.panel --> 
-
-                
-                <!-- /pontos de rede-->
 
                 <!-- serviços -->
                 <div class="col-lg-6">

@@ -159,7 +159,8 @@
                 <!-- /.col-lg-12 -->                       
             </div>
             <!-- /.row -->
-            {% endif %}     
+            {% endif %}    
+            </br> 
 
 
             {% if points %}
@@ -186,8 +187,16 @@
                                    <td>{{ point.pointtype }}</td>
                                    <td>{{ point.patchpanel| default_if_none:"" }}</td>
                                    <td>{{ point.patchpanelport| default_if_none:"" }}</td>
+                                   {% if point.switch %}
                                    <td><a href="{% url 'switchdetail' point.switch.id %}">{{ point.switch| default_if_none:"" }}</a></td>
+                                   {% else %}
+                                   <td></td>
+                                   {% endif %}
+                                   {% if point.swport %}
                                    <td><a href="{% url 'swport' point.swport.id %}">{{ point.swport| default_if_none:"" }}</a></td>
+                                   {% else %}
+                                   <td></td>
+                                   {% endif %}                                   
                                    <td><a href="{% url 'placedetail' point.place.id %}">{{ point.place }}</a></td>
                                 </tr>
                                 {% endfor %}

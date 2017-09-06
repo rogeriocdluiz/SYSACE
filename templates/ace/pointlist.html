@@ -99,6 +99,7 @@
                                             <th>Local</th>
                                             <th>Rack</th>
                                             <th>Tipo</th>
+                                            <th>Telefone</th>
                                             <th>Porta Switch</th>
                                             {% if perms.ace.can_change_netpoint %}
                                             <th>A&ccedil;&otilde;es</th> 
@@ -117,6 +118,7 @@
                                             <td>{{ ponto.place }}</td>
                                             <td>{{ ponto.rack|default_if_none:""  }}</td>
                                             <td>{{ ponto.pointtype }}</td>
+                                            <td>{{ ponto.phone.num|default_if_none:"" }}</td>
                                             <td>{{ ponto.swport|default_if_none:""  }}</td>
                                             {% if perms.ace.change_netpoint %}
                                             <td>

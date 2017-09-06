@@ -126,6 +126,7 @@ class Place(models.Model):
     AUDITORIO = 'auditorio'
     OUTROS = 'outros'
     TIPO_LOCAL_CHOICES = (
+        ('', '---------'),
         (SALA, 'Sala'),
         (GABINETE, 'Gabinete'),
         (SALA_TECNICA, 'Sala Técnica'),
@@ -801,8 +802,8 @@ class Switch(Device):
         user = self.admuser
         pwd = self.admpass
 
-        if o == None:
-            raise ValidationError("Campo Patrimônio é obrigatório")
+        #if o == None:
+        #    raise ValidationError("Campo Patrimônio é obrigatório")
 
   
         if p == True:
@@ -1036,7 +1037,7 @@ class Phoneownership(models.Model):
 
 
     def __unicode__(self):
-        return unicode(self.user)
+        return unicode(self.user.get_full_name())
 
 
 
@@ -1083,9 +1084,10 @@ class Switchport(models.Model):
         if porta:
                 raise ValidationError("Já existe uma porta com este número neste switch")
 
-        p = Switchport.objects.filter(host=self.host)
-        if p:
-            raise ValidationError("Já existe uma porta associada a este host")
+        #if self.host != None:
+        #    p = Switchport.objects.filter(host=self.host).exclude(pk = self.id)
+        #    if p:
+        #        raise ValidationError("Já existe uma porta associada a este host")
 
     def __unicode__(self):
         return u'%s (%s)' % (self.num, self.switch.name)

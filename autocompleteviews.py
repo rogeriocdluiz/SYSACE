@@ -245,6 +245,20 @@ class HostAutocomplete(autocomplete.Select2QuerySetView):
 
         return qs          
 
+class HostAutocomplete2(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return Host.objects.none()
+
+        qs = Host.objects.filter(vm=False)
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs    
+
+
 
 class DeviceAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
@@ -278,7 +292,7 @@ class VlanAutocomplete(autocomplete.Select2QuerySetView):
 
 
 
-
+from django.db.models import Q
 
 class UserAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
@@ -289,7 +303,8 @@ class UserAutocomplete(autocomplete.Select2QuerySetView):
         qs = User.objects.all().order_by('username')
 
         if self.q:
-            qs = qs.filter(first_name__istartswith=self.q)
+            #qs = qs.filter(first_name__istartswith=self.q)
+            qs = qs.filter(username__istartswith=self.q)
 
         return qs          
 

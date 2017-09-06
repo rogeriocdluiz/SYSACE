@@ -115,6 +115,7 @@
                                             <th>N&uacute;mero</th>
                                             <th>Usu&aacute;rio</th>
                                             <th>Local</th>                                            
+                                            <th>Setor</th>  
                                             <th>Categoria</th>
                                             <th>Ativo</th>
                                             <th>Senha</th>
@@ -146,6 +147,11 @@
                                             <td>{{ ramal.place |default_if_none:"" }}</td>
                                             {% endif %}
 
+                                            {% if ramal.place.sector %}
+                                            <td>{{ ramal.place.sector }}</td>
+                                            {% else %}
+                                            <td></td>
+                                            {% endif %}
                                             <td>{{ ramal.phonecategory |default_if_none:"" }}</td>
                                             {% if ramal.active = True %}
                                             <td><i class="fa fa-check-circle fa-1x text-success"><span style="display:none;">True</span></td>

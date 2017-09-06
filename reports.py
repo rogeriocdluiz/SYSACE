@@ -16,7 +16,7 @@ from django.template import Context
 from cgi import escape
 from PIL import Image
 
-
+from ace.models import AceConfig
 #config = AceConfig.objects.get()
 try:
     config = AceConfig.objects.get()
@@ -100,7 +100,8 @@ def freepointsreport(request):
 
 @login_required(login_url='/login/')
 def netpointsreport(request):
-    p = Netpoint.objects.all().order_by('place__name')
+    #p = Netpoint.objects.all().order_by('place__name')
+    p = Netpoint.objects.all()
     total = p.count()
     title = "Relatório de pontos"
     return render_to_pdf(

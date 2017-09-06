@@ -41,7 +41,7 @@
                                     <!-- form-django -->      
 									<form method="post">{% csrf_token %}
 			                            <div class="alert alert-danger">
-                                			Deseja mesmo apagar a porta <span class="alert-link"> {{ switchport }} </span>  do switch <span class="alert-link"> {{ switch }}</span>?
+                                			Deseja mesmo apagar a porta <span class="alert-link"> {{ switchport.num }} </span>  do switch <span class="alert-link"> {{ switchport.switch }}</span>?
                             			</div>
 									    <input class="btn btn-danger" type="submit" value="Sim. Tenho certeza" /> 
 									    <a href="{% url 'swport' switchport.id %}">

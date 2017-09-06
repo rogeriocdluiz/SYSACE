@@ -710,10 +710,11 @@ def placedetail(request, place_id):
 def sectordetail(request, sector_id):
     try:
         sector = Sector.objects.get(pk=sector_id)
+        places = Place.objects.filter(sector=sector)
 
     except Sector.DoesNotExist:
         raise Http404
-    return render(request, 'ace/sectordetail.html', {'sector': sector})
+    return render(request, 'ace/sectordetail.html', {'sector': sector, 'places':places})
 
 
 
@@ -2138,11 +2139,12 @@ def switchport_edit(request, pk):
 
 @login_required(login_url='/login/')
 @permission_required('ace.delete_switchport',raise_exception=True)
-def switchport_delete(request, pk, template_name='ace/patchpanel_confirm_delete.html'):
+def switchport_delete(request, pk, template_name='ace/switchport_confirm_delete.html'):
     switchport = get_object_or_404(Switchport, pk=pk)    
+    sw = switchport.switch
     if request.method=='POST':
         switchport.delete()
-        return redirect('swportlist')
+        return redirect('switchdetail', sw.id)
     return render(request, template_name, {'switchport': switchport,})         
 
 

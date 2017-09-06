@@ -46,6 +46,11 @@
                         <div class="iteminfo"> 
 
                             <p><b>Localiza&ccedil;&atilde;o:</b><a href="{% url 'placedetail' ponto.place.id %}"> {{ ponto.place }} </a></p>
+
+                            {% if ponto.place.sector %}
+                            <p><b>Setor:</b> {{ ponto.place.sector }}</p>
+                            {% endif %}
+
                             {% if ponto.patchpanelport %}    
                             <p><b>Porta do patchpanel:</b> {{ ponto.patchpanelport.num }}</p>
                             {% endif %}
@@ -58,8 +63,15 @@
 
 
                             {% if ponto.pointtype == 'dados' %}
-                            <p><b>Switch:</b><a href="{% url 'switchdetail' ponto.switch.id %}"> {{ ponto.switch.name |default_if_none:"" }}</a></p>
-                            <p><b>Porta do Switch:</b><a href="{% url 'swport' ponto.swport.id %}"> {{ ponto.swport.num |default_if_none:"" }}</a></p>
+                                {% if ponto.switch %}
+                                <p><b>Switch:</b><a href="{% url 'switchdetail' ponto.switch.id %}"> {{ ponto.switch.name |default_if_none:"" }}</a></p>
+                                {% endif %}   
+                                {% if ponto.swport %}
+                                <p><b>Porta do Switch:</b><a href="{% url 'swport' ponto.swport.id %}"> {{ ponto.swport.num |default_if_none:"" }}</a></p>
+                                {% endif %}   
+                                {% if ponto.swport.host %}
+                                <p><b>Equipamento:</b>{{ ponto.swport.host |default_if_none:"" }}</p>
+                                {% endif %}                                
                             {% endif %}   
                         </div>                                
 
