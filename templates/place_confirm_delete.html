@@ -1,0 +1,72 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+	Exclus&atilde;o de local
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+{% endblock %}
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-warning fa-fw"></i>Exclus&atilde;o de localxx</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+
+{% block conteudo1 %}
+    
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!-- form-django -->      
+									<form method="post">{% csrf_token %}
+			                            <div class="alert alert-danger">
+                                			Deseja mesmo apagar o local <span class="alert-link"> {{ place }}? </span> 
+                            			</div>
+									    <input class="btn btn-danger" type="submit" value="Sim. Tenho certeza" /> 
+									    <a href="{% url 'placedetail' place.id %}">
+				                            <button class="btn btn-default" type="button"><i class="fa fa-chevron-left "></i>&nbsp;N&atilde;o</button>
+				                    	</a> 
+									</form>                                    
+                                    <!-- form-django -->  
+                                    </br> 
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+{% endblock %}
+

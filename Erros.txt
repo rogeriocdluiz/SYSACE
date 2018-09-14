@@ -1,3 +1,19 @@
+- problema com session-security 
+
+- problema de com permissão de visualização de senhas para usuaŕios comuns após implemntação de django-tables2 - Estudar separa views e templates de telefones e senhas com criação de permissão customizada para senhas - OK
+
+- criar segundo report de senhas público para senhas para verificação - OK
+
+- problema para gerar senhas sem usuário vinculado - OK
+
+- modal não respeita permissões
+
+- problema ao tentar vingular senha ou telefone a usuário senha categoria ou local. - OK
+
+- problema ao buscar serviços e ips em host. Busca todos os ips mas não busca mais de um serviço.
+
+
+
 
 
 

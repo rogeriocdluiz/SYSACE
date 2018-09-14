@@ -1,12 +1,19 @@
- - cliente ssh web
- - campo alias ou apelido - hosts
- - relatório de senhas desativadas
- - criar menu global de edição
- - verificar senha salva em host atualmente salva em texto claro
- - adicionar forms de vlans
- - remover campo vlan antigo em portas de switch e redes e substituir por campo novo.
- - inserir gateway na rede (ou calcular automaticamente)
- 
+# TODO - cliente ssh web
+# TODO  - campo alias ou apelido - hosts
+# TODO - relatório de senhas desativadas
+# TODO  - criar menu global de edição
+# TODO  - verificar senha salva em host atualmente salva em texto claro
+# TODO  - adicionar forms de vlans
+# TODO  - remover campo vlan antigo em portas de switch e redes e substituir por campo novo.
+# TODO  - inserir gateway na rede (ou calcular automaticamente)
+# TODO  - lista de hosts atualizados recentemnte
+
+# TODO  - incluir botão de exportação em listagem de telefones
+# TODO  - criar template e view exclusivos para senhas 
+# TODO  - Exportação de telefones/senhas
+# TODO  - Relatorio impressoras PDF
+
+
 
 
  

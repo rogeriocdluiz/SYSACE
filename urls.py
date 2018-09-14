@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include, handler400
+from django.conf.urls import url, include, handler400
 from ace import views
 
 #from ace.views import OwneridAutocomplete, OsAutocomplete, HosttypeAutocomplete, ManufactorerAutocomplete, PlaceAutocomplete, StackAutocomplete, IpAutocomplete, NetworkAutocomplete, HostAutocomplete, DeviceAutocomplete, ServicecategoryAutocomplete, SwitchAutocomplete, SwitchportAutocomplete, SwitchrackAutocomplete, PatchpanelAutocomplete, PatchpanelportAutocomplete, PhoneAutocomplete, RackAutocomplete, UserAutocomplete
@@ -11,9 +11,9 @@ from django_filters.views import FilterView
 
 #handler403 = 'ace.views.permission_denied_view'
 
-urlpatterns = patterns('',
+urlpatterns = [
 	
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.index, name='ace_index'),
 
     url(r'^config/$', views.config, name='config'),
 
@@ -57,13 +57,9 @@ urlpatterns = patterns('',
 
     url(r'^netpoints/$', views.netpointlist, name='netpointlist'),
 
-    url(r'^vpoints/$', views.vpoints, name='vpoints'),
-
-    url(r'^voippoints/$', views.voippoints, name='voippoints'),
-
-    url(r'^dpoints/$', views.dpoints, name='dpoints'),
-
     url(r'^phonelist/$', views.phonelist, name='phonelist'),
+
+    url(r'^passwordlist/$', views.passwordlist, name='passwordlist'),
 
 
     url(r'^switch/(?P<switch_id>\d+)/$', views.switchdetail, name='switchdetail'),
@@ -135,6 +131,10 @@ urlpatterns = patterns('',
 
     url(r'^pwreport/$', views.pwreport, name='pwreport'),
 
+    url(r'^pwreportopen/$', views.pwreportopen, name='pwreportopen'),
+
+    url(r'^phonereport/$', views.phonereport, name='phonereport'),
+
     url(r'^rackreport/(?P<rack_id>\d+)$', views.rackreport, name='rackreport'),
 
 
@@ -186,6 +186,8 @@ urlpatterns = patterns('',
 
 
     url(r'^phone/new/$', views.phone_new, name='phone_new'),
+
+    #url(r'^phone/new2/$', views.phone_new2, name='phone_new2'),
 
     url(r'^phone/(?P<pk>[0-9]+)/edit/$', views.phone_edit, name='phone_edit'),
 
@@ -299,20 +301,27 @@ urlpatterns = patterns('',
     url(r'^place-autocomplete/$', PlaceAutocomplete.as_view(), name='place-autocomplete',
     ),    
 
-    url(r'^stack-autocomplete/$', StackAutocomplete.as_view(create_field='name'), name='stack-autocomplete',
+    url(r'^stack-autocomplete/$', StackAutocomplete.as_view(), name='stack-autocomplete',
     ), 
 
     url(r'^network-autocomplete/$', NetworkAutocomplete.as_view(), name='network-autocomplete',
     ), 
 
-    url(r'^ip-autocomplete/$', IpAutocomplete.as_view(create_field='address'), name='ip-autocomplete',
+    url(r'^ip-autocomplete/$', IpAutocomplete.as_view(), name='ip-autocomplete',
     ),    
 
-    url(r'^host-autocomplete/$', HostAutocomplete.as_view(create_field='name'), name='host-autocomplete',
+    url(r'^host-autocomplete/$', HostAutocomplete.as_view(), name='host-autocomplete',
     ),  
 
-    url(r'^host-autocomplete2/$', HostAutocomplete2.as_view(create_field='name'), name='host-autocomplete2',
-    ),  
+    url(r'^host-autocomplete2/$', HostAutocomplete2.as_view(), name='host-autocomplete2',
+    ),
+
+    url(r'^device-autocomplete/$', DeviceAutocomplete.as_view(), name='device-autocomplete',
+        ),
+
+    #url(r'^hostphone-autocomplete/$', HostPhoneAutocomplete.as_view(), name='hostphone-autocomplete',
+    #),      
+
 
     url(r'^device-autocomplete/$', DeviceAutocomplete.as_view(), name='device-autocomplete',
     ),
@@ -419,4 +428,4 @@ urlpatterns = patterns('',
 
   
 
-)
+]

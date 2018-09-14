@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-cloud fa-fw"></i>{{ title }}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            
+
+                                {% if vlans %}
+
+                   
+
+                                {% render_table table 'django_tables2/bootstrap.html' %}
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de {{ title }}: <b>{{ total }}</b></p>
+                                </div>                           
+
+                            {% else %}
+
+                            <br>
+                            <div class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    
+                                    Nenhuma VLAN cadastrada.
+                            </div>
+            
+                            {% endif %}                              
+
+                            </br>                                               
+                            
+
+                            <!-- formulario de adição -->
+                            <a href="{% url 'vlan_new' %}" alt="Adicionar" title="Adicionar">
+                                <button class="btn btn-default" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                            </a> 
+                            <!-- formulario de adição -->
+                           <!--  {% if perms.ace.add_vlan %}
+                            {% endif %}                                  -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+{% endblock %}

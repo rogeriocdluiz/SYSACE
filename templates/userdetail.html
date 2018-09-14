@@ -1,0 +1,187 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+    Detalhes do usu&aacute;rio
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-user fa-fw"></i>Usu&aacute;rio: {{ usr.get_full_name |upper }}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+
+
+                            <div class="iteminfo">
+                                <p><b>Usu&aacute;rio:</b> {{ usr.username |upper}}</p>
+                                <p><b>Nome completo:</b> {{ usr.get_full_name |upper }} </p>
+                                <p><b>E-mail:</b> {{ usr.email }}</p> 
+
+                            </div>                                
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+
+                    
+                    <div class="iteminfo">
+                        <p><i class="fa fa-users fa-fw"></i><strong>Grupos do usu&aacute;rio </strong></p>                            
+
+                        <ul class="list-group">
+                        {% for g in usr.groups.all %}
+                            <li class="list-group-item">{{ g }} </p>
+                        {% endfor %}
+                        </ul>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <!-- /.row -->
+
+
+
+            <div class="btn-group">
+                <a href="{% url 'userlist' %}" alt="Todos os usu&aacute;rios" title="Todos os usu&aacute;rios">
+                    <button class="btn btn-default" type="button">Todos os usu&aacute;rios</button>
+                </a>
+            </div>   
+
+
+            {% if perms.auth.add_user %}
+            <div class="btn-group">
+                <a href="{% url 'user_new' %}" alt="Adicionar" title="Adicionar">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                </a>
+            </div>
+            {% endif %}  
+            
+            {% if perms.auth.change_user %}
+            <div class="btn-group">
+                <a href="{% url 'user_edit' pk=usr.pk %}" alt="Editar" title="Editar">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil  text-info"></i>&nbsp;Editar</button>
+                </a>
+            </div>
+            {% endif %}    
+
+            {% if request.user.id == usr.id %}
+            <div class="btn-group">
+                <a href="{% url 'password' %}" alt="Mudar senha" title="Mudar senha">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-lock"></i>&nbsp;Mudar senha</button>
+                </a>
+            </div>            
+            {% endif %}
+     
+
+            </br>
+            </br>                
+            
+
+            {% if phoneownership %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        
+                        <div class="panel-heading"><i class="fa  fa-phone fa-fw"></i> Telefones/Senhas do usu&aacute;rio ( <small>Hist&oacute;rico de uso</small>)</div> 
+                        
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <th><center>Ativo</center></th>
+                                    <th>Num</th>
+                                    <th>Local</th>                                            
+                                    <th>Categoria</th>
+                                    <th>Tipo</th>
+                                    <th>Ativa&ccedil;&atilde;o em</th>
+                                    <th>Desativa&ccedil;&atilde;o em</th>                                    
+                                </thead>
+                                <tbody>
+                                {% for phone in phoneownership %}
+                                    
+                                    {% if phone.date_deactivation %}
+                                    <tr class="text-muted" >
+                                    {% else %}
+                                    <tr>
+                                    {% endif %}
+                                        <td>    
+                                            {% if phone.date_deactivation %}
+                                            <span class="text-default" title="Inativo"><center><i class="fa fa-times fa-1x"></i></center></span>
+                                            {% else %}
+                                            <span class="text-success" title="Ativo"><center><i class="fa fa-check fa-1x"></i></center></span>
+                                            {% endif %}
+                                        </td>
+
+                                        {% if phone.phone.password == True %}
+                                            <td><i class="fa fa-lock fa-1x">&nbsp;</i><a href="{% url 'phonedetail' phone.phone.pk %}">******</a></td>
+                                        {% else %}
+                                            <td><i class="fa fa-phone fa-1x">&nbsp;</i>{{ phone.phone }}</td>
+                                        {% endif %}
+
+                                        <td>{{ phone.phone.place |default_if_none:"" }}</td>
+                                        <td>{{ phone.phone.phonecategory | default_if_none:"" }}</td>                                    
+
+                                        <td>{{ phone.phone.telephonetype |default_if_none:""}}</td>
+                                        <td>{{ phone.date_activation |default_if_none:" --- "}}</td>
+                                        <td>{{ phone.date_deactivation |default_if_none:" --- "}}</td>
+
+                                        {{ date_activation }}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                       
+                    </div>
+                    <div class="filtercount">      
+                    Total {{ totalpo }}
+                    </div>
+                    <hr>
+
+                    <!-- /.panel -->
+                </div>
+            </div>
+            <!-- /.row -->
+            {% endif %}            
+
+            
+ 
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+{% endblock %}

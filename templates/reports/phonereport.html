@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>ACE - {{ title | safe }}</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+        </style>
+
+
+    </head>
+    <body>
+        <h1 style="text-align: center;"> <i class="fa fa-wrench fa-fw"></i>ACE - {{ title | safe }}</h1>
+        <h2 style="text-align: center;"> {{ org | safe }} </h2>
+
+
+
+
+                    
+                                    <table border="1" cellpadding="5">
+                                      <thead>
+                                        <tr style=" background-color: rgb(192, 192, 192);">
+                                            <th>Num</th>
+                                            <th>Usu&aacute;rio</th>
+                                            <th>Local</th>
+                                            <th>Categoria</th>
+                                            <th>Aparelho telef&ocirc;nico</th>
+                                            <th>Tipo</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                                        {% for item in mylist %}
+                                        <tr style="text-align: center;">
+                                        	<td>{{ item.num }}</td>
+                                            <td>{{ item.user.get_full_name | default_if_none:"" | upper }}</td>
+                                            <td>{{ item.place.name | default_if_none:"" | upper}}</td>
+                                            <td>{{ item.phonecategory }}</td>
+                                            <td>{{ item.phonehw | default_if_none:"" | upper }}</td>
+                                            <td>{{ item.telephonetype }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                    </table>
+
+<p> Total de {{ total }} telefone{{ total|pluralize:"s" }}</p>
+
+<hr>
+<p> Gerado em {% now "j / m / Y - H:i" %} </p>
+        <div id="footerContent" style="text-align: center;">
+            
+
+            {%block page_foot%}
+                P&aacute;gina <pdf:pagenumber>  
+            {%endblock%}
+        </div>
+
+
+
+
+    </body>
+</html>
+

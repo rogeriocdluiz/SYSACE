@@ -1,0 +1,88 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+    Patrim&ocirc;nio
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-money fa-fw"></i>Patrim&ocirc;nio: {{ ownerid.num }}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                
+                        <p><b>N&uacute;mero:</b> {{ ownerid.num }}</p>
+                        {% if devices %}
+                        {% for device in devices %}
+                        <p><b>Equipamento </b>{{ device }}
+                        {% endfor %}    
+                        {% endif %}
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+              
+                
+
+            </div>
+            <!-- /.row -->
+
+
+            <div class="btn-group">
+                <a href="{% url 'owneridlist' %}" alt="Todos os usu&aacute;rios" title="Todos os usu&aacute;rios">
+                        <button class="btn btn-default" type="button"><i class="fa fa-money fa-fw"></i>&nbsp;Todos os patrim&ocirc;nios</button>
+                </a>
+            </div>
+
+            <div class="btn-group">
+                <a href="{% url 'ownerid_new' %}" alt="Adicionar" title="Adicionar">
+                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                </a> 
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'ownerid_edit' pk=ownerid.pk %}" alt="Editar" title="Editar">
+                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                </a>                  
+            </div>
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+
+{% endblock %}

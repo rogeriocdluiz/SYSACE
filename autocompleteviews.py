@@ -81,6 +81,7 @@ class HosttypeAutocomplete(autocomplete.Select2QuerySetView):
         return qs         
 
 
+
 class ServicecategoryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
@@ -231,7 +232,7 @@ class IpAutocomplete(autocomplete.Select2QuerySetView):
         return qs     
 
 
-
+#autocomplete para hosts
 class HostAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
@@ -245,6 +246,7 @@ class HostAutocomplete(autocomplete.Select2QuerySetView):
 
         return qs          
 
+#autocomplete para vms
 class HostAutocomplete2(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
@@ -256,7 +258,36 @@ class HostAutocomplete2(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(name__istartswith=self.q)
 
-        return qs    
+        return qs
+
+# autocomplete para devices
+class DeviceAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return Device.objects.none()
+
+        qs = Device.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
+
+
+
+        #class HostPhoneAutocomplete(autocomplete.Select2QuerySetView):
+#    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+#        if not self.request.user.is_authenticated():
+#            return Host.objects.none()
+
+#        qs = Host.objects.filter(hwtype='voip')
+
+#        if self.q:
+#            qs = qs.filter(name__istartswith=self.q)
+
+#        return qs 
 
 
 

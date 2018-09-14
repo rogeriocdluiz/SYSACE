@@ -1,0 +1,569 @@
+
+{% extends "base.html" %}
+
+
+
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+    
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        {% if host.hwtype == "server" %}
+        <h3 class="page-header"><i class="fa fa-server fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "wifi" %}
+        <h3 class="page-header"><i class="fa fa-wifi fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "ap" %}
+        <h3 class="page-header"><i class="fa fa-wifi fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "fw" %}
+        <h3 class="page-header"><i class="fa fa-shield fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "printer" %}
+        <h3 class="page-header"><i class="fa fa-print fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "router" %}
+        <h3 class="page-header"><i class="fa fa-arrows fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "virt" %}
+        <h3 class="page-header"><i class="fa fa-cloud fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "cftv" %}
+        <h3 class="page-header"><i class="fa fa-video-camera fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "cam" %}
+        <h3 class="page-header"><i class="fa fa-video-camera fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "voip" %}
+        <h3 class="page-header"><i class="fa fa-phone fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "media" %}
+        <h3 class="page-header"><i class="fa fa-youtube-play fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "desktop" %}
+        <h3 class="page-header"><i class="fa fa-desktop fa-1x"></i> {{ host.name }}</h3>
+        {% elif host.hwtype == "storage" %}
+        <h3 class="page-header"><i class="fa fa-database fa-1x"></i> {{ host.name }}</h3>
+        {% elif t == "printer" %}
+        <h3 class="page-header"><i class="fa fa-print fa-1x"></i> {{ host.name }}</h3>
+        {% else %}
+        <h3 class="page-header"><i class="fa fa-gears fa-1x"></i> {{ host.name }}</h3>
+        {% endif %} 
+
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+				<div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body panel-primary">
+                            <div class="iteminfo"> 
+
+                                {% if host.active == True %}
+                                <p><b>Ativo:&nbsp;</b><span><i class="fa fa-check-circle fa-1x text-success"></i></span> </p>
+                                {% else %}                           
+                                <p><b>Ativo:&nbsp;</b><span><i class="fa fa-times-circle fa-1x text-danger"></i></span> </p>
+                                {% endif %}  
+                            
+                                {% if host.serial_number %}
+                                <p><b>Nº de s&eacute;rie:&nbsp;</b> {{ host.serial_number }}</p>
+                                {% endif %}
+
+                                
+                                {% if host.vm == False %}                
+                                    {% if host.supplierhw == False %}
+                                    <p><b>Patrim&ocirc;nio:</b> {{ host.ownerid }}</p> 
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if host.supplierhw %}                
+                                <p><b>Hardware de terceiros:</b> <span><i class="fa fa-check-circle fa-1x text-success"></i></span></p> 
+                                {% endif %}
+
+                                {% if host.manufactorer %}
+                                <p><b>Fabricante:&nbsp;</b> {{ host.manufactorer }}</p>
+                                {% endif %}                                
+
+                                {% if host.devicemodel %}
+                                <p><b>Modelo:&nbsp;</b> {{ host.devicemodel }}</p>
+                                {% endif %}                        
+
+
+                                {% if host.printer_type %}
+                                <p><b>Tipo:&nbsp;</b> {{ host.get_printer_type_display }}</p>
+                                {% endif %}                        
+
+                                {% if host.place %}
+                                <p><b>Local:&nbsp;</b> <a href="{% url 'placedetail' host.place.id %}">{{ host.place }}</a></p>
+                                {% endif %} 
+
+
+
+
+                                {% if host.osplatform %}
+                                <p><b>Plataforma:&nbsp;</b> {{ host.get_osplatform_display }}</p> 
+                                {% endif %}
+                
+                                {% if host.os %}
+                                <p><b>Sistema operacional:&nbsp;</b> {{ host.os }}</p> 
+                                {% endif %}
+
+                            </div>                                
+
+                            <div class="iteminfo">                         
+
+                                {% if host.url %}
+                                <p><b>URL:</b> <a href="{{ host.url }}" alt="interface de administra&ccedil;&atilde;o" title="interface de administra&ccedil;&atilde;o" target="blank">{{ host.url }}</a></p> 
+                                {% endif %}                        
+
+                                {% if host.mem %}
+                                <p><b>Mem&oacute;ria instalada:&nbsp;</b> {{ host.mem }}</p> 
+                                {% endif %}                        
+
+                                {% if host.cpu %}
+                                <p><b>Quantidade de CPU's:&nbsp;</b> {{ host.cpu }}</p> 
+                                {% endif %}                                                
+
+                                {% if host.hwtype %}
+                                <p><b>Tipo de hardware:&nbsp;</b> {{ host.get_hwtype_display }}</p>
+                                {% endif %}      
+
+                                {% if host.vm == True %}
+                                <p><b>M&aacute;quina virtual:&nbsp;</b><span><i class="fa fa-check-circle fa-1x text-success"></i></span> </p>
+                                {% endif %}
+                            </div>                                
+
+                            <div class="iteminfo"> 
+                                {% if request.user.is_superuser %}
+                                {% if host.admuser %}
+                                <p><b>Usu&aacute;rio administrador:</b> {{ host.admuser}} </p>
+                                {% endif %}                        
+                                <!--{% if host.admpass %}
+                                 <p><b>Senha do Usu&aacute;rio administrador:</b>  <a href="/admin/ace/host/{{ host.id }}/" alt="interface de administra&ccedil;&atilde;o do host" title="interface de administra&ccedil;&atilde;o do host" target="blank">veja na interface de administra&ccedil;&atilde;o</a> </p> 
+                                {% endif %}                                                -->
+                                {% endif %}  
+
+
+                            </div>                                
+
+                            
+                            {% if host.comments %}
+                            <p><b>Obs:</b> {{ host.comments }}</p>                            
+
+                            {% endif %} 
+
+                            {% if history %}
+                            <small class="text-muted">
+                                <em><i class="fa fa-clock-o "></i>&nbsp;&Uacute;ltima altera&ccedil;&atilde;o em: {{ history.0.history_date }} realizada por {{ history.0.history_user }}</em>
+                            </small>
+                            <br>
+                            {% endif %}
+
+
+
+                            {% if erro %}
+                            <div class="alert alert-danger">
+                                    Impossível obter informações do host - Verifique as credenciais de acesso.
+                            </div>
+                            {% endif %}
+
+
+
+
+                            <!-- <p><b>Mem&oacute;ria total:</b> {{ ram }} MB </p>
+                            <p><b>Quantidade de CPU's:</b> {{ cpu }} </p> -->
+
+                            </br>
+
+                            
+                            {% if t == "printer" %}
+
+                                <div class="btn-group">
+                                    <a href="{% url 'printer_edit' pk=host.pk %}" alt="Editar" title="Editar">
+                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                                    </a>                                                      
+                                </div>    
+                                <div class="btn-group">
+                                    <a href="{% url 'printer_delete' host.id %}" alt="Excluir" title="Excluir">
+                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                                    </a>                                                                                 
+                                </div>                                 
+                            {% else %}
+
+                   
+                                {% if perms.ace.edit_host %}
+                                <div class="btn-group">
+                                    <a href="{% url 'host_edit' pk=host.pk %}" alt="Editar" title="Editar">
+                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                                    </a>                                                      
+                                </div>    
+                                {% endif %}
+                                {% if perms.ace.delete_host %}
+                                <div class="btn-group">
+                                    <a href="{% url 'host_delete' host.id %}" alt="Excluir" title="Excluir">
+                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                                    </a>                                                                                 
+                                </div>   
+                                {% endif %}
+                                <div class="btn-group">
+                                    <a href="{% url 'hostdetailreport' host_id=host.pk %} " alt="Imprimir" title="Imprimir" target="blank">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Imprimir</button>
+                                    </a>                                                                                                  
+                                </div>   
+                           
+                            {% endif %}
+                          
+                        </div>
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>          
+
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if t == "printer" %}
+                        <div class="btn-group">
+                            <a href="{% url 'printerlist' %}" alt="Todas as impressoras" title="Todos as impressoras">
+                                <button class="btn btn-default" type="button">Todas as impressoras</button>
+                            </a>
+                        </div>
+
+                        {% if perms.ace.add_printer %}
+                        <div class="btn-group">
+                            <a href="{% url 'printer_new' %}" alt="Adicionar" title="Adicionar">
+                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                            </a>                             
+                        </div>
+                        {% endif %}                            
+                    {% else %}
+
+                        <div class="btn-group">
+                            <a href="{% url 'hostlist' %}" alt="Todos os Hosts" title="Todos os Hosts">
+                                <button class="btn btn-default" type="button">Todos os Hosts</button>
+                            </a>
+                        </div>
+                        {% if perms.ace.add_host %}
+                        <div class="btn-group">
+                            <a href="{% url 'host_new' %}" alt="Adicionar" title="Adicionar">
+                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                            </a>                             
+                        </div>   
+                        {% endif %}                            
+                    {% endif %}                    
+
+                    
+                    <div class="btn-group"> 
+                    <a href='{% url "switchport_new" %}' alt="Adicionar" title="Adicionar porta de switch">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Porta de switch</button>
+                    </a> 
+                    </div>     
+                    
+
+                    <div class="btn-group"> 
+                    <a href='{% url "ip_new" %}' alt="Adicionar" title="Adicionar IP">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;IP</button>
+                    </a> 
+                    </div>     
+
+                    
+                    <div class="btn-group">                         
+                        <a href="{% url 'netpoint_new' %}" alt="Adicionar ponto de rede" title="Adicionar ponto de rede">
+                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Ponto de rede</button>
+                        </a> 
+                    </div>     
+                    
+
+                    {% if t != "printer" %}
+                        {% if perms.ace.add_host %}
+                        <div class="btn-group">  
+                        <a href='{% url "service_new" %}' alt="Adicionar Servi&ccedil;o" title="Adicionar Servi&ccedil;o">
+                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar Servi&ccedil;o</button>
+                        </a> 
+                        </div>     
+                        {% endif %}
+                        {% if perms.ace.add_host %}
+                        <div class="btn-group">  
+                        <a href="{% url 'update_new' host.id %}" alt="Adicionar Atualiza&ccedil;&atilde;o" title="Adicionar Atualiza&ccedil;&atilde;o">
+                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Atualiza&ccedil;&atilde;o</button>
+                        </a>    
+                        </div>        
+                        {% endif %}
+                    {% endif %}
+
+                    </br></br>      
+
+
+                </div>
+            </div>
+
+
+            
+
+            
+            <div class="row">
+
+
+                {% if host.groups.all  %}
+                <div class="col-lg-4">
+                  <div class="panel panel-default"><div class="panel-heading"><i class="fa fa-users fa-fw"></i>&nbsp;&Aacute;reas respons&aacute;veis</div>
+                    <div class="panel-body">   
+                                  
+                        <ul class="list-group">
+                          {% for g in host.groups.all %}   
+                          <li class="list-group-item">{{ g }}</li>
+                          {% endfor %}
+                        </ul>
+
+                      
+                    </div>
+                  </div>
+                </div>      
+                {% endif %} 
+
+                {% if host.vm == False %} 
+                <!-- PORTAS DE SWITCH -->
+                <div class="col-lg-4">
+                    {% if swport %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-check fa-fw"></i> Portas do switch
+                        </div>
+                        <!-- /.panel-heading -->
+                    
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <th>Num</th>
+                                    <th>Switch</th>
+                                    <th>VLANs</th>
+                                    <th>Pilha</th>
+                                </thead>
+                                <tbody>
+                                {% for porta in swport %}
+                                <tr>
+                                    <td><a href="{% url 'swport' porta.id %}">{{ porta.num }}</a></td>
+                                    <td><a href="{% url 'switchdetail' porta.switch.id %}">{{ porta.switch.name }}</a></td>
+                                    {% if porta.vlans %}
+                                    <td>
+
+                                        {% for v in porta.vlans.all %}   
+                                        <p>
+                                            {{ v }}    
+                                        </p>
+                                        {% endfor %}
+
+                                    </td>
+                                    {% else %}
+                                    <td></td>
+                                    {% endif %}
+                                    {% if porta.switch.stack %}
+                                    <td><a href="{% url 'stackdetail' porta.switch.stack.id %}">{{ porta.switch.stack }}</a></td>
+                                    {% else %}
+                                    <td></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                    <!-- /.panel-body -->
+
+                    {% endif %}
+
+                </div>
+                <!-- PORTAS DE SWITCH -->
+                
+                <!-- pontos de rede -->
+                <div class="col-lg-4">
+                {% if n %}                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-check fa-fw"></i> Pontos de rede
+                        </div>
+                        <!-- /.panel-heading -->
+                    
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <th>Num</th>
+                                        <th>Local</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for netpoint in n %}
+                                    <tr>
+                                        <td><a href="{% url 'pointdetail' netpoint.id %}">{{ netpoint.num }}</a></td>
+                                        <td><a href="{% url 'placedetail' netpoint.place.id %}">{{ netpoint.place }}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                    </div>
+                    <!-- /.panel-body -->
+     
+                {% endif %}                     
+                </div>
+                <!-- /.panel -->         
+                <!-- /pontos de rede-->
+                {% endif %}
+
+
+   
+
+
+
+                
+            </div>
+            
+
+
+            <div class="row">    
+
+                  
+
+
+                <!-- IPS -->
+                <div class="col-lg-4">                         
+                    {% if i %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-map-marker fa-fw"></i> Endere&ccedil;os IP deste host
+                        </div>
+                        <!-- /.panel-heading -->
+
+
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <th>Endere&ccedil;o</th>
+                                        <th>Obs</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for ip in i %}
+                                    <tr>
+                                        <td><a href="{% url 'ipdetail' ip.id %}">{{ ip.address }}</a></td>
+                                        <td>{{ ip.comments |default_if_none:"" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                    </div>
+                    <!-- /.panel -->
+                    {% endif %} 
+                                      
+                </div>
+                <!-- /IPS -->
+
+                {% if t != "printer" %}
+                <!-- serviços -->
+                <div class="col-lg-4">
+                    {% if s %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-wrench fa-fw"></i> Servi&ccedil;os deste host
+                        </div>
+                        <!-- /.panel-heading -->
+
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <th>Nome</th>
+                                        <th>IP</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for service in s %}
+                                    <tr>
+                                        <td><a href="{% url 'servicedetail' service.id %}">{{ service.name }}</a></td>
+                                        <td><a href="{% url 'ipdetail' service.ip.id %}">{{ service.ip }}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                    </div>
+                    <!-- /.panel -->
+                    {% endif %}   
+
+                </div>
+                <!-- /.col-lg-12 -->   
+                <!-- /serviços -->
+                {% endif %} 
+
+            </div>
+            
+            <div class="row">                      
+
+                {% if t != "printer" %}
+                <!-- updates -->
+                <div class="col-lg-12">
+                    {% if u %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-repeat fa-fw"></i> Atualiza&ccedil;&otilde;es aplicadas
+                        </div>
+                        <!-- /.panel-heading -->
+
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <th>Nome</th>
+                                <th>Data de registro</th>
+                                <th>Data de aplica&ccedil;&atilde;o</th>
+                                <th>Obs</th>
+                                <th>A&ccedil;&otilde;es</th> 
+                            </thead>
+                            <tbody>
+                            {% for update in u %}
+                            <tr>
+                                <td>{{ update.name }}</a></td>
+                                <td>{{ update.register_date }}</a></td>
+                                <td>{{ update.aplication_date }}</a></td>
+                                <td>{{ update.comments }}</a></td>
+                                <td>
+                                    <a href="{% url 'update_edit' update.pk host.pk %}" alt="Editar" title="Editar"><i class="glyphicon glyphicon-pencil  text-info"></i></a>&nbsp;
+                                </td>                              
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- /.panel-body -->                      
+                    {% endif %}                                    
+
+                </div>
+                <!-- /.col-lg-12 -->  
+                <!-- /updates -->  
+                {% endif %}                 
+            
+                
+
+            </div>
+            <!-- /.row -->
+                    
+                
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+   
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+                                
+
+
+
+{% endblock %}

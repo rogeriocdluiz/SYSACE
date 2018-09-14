@@ -51,12 +51,11 @@
 		    <div class="error-details">
 			Desculpe, ocorreu um erro no servidor.<br>
 		    </div>
-		    <div class="error-actions">
-		    
-			<a href="{% url 'painel' %}" class="btn btn-primary">
-			    <i class="icon-home icon-white"></i> Voltar para a p&aacute;gina inicial </a>
-			<!-- <a href="mailto:me@null-byte.info" class="btn btn-default">
-			    <i class="icon-envelope"></i> Contact Support </a> -->
+		    <div class="error-actions">	    
+                <form>
+                  <input class="btn btn-primary" type="button" value="Voltar" onclick="history.back()">
+                  </input>
+                </form> 
 		    </div>
 		</div>
 	    </div>

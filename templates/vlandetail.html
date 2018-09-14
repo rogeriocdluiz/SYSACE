@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-cloud fa-fw"></i>VLAN: {{ vlan.vlanid }}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <div class="iteminfo"> 
+                
+                                <p><b>Id:</b> {{ vlan.vlanid }}</p>
+                                <p><b>Nome:</b> {{ vlan.name }}</p>
+                                {% if vlan.comments %}
+                                <p><b>Obs:</b> {{ vlan.comments }}</p>
+                                {% endif %}
+
+
+
+                            </div>
+                                
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+              
+                
+
+            </div>
+            <!-- /.row -->
+
+            <div class="btn-group">
+                <a href="{% url 'vlanlist' %}" alt="Todas as VLANs" title="Todas as VLANs">
+                        <button class="btn btn-default" type="button">Todas as VLANs</button>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'vlan_new' %}" alt="Adicionar" title="Adicionar">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                </a>                 
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'vlan_edit' pk=vlan.pk %}" alt="Editar" title="Editar">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                </a>                                 
+            </div>
+
+            </br>
+            </br>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        </br>
+                        <h4>&nbsp;&nbsp;<i class="fa  fa-cloud fa-fw"></i> Redes</h4>   
+                        </br>
+
+                                {% if networks %}                                    
+                                        <table class="table table-striped table-bordered table-hover" id="lista">
+                                            <thead>
+                                                <th>Rede</th>
+                                            </thead>
+                                            <tbody>
+                                            {% for n in networks %}
+                                            <tr>
+                                                <td><a href="{% url 'networkdetail' rede_id=n.pk %}">{{ n.name }}</a></td> 
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                {% else %}
+                                <br>
+                                    <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            
+                                            Nenhuma rede associada a esta VLAN.
+                                    </div>
+                                {% endif %}
+                    </div>
+                    <!-- /.panel -->
+
+                    <!-- formulario de adição -->
+                    <a href="{% url 'network_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                    </a> 
+                    <!-- formulario de adição -->
+                </div>
+                <!-- /.col-lg-12 -->                            
+
+            </div>
+            <!-- /.row -->
+
+            </br>
+            </br>
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        </br>
+                        <h4>&nbsp;&nbsp;<i class="fa  fa-cloud fa-fw"></i> Portas de switch</h4>   
+                        </br>
+
+                                {% if swports %}                                    
+                                        <table class="table table-striped table-bordered table-hover" id="lista">
+                                            <thead>
+                                                <th>Porta</th>
+                                                <th>Switch</th>
+                                                <th>Equipamento</th>
+                                                <th>Vlans</th>
+                                                <th>Obs</th>
+                                            </thead>
+                                            <tbody>
+                                            {% for port in swports %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'swport' port.pk %}">{{ port.num }}</a>
+                                                    {% if port.vlans.all.count > 1 %}
+                                                        <span class="text-danger">(Trunk)</span>
+                                                    {% endif %}                                                    
+                                                </td> 
+                                                <td><a href="{% url 'switchdetail' port.switch.pk %}">{{ port.switch }}</a></td> 
+                                                <td>{{ port.host }}</td> 
+                                                <td>
+                                                   {% if port.vlans.all %}
+                                                        <ul>
+                                                        {% for v in port.vlans.all %}                                       
+                                                            <li> {{ v }} </li>
+                                                        {% endfor %}                                    
+                                                        </ul>
+                                                    </p>
+                                                   {% endif %}
+                                                </td>
+
+                                                <td>{{ port.obs }}</td> 
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                {% else %}
+                                <br>
+                                    <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            
+                                            Nenhuma porta associada a esta VLAN.
+                                    </div>
+                                {% endif %}
+                    </div>
+                    <!-- /.panel -->
+
+                    <!-- formulario de adição -->
+                    <a href="{% url 'switchport_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                    </a> 
+                    <!-- formulario de adição -->
+                </div>
+                <!-- /.col-lg-12 -->                            
+
+            </div>
+            <!-- /.row -->
+
+
+
+
+
+             
+
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+
+{% endblock %}

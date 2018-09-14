@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Sistema ACE - {{ title | safe }}</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+        </style>
+
+
+    </head>
+    <body>
+        <h1 style="text-align: center;"> Sistema ACE - {{ title }} </h1>
+        <h2 style="text-align: center;"> {{ org }} </h2>
+
+
+
+                    
+                                    <table border="1" cellpadding="5">
+                                      <thead>
+                                        <tr style=" background-color: rgb(192, 192, 192);">
+                                            <th>Nome</th>
+                                            <th>Fabricante</th>
+                                            <th>Modelo</th>
+                                            <th>Nº de s&eacute;rie</th>
+                                            <th>Local</th>
+                                            <th>Rack</th>
+                                            <th>Num. Portas</th>
+                                            <th>Patrim&ocirc; nio</th>
+
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                                        {% for item in mylist %}
+                                        <tr style="text-align: center;">
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.manufactorer | default_if_none:""}}</td>
+                                            <td>{{ item.model }}</td>
+                                            <td>{{ item.serial }}</td>
+                                            <td>{{ item.place }}</td>
+                                            <td>{{ item.rack.name }}</td>
+                                            <td>{{ item.ports }}</td>
+                                            <td>{{ item.ownerid }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                      </tbody>
+                                    </table>
+
+<p> Total de {{ total }} switch(es)</p>
+
+<hr>
+<p> Gerado em {% now "j / m / Y - H:i" %} </p>
+        <div id="footerContent" style="text-align: center;">
+            
+
+            {%block page_foot%}
+                P&aacute;gina <pdf:pagenumber>  
+            {%endblock%}
+        </div>
+
+
+
+
+    </body>
+</html>
+

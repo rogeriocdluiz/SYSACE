@@ -1,0 +1,120 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+	<title>Detalhes do setor/departamento</title>
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-map-marker fa-fw"></i>Setor/Departamento:&nbsp;{{ sector.name }} </h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+				<div class="col-lg-8">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                      
+                        <p><b>Nome:&nbsp;</b> {{ sector.name }}</p>
+                        {% if sector.comments %}
+                        <p><b>Obs:&nbsp;</b>{{ sector.comments }}</p>
+                        {% endif %}                                                
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+
+                    <div class="btn-group">
+                        <a href="{% url 'sectorlist' %}" alt="Todos os setores/departamentos" title="Todos os locais">
+                            <button class="btn btn-default" type="button">Todos os Setores/Departamentos</button>
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'sector_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a>                         
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'sector_edit' pk=sector.pk %}" alt="Editar" title="Editar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>                                                         
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'sector_delete' sector.id %}" alt="Excluir" title="Excluir">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>                                                         
+                    </div>                                        
+
+                   <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->      
+
+            </div>
+            <!-- /.row -->
+        </br>
+
+            {% if places %}            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-phone fa-fw"></i>  Locais associados a este setor
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">                             
+                                <table class="table table-striped table-bordered table-hover" id="lista">
+                                                                    <thead>
+                                        <tr>
+                                          <th>Nome</th>
+                                          <th>Andar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for place in places %}
+                                        <tr>
+                                          <td><a href="{% url 'placedetail' place.id %}">{{ place.name }}</a></td> 
+                                          <td>{{ place.floor }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>                                
+                            </div>                      
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+                {% endif %}            
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+{% endblock %}

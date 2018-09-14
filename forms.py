@@ -4,7 +4,6 @@
 #from django.forms import ModelForm
 from django import forms  
 from django.forms import ModelForm, TextInput, Select, CheckboxInput, NumberInput, SelectMultiple, NullBooleanSelect, CheckboxInput, URLInput, NumberInput, DateInput, EmailInput, Textarea, PasswordInput
-#from ace.models import AceConfig, Switch, Netpoint, Phone, Switchport, Place, Floor, Stack, Rack, Host, Service, Ip, Network, Ownerid, Device, Servicecategory, Os, Hosttype, Manufactorer, Patchpanel, Patchpanelport, Phonecategory, Switchport, Sector, Printer, Devicemodel
 from ace.models import *
 
 from django.contrib.auth.models import User, Group
@@ -86,7 +85,8 @@ class HostForm(forms.ModelForm):
         queryset=Place.objects.all(),
         widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
         label=u'Local',
-        required=False
+        required=False,
+        help_text=u"Onde o equipamento está instalado (Não se aplica à máquinas virtuais)"
     )
 
     devicemodel = forms.ModelChoiceField(
@@ -112,7 +112,7 @@ class HostForm(forms.ModelForm):
     class Meta:
 		model = Host
 		#fields = '__all__'
-		fields = ['name','active','vm','supplierhw', 'ownerid','serial_number','devicemodel','osplatform','os','hwtype','manufactorer','place','url', 'admuser','admpass','mem','cpu','comments'] 
+		fields = ['name','active','vm','supplierhw', 'ownerid','serial_number','devicemodel','osplatform','os','hwtype','manufactorer','place','url', 'admuser','admpass','mem','cpu','groups','comments'] 
 		widgets = {
         'name': TextInput(attrs={'class': u'form-control'}),
         'active': CheckboxInput(attrs={'class': u'form-control'}),
@@ -127,6 +127,7 @@ class HostForm(forms.ModelForm):
         'mem':TextInput(attrs={'class': u'form-control'}),
         'cpu':NumberInput(attrs={'class': u'form-control'}),
         'manufactorer':Select(attrs={'class': u'form-control'}),
+        'groups':SelectMultiple(attrs={'class': u'form-control'}),
         'comments':Textarea(attrs={'class': u'form-control'}), 
     	}
 
@@ -153,7 +154,8 @@ class PrinterForm(forms.ModelForm):
         queryset=Place.objects.all(),
         widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
         label=u'Local',
-        required=False
+        required=False,
+        help_text=u"Onde o equipamento está instalado"
     )
 
        
@@ -178,18 +180,20 @@ class PrinterForm(forms.ModelForm):
 
     class Meta:
         model = Printer
-        fields = ['name','supplierhw','ownerid','active','serial_number','model', 'devicemodel', 'printer_type','manufactorer','place','url','admuser','admpass','comments',]
+        fields = ['name','supplierhw','ownerid','active','serial_number', 'manufactorer','printer_type','devicemodel','place','url','admuser','admpass','groups','comments',]
+        exclude = ['osplatform','vm']
         widgets = {
         'name': TextInput(attrs={'class': u'form-control'}),
         'supplierhw': CheckboxInput(attrs={'class': u'form-control'}),
         'active': CheckboxInput(attrs={'class': u'form-control'}),
         'url':URLInput(attrs={'class': u'form-control'}),  
         'serial_number':TextInput(attrs={'class': u'form-control'}),
-        'model':TextInput(attrs={'class': u'form-control'}),
+        #'model':TextInput(attrs={'class': u'form-control'}),
         'devicemodel':Select(attrs={'class': u'form-control'}),
         'printer_type':Select(attrs={'class': u'form-control'}),
         'manufactorer':Select(attrs={'class': u'form-control'}),
         'place':Select(attrs={'class': u'form-control'}),
+        'groups':SelectMultiple(attrs={'class': u'form-control'}),        
         'comments':Textarea(attrs={'class': u'form-control'}),         
 
         } 
@@ -393,6 +397,59 @@ class IpFormModal(forms.ModelForm):
 
 
 
+#class PhoneForm(forms.ModelForm):
+
+
+#    place = forms.ModelChoiceField(
+        #queryset=Place.objects.all(),
+        #widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
+        #label=u'Local',
+        #required=False,
+    #help_text='Local onde o telefone está instalado (Não se aplica a senhas)'
+
+    #)
+
+#    phonecategory = forms.ModelChoiceField(
+        #queryset=Phonecategory.objects.all(),
+        #widget=autocomplete.ModelSelect2(url='phonecategory-autocomplete',attrs={'class': u'form-control'},),
+        #label=u'Categoria do telefone',
+        #required=False,
+        #help_text='Indica o tipo de chamada telefônica permitida'
+
+    #)
+
+    #telephonetype = forms.ModelChoiceField(
+    #    queryset=Phonetype.objects.all(),
+    #    widget=autocomplete.ModelSelect2(url='phonetype-autocomplete',attrs={'class': u'form-control'},),
+    #    label=u'Tipo/tecnologia do telefone',
+    #    required=False,
+    #    help_text="Digital, analógico, IP"
+    #)
+
+
+
+    #class Meta:
+    #    model = Phone
+    #    fields = ['num','place','password', 'phonecategory','telephonetype',  'dg', 'dist', 'bloco', 'par','comments']
+    #    widgets = {
+    #    'num':TextInput(attrs={'class': u'form-control'}),
+    #    'password':CheckboxInput(attrs={'class': u'form-control','id':'password', 'onclick': 'javascript:passwordCheck();'}),
+    #    'active':CheckboxInput(attrs={'class': u'form-control'}),     
+    #    'newpassword':NullBooleanSelect(attrs={'class': u'form-control'}),  
+    #    'phonecategory':Select(attrs={'class': u'form-control'}),        
+    #    'telephonetype':Select(attrs={'class': u'form-control'}),  
+    #    'dist': TextInput(attrs={'class': u'form-control'}),
+    #    'bloco': TextInput(attrs={'class': u'form-control'}),
+    #    'par': TextInput(attrs={'class': u'form-control'}),
+    #    'dg': TextInput(attrs={'class': u'form-control'}),              
+    #    'comments':Textarea(attrs={'class': u'form-control'}), 
+    #    }         
+
+
+
+
+
+
 class PhoneForm(forms.ModelForm):
 
 
@@ -400,15 +457,17 @@ class PhoneForm(forms.ModelForm):
         queryset=Place.objects.all(),
         widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
         label=u'Local',
-        required=False
+        required=False,
+        help_text='Local onde o telefone está instalado (Não se aplica a senhas)'
 
     )        
 
     phonecategory = forms.ModelChoiceField(
         queryset=Phonecategory.objects.all(),
         widget=autocomplete.ModelSelect2(url='phonecategory-autocomplete',attrs={'class': u'form-control'},),
-        label=u'Categoria do telefone',
-        required=False
+        label=u'Categoria',
+        required=False,
+        help_text='Indica o tipo de chamada telefônica permitida'
 
     )
 
@@ -416,34 +475,57 @@ class PhoneForm(forms.ModelForm):
         queryset=Phonetype.objects.all(),
         widget=autocomplete.ModelSelect2(url='phonetype-autocomplete',attrs={'class': u'form-control'},),
         label=u'Tipo/tecnologia do telefone',
-        required=False
-
+        required=False,
+        help_text="Digital, analógico, IP - Somente telefones"
     )
+
+    user = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        widget=autocomplete.ModelSelect2(url='user-autocomplete',attrs={'class': u'form-control'},),
+        label=u'Usuário',
+        required=False,    
+    ) 
+
+    # host = forms.ModelChoiceField(
+    #    queryset=Host.objects.all(),
+    #    widget=autocomplete.ModelSelect2(url='hostphone-autocomplete',attrs={'class': u'form-control'},),
+    #    label=u'Equipamento/Aperelho telefônico',
+    #    required=False,    
+    #)     
 
 
     class Meta:
         model = Phone
-        fields = ['num','place','password', 'phonecategory','telephonetype','comments', 'dg', 'dist', 'bloco', 'par']
-        #fields = '__all__'
+        fields = ['num','place','password', 'phonecategory','telephonetype','user', 'phonehw','dg', 'dist', 'bloco', 'par','comments']
         widgets = {
         'num':TextInput(attrs={'class': u'form-control'}),
         'password':CheckboxInput(attrs={'class': u'form-control','id':'password', 'onclick': 'javascript:passwordCheck();'}),
-        #'user':Select(attrs={'class': u'form-control'}),
-        #'place':Select(attrs={'class': u'form-control'}),   
         'active':CheckboxInput(attrs={'class': u'form-control'}),     
-        #'password':CheckboxInput(attrs={'class': u'form-control'}),
-        'newpassword':NullBooleanSelect(attrs={'class': u'form-control'}),  
+        #'newpassword':NullBooleanSelect(attrs={'class': u'form-control'}),  
         'phonecategory':Select(attrs={'class': u'form-control'}),        
         'telephonetype':Select(attrs={'class': u'form-control'}),  
+        'phonehw': TextInput(attrs={'class': u'form-control'}),
         'dist': TextInput(attrs={'class': u'form-control'}),
         'bloco': TextInput(attrs={'class': u'form-control'}),
         'par': TextInput(attrs={'class': u'form-control'}),
         'dg': TextInput(attrs={'class': u'form-control'}),              
         'comments':Textarea(attrs={'class': u'form-control'}), 
-        }         
-    #def __init__(self, *args, **kwargs):
-    #    super(PhoneForm, self).__init__(*args, **kwargs)   
-    #    self.fields['user'].queryset = User.objects.order_by('username')
+        'user':Select(attrs={'class': u'form-control'}),
+        }   
+
+
+
+    def __init__(self, *args, **kwargs):
+        super(PhoneForm, self).__init__(*args, **kwargs)
+        self.fields['user'].queryset = User.objects.order_by('username')  
+#        self.fields['user'].label_from_instance = lambda obj: "%s" % obj.get_full_name()
+
+
+
+
+
+
+
 
 
 class PhonetypeForm(forms.ModelForm):
@@ -612,7 +694,8 @@ class SwitchForm(forms.ModelForm):
     place = forms.ModelChoiceField(
         queryset=Place.objects.all(),
         widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
-        label=u'Local'
+        label=u'Local',
+        required=False,
     )
     admuser = forms.CharField(
         widget=forms.TextInput(attrs={'class': u'form-control'},),
@@ -624,7 +707,7 @@ class SwitchForm(forms.ModelForm):
         required=False,
         label=u'Senha do administrador'
     )      
-    stack = forms.ModelChoiceField(
+    stack_field = forms.ModelChoiceField(
         queryset=Stack.objects.all(),
         widget=autocomplete.ModelSelect2(url='stack-autocomplete',attrs={'class': u'form-control'},),
         label=u'Pilha',
@@ -636,12 +719,19 @@ class SwitchForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(url='devicemodel-autocomplete',attrs={'class': u'form-control'},),
         label=u'Modelo do equipamento',
         required=False
-    )      
+    )
+
+    #rack = forms.ModelChoiceField(
+    #    queryset=Rack.objects.all(),
+    #    widget=autocomplete.ModelSelect2(url='rack-autocomplete',forward=['place'],attrs={'class': u'form-control'},),
+    #    label=u'Rack',
+    #    required=True
+    #)
 
 
     class Meta:
         model = Switch
-        fields =  ['name','active', 'ownerid', 'devicemodel', 'manufactorer','serial','devicemodel','serial','place','rack','ports','manageable','url','admuser','admpass','stacked','stack','comments']
+        fields =  ['name','active', 'ownerid', 'devicemodel', 'manufactorer','serial','devicemodel','serial','place','rack','ports','manageable','url','admuser','admpass','stacked','stack_field','comments']
         #fields = '__all__'
         widgets = {
         'name':TextInput(attrs={'class': u'form-control'}),
@@ -649,7 +739,7 @@ class SwitchForm(forms.ModelForm):
         #'ownerid':Select(attrs={'class': u'form-control'}),
         #'manufactorer':Select(attrs={'class': u'form-control'}),
         'serial':TextInput(attrs={'class': u'form-control'}),  
-        'model':TextInput(attrs={'class': u'form-control'}),  
+        #'model':TextInput(attrs={'class': u'form-control'}),  
         'devicemodel':Select(attrs={'class': u'form-control'}),
         #'place':Select(attrs={'class': u'form-control'}),   
         #'rack':Select(attrs={'class': u'form-control'}),
@@ -673,18 +763,25 @@ class SwitchFormModal(forms.ModelForm):
         widget=forms.PasswordInput(attrs={'class': u'form-control'},),
         required=False,
         label=u'Senha do administrador'
+    )    
+
+    devicemodel = forms.ModelChoiceField(
+        queryset=Devicemodel.objects.all(),
+        widget=autocomplete.ModelSelect2(url='devicemodel-autocomplete',attrs={'class': u'form-control'},),
+        label=u'Modelo do equipamento',
+        required=False
     )      
     
 
     class Meta:
         model = Switch
-        fields =  ['name','ownerid', 'manufactorer','serial','model','place','rack','ports','manageable','url','admuser','admpass','stacked','stack','comments']
+        fields =  ['name','ownerid', 'manufactorer','serial','devicemodel','place','rack','ports','manageable','url','admuser','admpass','stacked','stack_field','comments']
         widgets = {
         'name':TextInput(attrs={'class': u'form-control'}),
         'ownerid':Select(attrs={'class': u'form-control'}),
         'manufactorer':Select(attrs={'class': u'form-control'}),
         'serial':TextInput(attrs={'class': u'form-control'}),  
-        'model':TextInput(attrs={'class': u'form-control'}),  
+        #'model':TextInput(attrs={'class': u'form-control'}),  
         'place':Select(attrs={'class': u'form-control'}),   
         'rack':Select(attrs={'class': u'form-control'}),
         'ports': NumberInput(attrs={'class': u'form-control'}),
@@ -693,7 +790,7 @@ class SwitchFormModal(forms.ModelForm):
         'admuser':TextInput(attrs={'class': u'form-control'}),
         'admpass':TextInput(attrs={'class': u'form-control'}),
         'stacked':CheckboxInput(attrs={'class': u'form-control'}), 
-        'stack':Select(attrs={'class': u'form-control'}),
+        'stack_field':Select(attrs={'class': u'form-control'}),
         'comments':Textarea(attrs={'class': u'form-control'}), 
         }  
 
@@ -806,7 +903,8 @@ class NetpointForm(forms.ModelForm):
     place = forms.ModelChoiceField(
     queryset=Place.objects.all(),
     widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
-    label=u'Local'
+    label=u'Local',
+    help_text='localização do ponto de rede'
     )
 
     rack = forms.ModelChoiceField(
@@ -849,9 +947,9 @@ class SwitchportForm(forms.ModelForm):
     )
 
     host = forms.ModelChoiceField(
-    queryset=Host.objects.all(),
-    widget=autocomplete.ModelSelect2(url='host-autocomplete2',attrs={'class': u'form-control'},),
-    label=u'Equipamento (Host)',
+    queryset=Device.objects.all(),
+    widget=autocomplete.ModelSelect2(url='device-autocomplete',attrs={'class': u'form-control'},),
+    label=u'Equipamento/Host',
     required=False
     )
 
@@ -907,14 +1005,14 @@ class PatchpanelportForm(forms.ModelForm):
 
 
 
-class HosttypeFormModal(forms.ModelForm):
+#class HosttypeFormModal(forms.ModelForm):
 
-    class Meta:
-        model = Hosttype
-        fields = '__all__'
-        widgets = {
-        'name':TextInput(attrs={'class': u'form-control'}),
-        }   
+#    class Meta:
+#        model = Hosttype
+#        fields = '__all__'
+#        widgets = {
+#        'name':TextInput(attrs={'class': u'form-control'}),
+#        }   
               
 
 
@@ -941,6 +1039,14 @@ class PhonecategoryFormModal(forms.ModelForm):
 
 
 class SwitchportFormModal(forms.ModelForm):
+
+    host = forms.ModelChoiceField(
+    queryset=Host.objects.all(),
+    widget=Select(attrs={'class': u'form-control'},),
+    label=u'Equipamento/Host',
+    required=False
+    )
+
 
     class Meta:
         model = Switchport
@@ -969,14 +1075,47 @@ class DevicemodelForm(forms.ModelForm):
 
 
 
+#class UserModelChoiceField(forms.ModelChoiceField):
+#    def label_from_instance(self, obj):
+#         return obj.get_full_name().title()
+
+
+
+
 class PhoneownershipForm(forms.ModelForm):
 
     user = forms.ModelChoiceField(
+    #user = UserModelChoiceField(
         queryset=User.objects.all(),
         widget=autocomplete.ModelSelect2(url='user-autocomplete',attrs={'class': u'form-control'},),
         label=u'Usuário',
         required=True,
     ) 
+
+    phonecategory = forms.ModelChoiceField(
+        queryset=Phonecategory.objects.all(),
+        widget=autocomplete.ModelSelect2(url='phonecategory-autocomplete',attrs={'class': u'form-control'},),
+        label=u'Categoria',
+        required=True,
+        help_text="Quais ligações pode realizar. Não se aplica a senhas"
+    )
+
+    telephonetype = forms.ModelChoiceField(
+        queryset=Phonetype.objects.all(),
+        widget=autocomplete.ModelSelect2(url='phonetype-autocomplete',attrs={'class': u'form-control'},),
+        label=u'Tipo/Tecnologia',
+        required=False,
+        help_text="Tecnologia da linha. Não se aplica a senhas"
+    )
+
+    place = forms.ModelChoiceField(
+        queryset=Place.objects.all(),
+        widget=autocomplete.ModelSelect2(url='place-autocomplete',attrs={'class': u'form-control'},),
+        label=u'Local',
+        required=False,
+        help_text="Não se aplica a senhas"
+    )
+
 
     class Meta:
         model = Phoneownership
@@ -990,7 +1129,8 @@ class PhoneownershipForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PhoneownershipForm, self).__init__(*args, **kwargs)   
-        self.fields['user'].queryset = User.objects.order_by('username')        
+        self.fields['user'].queryset = User.objects.order_by('username')  
+#        self.fields['user'].label_from_instance = lambda obj: "%s" % obj.get_full_name()
 
 
 class VlanForm(forms.ModelForm):

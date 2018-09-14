@@ -1,0 +1,392 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-map-marker fa-fw"></i>Local:&nbsp;{{ local.placetype }}&nbsp;{{ local.name }} </h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+				<div class="col-lg-8">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+
+                            <div class="iteminfo"> 
+                      
+                                <p><b>Andar:</b> {{ local.floor }}</p>
+                                {% if local.sector %}
+                                <p><b>Setor:</b> {{ local.sector }}</p>
+                                {% endif %}
+
+                            </div>                                
+
+                            <div class="iteminfo"> 
+
+                                {% if phonetotal %}
+                                <p><b>Nº de telefones:</b> {{ phonetotal }}</p>
+                                {% endif %}
+
+                                {% if ptotal %}
+                                <p><b>Nº de pontos de rede:</b> {{ ptotal }}</p>
+                                {% endif %}                        
+                                {% if local.comments %}
+                                <p><b>Obs</b>{{ local.comments }}</p>
+                                {% endif %}                                                
+                            </div>
+
+
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+ 
+
+                    <div class="btn-group">
+                        <a href="{% url 'placelist' %}" alt="Todos os locais" title="Todos os locais">
+                            <button class="btn btn-default" type="button"><i class="fa fa-map-marker fa-fw"></i>&nbsp;Todos os locais</button>
+                        </a>
+                    </div>                    
+                    <div class="btn-group">
+                        <a href="{% url 'place_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button">    <i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a> 
+                    </div>    
+                    <div class="btn-group">
+                        <a href="{% url 'place_edit' pk=local.pk %}" alt="Editar" title="Editar">
+                            <button class="btn btn-default" type="button"> <i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>   
+                    </div>                                 
+                    <div class="btn-group">
+                        <a href="{% url 'place_delete' local.id %}" alt="Excluir" title="Excluir">
+                             <button class="btn btn-default" type="button">   <i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>                               
+                    </div>  
+
+                    {% if p or phone %}
+                    <div class="btn-group">
+                        <a href="{% url 'placereport' local.id %}" target="blank" alt="Gerar relat&oacute;rio em PDF" title="Gerar relat&oacute;rio em PDF" >
+                                <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>&nbsp;Gerar relat&oacute;rio em PDF</button>
+                        </a>                                 
+                    </div>
+                    {% endif %} 
+
+                    </br>
+                    </br>                    
+
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->      
+
+                
+                {% if p %}
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        
+                        <div class="panel-body">
+
+                            <div id="pontos" style="min-width: 210px; height: 300px; max-width: 500px; margin: 0 auto"></div>
+                            
+                        </div>
+                        
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                {% endif %}
+                <!-- /.col-lg-4 -->               
+                
+
+            </div>
+            <!-- /.row -->
+
+
+
+
+            
+            </br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-sitemap fa-fw"></i>  Pontos de rede
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            {% if p %}
+                            <div>                             
+                                <table class="table table-striped table-bordered table-hover" id="lista">
+                                    <thead>
+                                        <tr>
+                                          <th>N&uacute;mero</th>
+                                          <th>Tipo</th>
+                                          <th>Telefone</th>
+                                          <th>Rack</th>
+                                          <th>Patchpanel</th>
+                                          <th>Porta patchpanel</th>
+                                          <th>Switch</th>
+                                          <th>Porta do switch</th>
+                                          <th>Obs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ponto in p %}
+                                        <tr>
+                                          <td><a href="{% url 'pointdetail' ponto.id %}">{{ ponto.num }}</a></td> 
+                                          <td>{{ ponto.pointtype }}</td>
+                                          {% if ponto.phone %}                                          
+                                          <td><a href="{% url 'phonedetail' ponto.phone.id %}">{{ ponto.phone }}</a></td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}
+                                          {% if ponto.rack %}
+                                          <td><a href="{% url 'rackdetail' ponto.rack.id %}">{{ ponto.rack|default_if_none:"" }}</a></td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}
+                                          {% if ponto.patchpanel %}
+                                            <td>{{ ponto.patchpanel.num }}</td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}                                          
+                                          {% if ponto.patchpanelport %}
+                                            <td>{{ ponto.patchpanelport.num }}</td>
+                                          {% else %}
+                                          <td></td>
+                                          {% endif %}
+                                          {% if ponto.switch %}
+                                          <td><a href="{% url 'switchdetail' ponto.switch.id %}">{{ ponto.switch.name }}</a></td>
+                                          <td>{{ ponto.swport.num }}</td>
+                                          {% else %}
+                                          <td></td>
+                                          <td></td>
+                                          {% endif %}
+                                          <td>{{ ponto.comments }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>                                
+                            </div>
+                            {% else %}
+
+                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    
+                                    Nenhum ponto cadastrado neste local.
+                                </div>
+            
+                             {% endif %}
+
+                    <div class="btn-group">
+                        <a href="{% url 'netpoint_new' %}" alt="Adicionar ponto de rede" title="Adicionar ponto de rede">
+                            <button class="btn btn-default" type="button">Adicionar ponto de rede</button>
+                        </a>
+                    </div>
+                      
+                        </div>
+                        <!-- /.panel-body -->
+
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->    
+            
+            </div>
+            <!-- /.row -->
+            
+
+
+
+            {% if phone %}            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-phone fa-fw"></i>  Telefones deste local
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">                             
+                                <table class="table table-striped table-bordered table-hover" id="lista">
+                                                                    <thead>
+                                        <tr>
+                                          <th>N&uacute;mero</th>
+                                          <th>Usuario</th>
+                                          <th>Categoria</th>
+                                          <th>Tipo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ramal in phone %}
+                                        <tr>
+                                          <td><a href="{% url 'phonedetail' ramal.id %}">{{ ramal.num }}</a></td> 
+                                          <td>{{ ramal.user.first_name |default_if_none:"" }} {{ ramal.user.last_name|default_if_none:"" }}</td>
+                                          <td>{{ ramal.phonecategory |default_if_none:"" }}</td>
+                                          <td>{{ ramal.telephonetype |default_if_none:"" }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>                                
+                            </div>                      
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+                {% endif %}
+
+            </div>
+            <!-- /.row -->
+            
+            {% if h %}            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-phone fa-fw"></i>  Equipamentos neste local
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">                             
+                                <table class="table table-striped table-bordered table-hover" id="lista">
+                                                                    <thead>
+                                        <tr>
+                                          <th>Nome</th>
+                                          <th>Tipo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for host in h %}
+                                        <tr>
+                                          <td><a href="{% url 'hostdetail' host.id %}">{{ host.name }}</a></td> 
+                                          <td>{{ host.hwtype |default_if_none:"" }} </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>                                
+                            </div>                      
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+                {% endif %}
+
+            </div>
+            <!-- /.row -->
+
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+    <!-- DataTables JavaScript 
+    <script src="{% static "datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "datatables/media/js/dataTables.bootstrap.min.js" %}"></script>  -->  
+
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function() {
+            $('#lista').DataTable( {
+                "language": {
+                    "url": "{% static "datatables/media/js/Portuguese-Brasil.json" %}"
+                }
+            } );
+        } );
+    </script> -->
+
+
+                                   
+
+    <script type="text/javascript">
+        $(function () {
+            $('#pontos').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                exporting: {
+                  enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Utilização de pontos - {{ local.placetype }} - {{ local.name }}'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y}',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Percentagem',
+                    data: [
+                        ['Pontos de dados',     {{ pd }} ],
+                        ['Pontos de VoIP',      {{ pvoip }} ],
+                        {
+                            name: 'Pontos voz',
+                            y: {{ pv }},
+                            sliced: true,
+                            selected: true
+                        },
+                        ['Pontos desativados', {{ pdesat }} ]
+                    ]
+                }]
+            });
+        });
+    </script>
+
+
+
+{% endblock %}

@@ -50,14 +50,14 @@
 		    <h1>Oops!</h1>
 		    <h2>403 Acesso negado</h2>
 		    <div class="error-details">
-			Desculpe, voc&ecirc; n&atilde;o tem permiss&atilde;o para acessar esta p&aacute;gina.<br>
+			Desculpe, voc&ecirc; n&atilde;o tem permiss&atilde;o para executar esta a&ccedil;&atilde;o;<br>
 		    </div>
 		    <div class="error-actions">
 		    
-			<a href="{% url 'index' %}" class="btn btn-primary">
-			    <i class="icon-home icon-white"></i> Voltar para a p&aacute;gina inicial </a>
-			<!-- <a href="mailto:me@null-byte.info" class="btn btn-default">
-			    <i class="icon-envelope"></i> Contact Support </a> -->
+                <form>
+                  <input class="btn btn-primary" type="button" value="Voltar" onclick="history.back()">
+                  </input>
+                </form> 
 		    </div>
 		</div>
 	    </div>

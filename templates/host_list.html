@@ -1,0 +1,284 @@
+
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+
+
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            {% if t %}
+            <i class="fa fa-print fa-fw"></i>
+            {% else %}
+            <i class="fa fa-desktop fa-fw"></i>
+            {% endif %}
+            {{ title }}
+        </h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            {% if filter.qs %}
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <!-- <div class="form-control" -->
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.name.id_for_label }}">Nome:</label>
+                                        {{ filter.form.name|add_class:"form-control"}}
+                                    </div>&nbsp;
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.active.id_for_label }}">Ativo:</label> 
+                                        {{ filter.form.active|add_class:"form-control"}}
+                                    </div>&nbsp;&nbsp;
+                                    {% if filter.form.vm %}
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.vm.id_for_label }}">Máquina virtual:</label> 
+                                        {{ filter.form.vm|add_class:"form-control"}}
+                                    </div>&nbsp; &nbsp;  
+                                    {% endif %}                                 
+                                    {% if filter.form.hwtype %}
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.hwtype.id_for_label }}">Tipo de hardware:</label>
+                                        {{ filter.form.hwtype|add_class:"form-control" }}
+                                    </div>
+
+                                    {% else %}
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.printer_type.id_for_label }}">Tipo de hardware:</label>
+                                        {{ filter.form.printer_type|add_class:"form-control" }}
+                                    </div>
+                                    {% endif %}            
+
+
+
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.manufactorer.id_for_label }}">Fabricante:</label>
+                                        <!-- <div class="form-control"> -->
+                                        {{ filter.form.manufactorer|add_class:"form-control" }}    
+                                    </div>  
+
+                                    {% if filter.form.devicemodel %}
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.devicemodel.id_for_label }}">Modelo:</label>
+                                        {{ filter.form.devicemodel|add_class:"form-control" }}    
+                                    </div>
+                                    {% endif %}
+
+                                    {% if filter.form.osplatform %}                                                         
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.os.id_for_label }}">Plataforma:</label>
+                                        <!-- <div class="form-control"> -->
+                                        {{ filter.form.osplatform|add_class:"form-control" }}    
+                                    </div>    
+                                    {% endif %} 
+
+                                    {% if filter.form.os %}                                                         
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.os.id_for_label }}">Sistema operacional:</label>
+                                        <!-- <div class="form-control"> -->
+                                        {{ filter.form.os|add_class:"form-control" }}    
+                                    </div>    
+                                    {% endif %}            
+                                    
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.ownerid.id_for_label }}">Patrimônio:</label>
+                                        {{ filter.form.ownerid|add_class:"form-control" }}    
+                                    </div> &nbsp;&nbsp;                                   
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.supplierhw.id_for_label }}">Equipamento de Terceiros:</label>
+                                        <!-- <div class="form-control"> -->
+                                        {{ filter.form.supplierhw|add_class:"form-control" }}    
+                                    </div>  
+                                       
+                                     </br>
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.place.id_for_label }}">Local:</label>
+                                        {{ filter.form.place|add_class:"form-control" }}    
+                                    </div>   
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.place__sector__name.id_for_label }}">Setor:</label>
+                                        {{ filter.form.place__sector__name|add_class:"form-control" }}    
+                                    </div>   
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.comments.id_for_label }}">Obs:</label>
+                                        {{ filter.form.comments|add_class:"form-control" }}    
+                                    </div>   
+                                    </br></br>
+
+                                    <div class="form-group form-field">
+                                        <label for="{{ filter.form.o.id_for_label }}">Ordenar:</label> 
+                                        {{ filter.form.o|add_class:"form-control"}}
+                                    </div>   
+
+
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+
+                                    <div class="btn-group btn-right">
+                                        {% if t == "printer" %}
+                                        <a href="{% url 'printerlist' %}" alt="Limpar filtro" title="Limpar filtro">
+                                        {% else %}
+                                        <a href="{% url 'hostlist' %}" alt="Limpar filtro" title="Limpar filtro">
+                                        {% endif %}
+                                            <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+                                        </a>
+                                    </div>
+                                    
+
+                                    <div class="btn-group btn-right">
+
+                                        <button class="btn btn-default">
+                                          <i class="glyphicon glyphicon-export"></i>&nbsp;Exportar
+                                        </button>
+
+                                        <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                                          <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                        {% if t %}
+                                          <li>
+                                            <a href="{% url 'printerlist' %}{% querystring '_export'='csv' %}" title="exportar no formato csv" alt="exportar  no formato csv" target="blank">CSV</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'printerlist' %}{% querystring '_export'='ods' %}" title="exportar  no formato Open/Libreoffice" alt="exportar  no formato pen/Libreoffice" target="blank">Open/Libreoffice</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'printerlist' %}{% querystring '_export'='xls' %}" title="exportar no formato Excel" alt="exportar no formato Excel" target="blank">Excell</a>
+                                          </li>
+                                        {% else %}
+                                          <li>
+                                            <a href="{% url 'hostlist' %}{% querystring '_export'='csv' %}" title="exportar no formato csv" alt="exportar  no formato csv" target="blank">CSV</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'hostlist' %}{% querystring '_export'='ods' %}" title="exportar  no formato Open/Libreoffice" alt="exportar  no formato pen/Libreoffice" target="blank">Open/Libreoffice</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'hostlist' %}{% querystring '_export'='xls' %}" title="exportar no formato Excel" alt="exportar no formato Excel" target="blank">Excell</a>
+                                          </li>
+                                        {% endif %}
+                                        </ul>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                            </br>
+                            {% endif %}
+
+
+
+                                {% if filter.qs %}
+
+
+                                {% render_table table 'django_tables2/bootstrap.html' %}
+                           
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de equipamentos: <b>{{ total }}</b></p>
+                                </div>
+
+                            {% else %}
+
+                            <br>
+                            <div class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    
+                                    Nenhum resultado encontrado.
+
+
+                            </div>
+            
+                            {% endif %}
+                        </br>
+
+                              <input class="btn btn-default" type="button" value="Voltar" onclick="history.back()">
+
+
+
+                            {% if t == "printer" %}                         
+                            <!-- formulario de adição -->
+                            <div class="btn-group">
+                                <a href="{% url 'printer_new' %}">
+                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>Adicionar</button>
+                                </a> 
+                            </div>
+
+                            <!-- formulario de adição -->
+                            {% else %}
+                            <!-- formulario de adição -->
+                            <div class="btn-group">
+                                <a href="{% url 'host_new' %}" alt="Adicionar" title="Adicionar">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                                </a>
+                            </div>
+
+ 
+                            <!-- formulario de adição -->                            
+                            {% endif %}     
+
+
+
+
+
+                            
+                            {% if filter.qs %}
+                            {% if t == "printer" %}
+                            <a href="{% url 'printerreport' %}" alt="Relat&oacute;rio de impressoras" title="Relat&oacute;rio de impressoras" target="blank">
+                                <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de impressoras</button>
+                            </a> 
+                            {% else %}
+                            <a href="{% url 'hostreport' %}" alt="Relat&oacute;rio de equipamentos" title="Relat&oacute;rio de equipamentos" target="blank">
+                                <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de equipamentos</button>
+                            </a>    
+                            {% endif %}       
+                            {% endif %} 
+
+                                                      
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+{% endblock %}

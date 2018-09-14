@@ -1,0 +1,151 @@
+
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-tasks fa-fw"></i>{{ title }}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            {% if filter.qs %}
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <!-- <div class="form-control" -->
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.name.id_for_label }}">Nome:</label>
+                                        {{ filter.form.name|add_class:"form-control"}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.url.id_for_label }}">URL:</label> 
+                                        {{ filter.form.url|add_class:"form-control"}}
+                                    </div>
+                                    
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+                                    <a href="{% url 'stacklist' %}" alt="Limpar filtro" title="Limpar filtro">
+                                        <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+                                    </a>         
+                                                                                                
+                                    <div class="btn-group btn-right">
+
+                                        <button class="btn btn-default">
+                                          <i class="glyphicon glyphicon-export"></i>&nbsp;Exportar
+                                        </button>
+
+                                        <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                                          <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+
+                                          <li>
+                                            <a href="{% url 'stacklist' %}{% querystring '_export'='csv' %}" title="exportar no formato csv" alt="exportar  no formato csv" target="blank">CSV</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'stacklist' %}{% querystring '_export'='ods' %}" title="exportar  no formato Open/Libreoffice" alt="exportar  no formato pen/Libreoffice" target="blank">Open/Libreoffice</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'stacklist' %}{% querystring '_export'='xls' %}" title="exportar no formato Excel" alt="exportar no formato Excel" target="blank">Excell</a>
+                                          </li>
+
+                                        </ul>
+                                    </div>                                                                                                  
+
+                                </form>
+                            </div>
+                            </br>
+                            {% endif %}
+
+
+
+                            {% if filter.qs %}
+
+
+                                {% render_table table 'django_tables2/bootstrap.html' %}
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de {{ title }}: <b>{{ total }}</b></p>
+                                </div>
+
+                                </br>                                               
+                                {% if perms.ace.add_stack %}
+                                    <a href="{% url 'stack_new' %}"alt="Adicionar" title="Adicionar">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                                    </a> 
+                                {% endif %}                                 
+
+                            {% else %}
+
+                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        
+                                        Nenhum resultado encontrado.
+                                </div>
+
+                                </br>                                               
+                                {% if perms.ace.add_stack %}
+                                    <a href="{% url 'stack_new' %}"alt="Adicionar" title="Adicionar">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                                    </a> 
+                                {% endif %}                             
+
+                                <input class="btn btn-default" type="button" value="Voltar" onclick="history.back()">  
+            
+                            {% endif %}                              
+
+
+
+                            
+
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+{% endblock %}

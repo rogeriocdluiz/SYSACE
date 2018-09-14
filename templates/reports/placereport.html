@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>ACE - {{ title | safe }} - {{ org | safe }} - {{ local.tipo}} {{ local.nome }}</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+        </style>
+
+
+    </head>
+    <body>
+        <h1 style="text-align: center;">ACE - {{ title | safe }}</h1>
+        <h2 style="text-align: center;"> {{ org | safe }} </h2>
+
+{% load staticfiles %}  
+<!-- <img src="/home/rogeriol/DEV/django/Projetos/sistemas/ace/static/img/ace.png" /> -->
+    {% if mylist %}
+    <h2 style="text-align: center;"> Pontos de rede - {{ local }} - {{ local.sector }}</h2>                                    
+    <table border="1" cellpadding="5">
+      <thead>
+        <tr style=" background-color: rgb(192, 192, 192);">
+            <th>Número do Ponto de rede</th>
+            <th>Tipo/Status</th>
+            <th>Rack</th>
+            <th>Patchpanel</th>
+            <th>Porta patchpanel</th>
+            <th>Switch</th>
+            <th>Porta do switch</th>
+            <th>Tel/Ramal</th>
+            <th>Obs</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in mylist %}
+        <tr style="text-align: center;">
+            <td style="font-weight: bold;">{{ item.num }}</td>
+            <td>{{ item.pointtype }}</td>
+            <td>{{ item.rack.name|default_if_none:" " }}</td>
+            <td>{{ item.patchpanel.num|default_if_none:" "}}</td>
+            <td>{{ item.patchpanelport.num|default_if_none:" "}}</td>
+            <td>{{ item.switch.name|default_if_none:" "}}</td>
+            <td>{{ item.swport.num|default_if_none:" "}}</td>
+            {% if item.phone  %}
+            <td>{{ item.phone|default_if_none:" "}}</td>
+            {% else %}
+            <td style=" background-color: rgb(224, 224, 224);">----</td> 
+            {% endif %}
+            <td>{{ item.comments|default_if_none:" "}}</td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p> Total de {{ total }} ponto(s)</p>
+    {% endif %}
+
+    {% if phonelist %}
+    <h2 style="text-align: center;"> Telefones</h2>
+    <table border="1" cellpadding="5">
+      <thead>
+        <tr style=" background-color: rgb(192, 192, 192);">
+            <th>Número do telefone/ramal</th>
+            <th>Usu&aacute;rio</th>
+            <th>Ativo</th>
+            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Dist</th>
+            <th>Bloco</th>
+            <th>Par</th>
+            <th>DG</th>
+
+            <th>Obs</th>
+
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in phonelist %}
+        <tr style="text-align: center;">
+            <td style="font-weight: bold;">{{ item.num }}</td>
+            <td>{{ item.user|default_if_none:" " }}</td>
+            <td>{{ item.active|yesno:"sim,não"}}</td>
+            <td>{{ item.phonecategory|default_if_none:" "}}</td>
+            <td>{{ item.telephonetype |default_if_none:" "}}</td>
+            <td>{{ item.dist|default_if_none:" "}}</td>
+            <td>{{ item.bloco|default_if_none:" "}}</td>
+            <td>{{ item.par|default_if_none:" "}}</td>
+            <td>{{ item.dg|default_if_none:" "}}</td>                                            
+            <td>{{ item.comments|default_if_none:" "}}</td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p> Total de {{ phonetotal }} ramais</p>
+    {% endif %}
+
+
+<hr>
+<p> Gerado em {% now "j / m / Y - H:i" %} </p>
+        <div id="footerContent" style="text-align: center;" >
+            {%block page_foot%}
+                Página <pdf:pagenumber> 
+            {%endblock%}
+        </div>
+
+
+
+
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+        

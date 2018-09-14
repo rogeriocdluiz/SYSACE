@@ -1,0 +1,254 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+	Switch
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-tasks fa-fw"></i>Switch - {{ switch.name }}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">                        
+
+                        <div class="panel-body">
+                            
+                                       <div class="iteminfo"> 
+                                            <p><b>Nome:&nbsp;</b>{{ switch.name }}</p>
+
+                                            {% if switch.devicemodel %}
+                                            <p><b>Modelo:&nbsp;</b> {{ switch.devicemodel }}</p>
+                                            {% endif %}  
+                                            
+                                            {% if switch.active == True %}
+                                            <p><b>Ativo/Em uso:&nbsp;</b><i class="fa fa-check-circle fa-1x text-success"></i></p>
+                                            {% else %}
+                                            <p><b>Ativo/Em uso:&nbsp;</b><i class="fa fa-minus-circle fa-1x text-danger"></i></p>
+                                            {% endif %}
+
+                                            {% if switch.manufactorer %}
+                                            <p><b>Fabricante:&nbsp;</b>{{ switch.manufactorer }}</p>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="iteminfo"> 
+                                            {% if switch.url %}
+                                            <p><b>URL:</b><a href="{{ switch.url }}" alt="interface de administra&ccedil;&atilde;o" title="interface de administra&ccedil;&atilde;o" target="blank">{{ switch.url }}</a></p>   
+                                            {% endif %} 
+
+                                            {% if request.user.is_superuser %}
+                                                {% if switch.admuser %}                                        
+                                                <p><b>Usu&aacute;rio administrador:&nbsp;</b>{{ switch.admuser }}</p>                                        
+                                                <p><b>Senha do Usu&aacute;rio administrador:&nbsp;</b><a href="/admin/ace/switch/{{ switch.id }}/" alt="interface de administra&ccedil;&atilde;o do host" title="interface de administra&ccedil;&atilde;o do switch" target="blank">veja na interface de administra&ccedil;&atilde;o</a>
+                                                </p>       
+                                                {% endif %} 
+                                            {% endif %}                                                                                                                  
+
+                                            <p>
+                                                <b>Localização:&nbsp;</b><a href="{% url 'placedetail' switch.place.pk  %}" alt="Local" title="Local">{{ switch.place | default_if_none:"" }}</a>
+                                            </p>
+
+                                            {% if switch.ownerid %}                                                                                    
+                                            <p>
+                                                <b>Patrimônio:&nbsp;</b>{{ switch.ownerid }}
+                                            </p>
+                                            {% endif %}                                                                                                                  
+
+                                            {% if switch.serial %}                                        
+                                            <p>
+                                                <b>Número de série:&nbsp;</b>{{ switch.serial| default_if_none:"" }}
+                                            </p>
+                                            {% endif %}                                                                                                                  
+
+                                            {% if switch.rack %}
+                                            <p>
+                                                <b>Rack:&nbsp;</b><a href="{% url 'rackdetail' switch.rack.pk  %}" alt="Rack" title="Rack">{{ switch.rack | default_if_none:"" }}</a>
+                                            </p>
+                                            {% endif %}
+
+                                        </div>
+
+                                        <div class="iteminfo"> 
+
+                                            <p>
+                                                <b>Número de portas:&nbsp;</b>{{ switch.ports | default_if_none:"" }}
+                                            </p>
+                                            {% if switch.garantia %}
+                                            <p>
+                                                <b>Garantia:&nbsp;</b>{{ switch.warranty | default_if_none:"" }}
+                                            </p>
+                                            {% endif %}
+                                            {% if switch.empilhado == False %}
+                                            <p>
+                                                <b>Interface de adminsitração:&nbsp;</b>{{ switch.url | default_if_none:"" }}
+                                            </p>
+                                            {% endif %}
+                                            {% if switch.stacked == True %}
+                                            <p>
+                                                <b>Pilha:&nbsp;</b><a href="{% url 'stackdetail' switch.stack_field.pk  %}" alt="Pilha" title="Pilha">{{ switch.stack_field | default_if_none:"" }}</a>
+                                            </p>
+                                            {% endif %}
+
+                                            {% if switch.comments %}
+                                            <p>
+                                                <b>Observações:&nbsp;</b>{{ switch.comments }}
+                                            </p>
+                                            {% endif %}
+
+                                            {% if history %}
+                                            <br>
+                                            <small class="text-muted">
+                                                <em><i class="fa fa-clock-o "></i>&nbsp;&Uacute;ltima altera&ccedil;&atilde;o em: {{ history.0.history_date }} realizada por {{ history.0.history_user }}</em>
+                                            </small>
+                                            <br>
+                                            {% endif %}                                            
+
+                                        </div>
+                        </div>
+                        <!-- /.panel -->              
+
+                    </div>
+
+                        <div class="btn-group">
+                            <a href="{% url 'switchlist' %}" alt="Todos os switches" title="Todos os switches">
+                                <button class="btn btn-default" type="button"><i class="fa fa-tasks fa-fw"></i>&nbsp;Todos os switches</button>
+                            </a>
+                        </div>                    
+                        <div class="btn-group">
+                            <a href="{% url 'switch_new' %}" alt="Adicionar" title="Adicionar">
+                                <button class="btn btn-default" type="button">    <i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                            </a> 
+                        </div>    
+                        <div class="btn-group">
+                            <a href="{% url 'switch_edit' pk=switch.pk %}" alt="Editar" title="Editar">
+                                <button class="btn btn-default" type="button"> <i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                            </a>   
+                        </div>                                 
+                        <div class="btn-group">
+                            <a href="{% url 'switch_delete' switch.id %}" alt="Excluir" title="Excluir">
+                                 <button class="btn btn-default" type="button">   <i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                            </a>                               
+                        </div>   
+                </div>
+            </div>
+                                   
+                </br>
+                </br>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa  fa-tasks fa-fw"></i> Portas do switch
+                        </div>   
+
+                            <div class="panel-body">                     
+                        
+                                {% if p %}
+                                    <div>                             
+                                        <table class="table table-striped table-bordered table-hover" id="lista">
+                                            <thead>
+                                                <th>Porta</th>
+                                                <th>Tipo</th>
+                                                <th>VLANs</th>   
+                                                <th>Equipamento (host)</th>
+                                                <th>Obs</th>                                        
+                                            </thead>
+                                            <tbody>
+                                            {% for porta in p %}
+                                            <tr>
+                                                <td><a href="{% url 'swport' porta.id %}">{{ porta.num }}</a></td> 
+                                                <!-- <td><a>{{ porta.num }}</a></td> -->
+                                                <td>{{ porta.tipo }}</td>
+                                                {% if porta.vlans %}
+                                                <td>
+                                                    {% for v in porta.vlans.all %}   
+                                                    <p>
+                                                        <a href="{% url 'vlandetail' v.pk %}">{{ v }} </a>
+                                                    </p>
+                                                    {% endfor %}                                                     
+                                                </td>
+                                                {% else %}
+                                                <td></td>
+                                                {% endif %}
+
+                                                <td>{{ porta.host |default_if_none:"" }}</td> 
+
+                                                <td>{{ porta.obs|default_if_none:"" }}</td>                                        
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                {% else %}
+                                <br>
+                                    <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            
+                                            Nenhuma porta cadastrada neste switch.
+                                    </div>
+                    
+                                {% endif %}
+
+                    <!-- formulario de adição -->
+                    <a href="{% url 'switchport_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                    </a> 
+                    <!-- formulario de adição -->
+
+                            </div>
+
+
+
+                    </div>
+                    <!-- /.panel -->
+
+                </div>
+                <!-- /.col-lg-12 -->                    
+                
+
+            </div>
+            <!-- /.row -->
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+
+{% endblock %}

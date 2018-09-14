@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>ACE - {{ title |safe }} - {{ host }}</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+
+            .iteminfo p {
+                 display: inline-block;
+                padding-right: 20px;    
+                padding-top: 2px;
+                padding-left: 1px;
+                padding-bottom: 2px;
+              
+            }
+
+
+        </style>
+
+
+    </head>
+    <body>
+        <h1 style="text-align: center;"> ACE - {{ title |safe }} </h1>
+        <h2 style="text-align: center;"> {{ org }} </h2>
+
+
+
+{% load staticfiles %}  
+    
+<!--    <img src="{% static 'img/ace.jpg' %}" alt="image" width="200" height="150" />
+ <img src="/home/rogeriol/DEV/django/Projetos/sistemas/ace/static/img/ace.png" /> -->
+     <img src="{% static 'img/ace.jpg' %}
+
+
+
+
+     ' %}" />
+
+	<h1>Host - {{ host }} </h1>
+
+
+<div class="iteminfo"> 
+    {% if host.vm == False %}                
+        {% if host.serial_number %}
+        <p><b>Num de s&eacute;rie:</b> {{ host.serial_number }}</p>&nbsp;&nbsp;&nbsp;
+        {% endif %}
+
+        {% if host.ownerid %}
+        <p><b>Patrim&ocirc;nio:</b> {{ host.ownerid }}</p>&nbsp;&nbsp;&nbsp; 
+        {% endif %}
+
+    {% endif %}
+
+    {% if host.devicemodel %}
+    <p><b>Modelo:</b> {{ host.devicemodel }}</p>&nbsp;&nbsp;&nbsp;
+    {% endif %}                        
+
+    {% if host.place %}
+    <p><b>Local:</b> {{ host.place }}</p>&nbsp;&nbsp;&nbsp;
+    {% endif %}
+
+    {% if host.manufactorer %}
+    <p><b>Fabricante:</b> {{ host.manufactorer }}</p>&nbsp;&nbsp;&nbsp;
+    {% endif %}
+
+    {% if host.os %}
+    <p><b>Sistema operacional:</b> {{ host.os }}</p> &nbsp;&nbsp;&nbsp;
+    {% endif %}    
+</div>
+<div class="iteminfo"> 
+
+
+    {% if host.url %}
+    <p><b>URL:</b> {{ host.url }}</p>&nbsp;&nbsp; &nbsp;
+    {% endif %}                           
+
+    {% if host.mem %}
+    <p><b>Mem&oacute;ria instalada:</b> {{ host.mem }}</p> &nbsp;&nbsp; &nbsp;
+    {% endif %}                        
+
+    {% if host.cpu %}
+    <p><b>Quantidade de CPU's:</b> {{ host.cpu }}</p> &nbsp;&nbsp; &nbsp;
+    {% endif %}                                                  
+
+    {% if host.hwtype %}
+    <p><b>Tipo de hardware:</b> {{ host.get_hwtype_display }}</p>&nbsp;&nbsp;&nbsp;
+    {% endif %}    
+
+    {% if host.osplatform %}
+    <p><b>Plataforma:</b> {{ host.get_osplatform_display }}</p>&nbsp;&nbsp;&nbsp;
+    {% endif %}      
+
+</div>
+<div class="iteminfo">    
+
+	{% if host.comments %}
+	<p><b>Obs:</b> {{ host.comments }}</p> &nbsp;&nbsp;                           
+	{% endif %}  
+</div>
+
+
+{% if i %}
+<h1 style="text-align: center;"> Endere&ccedil;os IP deste host </h1>                                    
+<table border="1" cellpadding="5">
+  <thead>
+    <tr style=" background-color: rgb(192, 192, 192);">
+        <th>IP</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for ip in i %}
+    <tr style="text-align: center;">
+            <td>{{ ip.address }}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+<p> Total de {{ itotal }} ip(s)</p>
+{% endif %}
+
+{% if s %}
+<h1 style="text-align: center;"> Servi&ccedil;os deste host </h1>
+<table border="1" cellpadding="5">
+  <thead>
+    <tr style=" background-color: rgb(192, 192, 192);">
+        <th>Nome</th>
+        <th>IP</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for service in s %}
+	<tr style="text-align: center;">
+        <td style="font-weight: bold;">{{ service.name }}</a></td>
+        <td>{{ service.ip }}</td>
+    </tr>
+    {% endfor %}                                        
+  </tbody>
+</table>
+<p> Total de {{ stotal }} servi&ccedil;os</p>
+{% endif %}
+
+{% if swport %}
+<h1 style="text-align: center;"> Portas do switch </h1>
+<table border="1" cellpadding="5">
+  <thead>
+    <tr style=" background-color: rgb(192, 192, 192);">
+        <th>Porta</th>
+        <th>Switch</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for porta in swport %}
+	<tr style="text-align: center;">
+		<td style="font-weight: bold;">{{ porta.num }}</td>
+        <td>{{ porta.switch.name }}</td>	                                    	                                        
+    </tr>
+    
+    {% endfor %}                                        
+  </tbody>
+</table>
+<p> Total de {{ swporttotal }} portas de switch</p>
+{% endif %}                                    
+
+{% if u %}
+<h1 style="text-align: center;"> Atualiza&ccedil;&otilde;es aplicadas </h1>
+<table border="1" cellpadding="5">
+  <thead>
+    <tr style=" background-color: rgb(192, 192, 192);">
+        <th>Nome</th>
+        <th>Data de aplica&ccedil;&atilde;o</th>
+        <th>Obs</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for update in u %}
+    <tr style="text-align: center;">
+        <td style="font-weight: bold;" >{{ update.name }}</a></td>
+        <td>{{ update.aplication_date }}</a></td>
+        <td>{{ update.comments }}</a></td>        
+    </tr>   
+    {% endfor %}                                        
+  </tbody>
+</table>
+
+
+
+
+<p> Total de {{ utotal }} atualiza&ccedil;&otilde;es</p>
+{% endif %}    
+
+
+
+<hr>
+<p> Gerado em {% now "j / m / Y - H:i" %} </p>
+        <div id="footerContent" style="text-align: center;">
+            {%block page_foot%}
+                P&aacute;gina <pdf:pagenumber> 
+            {%endblock%}
+        </div>
+
+
+
+
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+        

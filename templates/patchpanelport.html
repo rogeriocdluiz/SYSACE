@@ -1,0 +1,114 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+    <title>Detalhes da porta de patchpanel</title>
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-cube fa-fw"></i>Porta de patchpanel</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Detalhes
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <div class="iteminfo"> 
+                                <p><b>N&uacute;mero:</b> {{ patchpanelport.num }}</p>
+                                <p><b>Pachpanel:</b> {{ patchpanelport.patchpanel.num }}</p>
+                                <p><b>Rack:</b> {{ patchpanelport.patchpanel.rack }}</p>
+                                {% if portapatchpanel.comments %}
+                                <p><b>Obs:</b> {{ portapatchpanel.comments }}</p>
+                                {% endif %}                                
+                            </div>                             
+                        </div>
+                        <!-- /.panel-body -->
+
+
+                    </div>
+                    <!-- /.panel -->              
+
+                </div>
+               
+
+                <!-- /.col-lg-6 -->
+ 
+
+            </div>
+               
+                    <div class="btn-group">
+                        <a href="{% url 'patchpanellist' %}" alt="Todos os patchpanels" title="Todos os patchpanels">
+                            <button class="btn btn-default" type="button">Todos os patchpanels</button>
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'patchpanelport_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'patchpanelport_edit' pk=patchpanelport.pk %}" alt="Editar" title="Editar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="{% url 'patchpanelport_delete' patchpanelport.id %}" alt="Excluir" title="Excluir">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>
+                    </div>
+
+
+                                   
+                </br>
+                </br>
+
+                <!-- /.col-lg-6 -->
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+                                  
+
+
+{% endblock %}
+
+
+
+

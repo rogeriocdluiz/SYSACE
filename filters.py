@@ -12,10 +12,12 @@ import django_filters
 class HostFilter(django_filters.FilterSet):
 
     name = django_filters.CharFilter(lookup_expr='icontains')
+    place__sector__name = django_filters.CharFilter(lookup_expr='icontains')
+    comments = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Host
-        fields = ['active','manufactorer', 'ownerid','vm','serial_number','devicemodel','os','osplatform','hwtype','supplierhw']
+        fields = ['active','manufactorer', 'ownerid','vm','serial_number','devicemodel','os','osplatform','hwtype','supplierhw','place','comments']
         order_by = (
         	('name', 'Nome'),
         	('vm', u'Máquina virtual'),
@@ -26,10 +28,12 @@ class HostFilter(django_filters.FilterSet):
 class PrinterFilter(django_filters.FilterSet):
 
     name = django_filters.CharFilter(lookup_expr='icontains')
+    place__sector__name = django_filters.CharFilter(lookup_expr='icontains')
+    comments = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Printer
-        fields = ['active','manufactorer', 'ownerid','serial_number','model','supplierhw']
+        fields = ['active','manufactorer', 'ownerid','serial_number','supplierhw','printer_type', 'place', 'comments']
         order_by = (
             ('name', 'Nome'),
             ('manufactoerer', 'Fabricante'),
@@ -48,7 +52,7 @@ class SwitchFilter(django_filters.FilterSet):
 
     class Meta:
         model = Switch
-        fields = ['active','manufactorer', 'ownerid','devicemodel','stack','manageable','place','rack']
+        fields = ['active','manufactorer', 'ownerid','devicemodel','stack_field','manageable','place','rack']
         order_by = (
             ('name', 'Nome'),
     )
@@ -112,12 +116,14 @@ class OwneridFilter(django_filters.FilterSet):
 
     class Meta:
         model = Ownerid
+        fields = ['num']
         
             
 
 class IpFilter(django_filters.FilterSet):
 
     address = django_filters.CharFilter(lookup_expr='icontains')
+    device__name = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Ip
@@ -196,10 +202,15 @@ class PhoneFilter(django_filters.FilterSet):
     user__username = django_filters.CharFilter(lookup_expr='icontains')
     user__first_name = django_filters.CharFilter(lookup_expr='icontains')
     user__last_name = django_filters.CharFilter(lookup_expr='icontains')
+    place__name = django_filters.CharFilter(lookup_expr='icontains')
+    place__sector__name = django_filters.CharFilter(lookup_expr='icontains')
+    place__floor = django_filters.CharFilter(lookup_expr='icontains')
+    phonehw = django_filters.CharFilter(lookup_expr='icontains')
+    comments = django_filters.CharFilter(lookup_expr='icontains')
     
     class Meta:
         model = Phone
-        fields = ['place','active','password','newpassword','phonecategory','telephonetype','place']
+        fields = ['place','active','password','phonecategory','telephonetype','place', 'phonehw','comments']
         order_by = (
             ('num', 'Num'),
             ('user', 'Usuário'),
@@ -209,6 +220,24 @@ class PhoneFilter(django_filters.FilterSet):
             ('place', 'Local'),
 
         )
+
+
+class PasswordFilter(django_filters.FilterSet):
+
+    user__username = django_filters.CharFilter(lookup_expr='icontains')
+    user__first_name = django_filters.CharFilter(lookup_expr='icontains')
+    user__last_name = django_filters.CharFilter(lookup_expr='icontains')
+    comments = django_filters.CharFilter(lookup_expr='icontains')
+    
+    class Meta:
+        model = Phone
+        fields = ['active','phonecategory','comments']
+        order_by = (
+            ('user', 'Usuário'),
+            ('active', 'Ativo'),
+            ('phonecategory', 'Categoria'),
+        )
+
          
 
 class UserFilter(django_filters.FilterSet):

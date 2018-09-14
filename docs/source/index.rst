@@ -16,6 +16,16 @@ O ACE permite um controle centralizado de várias informações da infraestrutur
 * Controle de linhas telefônicas sejam elas analógicas, digitais ou VoIP.
 
 
+Changelog
+=========
+
+
+
+Versão 1.2.1
+
+Compatível com Django 1.11
+
+
 
 
 
@@ -32,6 +42,7 @@ O ACE permite um controle centralizado de várias informações da infraestrutur
    rede
    telefonia
    usuarios
+   changelog
    licence
    contato
 

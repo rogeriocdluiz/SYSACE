@@ -1,0 +1,145 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-phone fa-fw"></i>Cria&ccedil;&atilde;o/Ediç&atilde;o do telefone/senha</h3>
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+{% block conteudo1 %}
+    
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                                <div class="dropdown pull-right">
+                                  <button class="btn btn-default dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Adicionar
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+
+                                    {% if perms.auth.add_user or perms.auth.change_user or perms.auth.delete_user %} 
+                                    <li>
+                                        <a id="my_modal_runner" href='{% url "usermodal" %}' alt="Adicionar" title="Adicionar">
+                                            Usu&aacute;rio
+                                        </a> 
+                                    </li>    
+                                    {% endif  %} 
+                                    <li>
+                                        <a id="my_modal_runner2" href='{% url "placemodal" %}' alt="Adicionar" title="Adicionar">
+                                            Local
+                                        </a> 
+                                    </li>
+                                    <li>
+                                        <a id="my_modal_runner5" href='{% url "sectormodal" %}' alt="Adicionar" title="Adicionar">
+                                            Setor
+                                        </a> 
+                                    </li>    
+                                    <li>
+                                        <a id="my_modal_runner3" href='{% url "floormodal" %}' alt="Adicionar" title="Adicionar">
+                                            Andar
+                                        </a> 
+                                    </li>                                    
+                                    <li>
+                                        <a id="my_modal_runner4" href='{% url "phonecatmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Categoria de telefone
+                                        </a> 
+                                    </li>                                    
+                                    <li>
+                                        <a id="my_modal_runner6" href='{% url "phonetypemodal" %}' alt="Adicionar" title="Adicionar">
+                                            Tipo/tecnologia de telefone
+                                        </a> 
+                                    </li>
+                                    <!-- <li>
+                                        <a id="my_modal_runner7" href=# alt="Adicionar" title="Adicionar">
+                                            Aparelho telefônico
+                                        </a> 
+                                    </li> -->                                    
+
+                                  </ul>
+                                </div>  
+                            </br></br>
+
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-8">
+
+                                    <form method="post" novalidate>
+                                      {% csrf_token %}
+                                      {% include 'includes/form.html' with form=form %}
+                                      <button type="submit" class="btn btn-default">Salvar</button>
+
+                                        <input class="btn btn-default" type="button" value="Cancelar    " onclick="history.back()">
+                                    </form>
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+
+    <!-- <script type="text/javascript">
+    function passwordCheck() {
+        if (document.getElementById('password').checked) {
+            document.getElementById('newpassword').style.display = 'block'; 
+            document.getElementById('telephonetype').style.display = 'none';
+            document.getElementById('place').style.display = 'none';
+        }
+        else {
+            document.getElementById('newpassword').style.display = 'none';
+            document.getElementById('telephonetype').style.display = 'block';
+            document.getElementById('place').style.display = 'block';            
+        }
+
+    }
+    </script> -->
+
+
+
+{{ form.media }}
+
+{% endblock %}
+

@@ -1,0 +1,367 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+    
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        {% if ramal.password == True %}
+        <h3 class="page-header"><i class="fa fa-lock fa-fw"></i>Senha telef&ocirc;nica</h3>
+        {% else %}
+        <h3 class="page-header"><i class="fa fa-phone fa-fw"></i>Telefone</h3>
+        {% endif %}
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+<div class="row">
+  <div class="col-lg-8">
+
+
+    {% if send == 'ok' %}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        Senha enviada para o usuário <b>{{ ramal.user.get_full_name |upper }}</b> no email <b>{{ ramal.user.email }}</b> 
+    </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+
+
+
+          <div class="iteminfo"> 
+
+            
+
+            
+            <p>
+              {% if ramal.password == True %}
+              <b>C&oacute;digo:</b>
+                {% if perms.ace.view_password %}
+                  {{ ramal }}
+                {% else %}
+                  **********
+                {% endif %}
+              {% else %}
+              <b>N&uacute;mero:</b>
+                {{ ramal }}
+              {% endif %}
+            </p>
+
+
+            {% if ramal.active == True %}
+            <p><b>Ativo:</b>&nbsp;<i class="fa fa-check fa-1x text-success"></i>{{ ramal.active|yesno:"Sim,Não" }}</p>
+            {% else %}
+            <p><b>Ativo:</b>&nbsp;<i class="fa fa-times fa-1x text-danger"></i> {{ ramal.active|yesno:"Sim,Não" }}</p>
+            {% endif %}
+
+
+            {% if ramal.user !=  None %}
+            <p><b>Usuário:</b><a href="{% url 'userdetail' ramal.user.id %}"> {{ ramal.user.get_full_name |upper}}</a> - {{ ramal.user.email }} </p>
+            {% endif %}
+
+          </div>                                
+
+          <div class="iteminfo"> 
+          
+            {% if ramal.newpassword == True %}
+            <b>Data de criação:</b> {{ ramal.date_creation }}</p>
+            {% endif %}
+
+            {% if ramal.password == False %}
+            {% if ramal.place %}
+            <p><b>Localização:</b> <a href="{% url 'placedetail' ramal.place.id %}">{{ ramal.place|default_if_none:"N/A" }}</a></p>
+            {% endif %}
+
+            {% if ramal.place.sector %}
+            <p><b>Setor:</b> {{ ramal.place.sector }}</p>
+            {% endif %}
+
+            <p><b>Tipo:</b> {{ ramal.telephonetype|default_if_none:"N/A" }}</p>
+            {% endif %}
+
+            <p><b>Categoria:</b> {{ ramal.phonecategory|default_if_none:"N/A" }}</p> 
+
+            {% if ramal.phonehw %}
+            <p><b>Aparelho:</b> {{ ramal.phonehw }}</a></p> 
+            {% endif %}
+
+            {% if ramal.comments %}
+            <b>Obs:</b> {{ ramal.comments }}</p>
+            {% endif %}        
+            </br>    
+
+            <!--<small>
+              <em>Cadastro em:</b> {{ ramal.date_creation|default_if_none:"N/A" }} &nbsp; Modifica&ccedil;&atilde;o em: {{ ramal.date_modification|default_if_none:"N/A" }}</em>
+
+            </small> -->
+            <small class="text-muted">
+              <em><i class="fa fa-clock-o "></i> Cadastro em:</b> {{ ramal.date_creation|default_if_none:"N/A" }}  |  &Uacute;ltima altera&ccedil;&atilde;o em: {{ history.history_date }} realizada por {{ history.history_user }}</em>
+            </small>            
+
+          </div>    
+
+        </div>
+        <!-- /.panel-body -->
+    </div>
+       
+
+
+    <div class="btn-group">
+        {% if ramal.password == True %}
+        <a href="{% url 'passwordlist' %}" alt="Todas as senhas" title="Todas as senhas">
+            <button class="btn btn-default" type="button">Todas as senhas</button>
+        </a>
+        {% else %}
+        <a href="{% url 'phonelist' %}" alt="Todos os telefones" title="Todos os telefones">
+            <button class="btn btn-default" type="button">Todos os telefones</button>
+        </a>        
+        {% endif %}
+    </div>
+
+    {% if ramal.active == True or poactive %}
+    <!-- Button trigger modal -->
+    {% if perms.ace.delete_phoneownership %}
+    <button class="btn btn-default" data-toggle="modal" data-target="#myModal">
+        <i class="fa fa-times fa-fw"></i>Desvincular do usu&aacute;rio
+    </button>
+    {% endif %}
+    
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-warning fa-fw"></i> Desvincular telefone do usu&aacute;rio</h4>
+                </div>
+                <div class="modal-body">
+                      A desvinculação permite que o número fique livre para ser utilizado
+                      por outro usuário.
+                      <br>
+                      As datas de vinculação e desvinculação ficam registradas nos
+                      históricos do usuário e do telefone.<br>
+                </div>
+                <div class="modal-footer">
+                  <div class="btn-group">
+                    <a href="{% url 'phoneownership_disable' ramal.id  %}" alt="Desvincular do usu&aacute;rio" title="Desvincular do usu&aacute;rio">
+                        <button class="btn btn-default" type="button"><i class="fa fa-times fa-fw"></i>Desvincular do usu&aacute;rio</button>
+                    </a>
+                  </div>  
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    {% else %}
+
+    {% if perms.ace.add_phoneownership %}
+    <div class="btn-group">
+        
+        <a href="{% url 'phoneownership_new' ramal.pk %}" alt="Vincular ao usu&aacute;rio" title="Vincular ao usu&aacute;rio">  
+            <button class="btn btn-default" type="button"><i class="fa fa-user fa-fw"></i>Vincular ao usu&aacute;rio</button>
+        </a>
+
+    </div> 
+    {% endif %}
+
+   {% endif %}
+
+
+
+
+
+    {% if ramal.user.email and ramal.password == True and ramal.active == True %}
+    {% if perms.ace.add_phone %}
+    <div class="btn-group">
+        <a href="{% url 'sendpassword' pk=ramal.id  %}" alt="Enviar senha por email" title="Enviar senha por email">
+            <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-envelope"></i>&nbsp;Enviar senha por email</button>
+        </a>
+    </div>
+    {% endif %}                    
+    {% endif %}                    
+
+    {% if perms.ace.change_phone %}
+    <div class="btn-group">
+        <a href="{% url 'phone_edit' pk=ramal.pk %}" alt="Editar" title="Editar">
+            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+        </a>
+    </div>              
+    {% endif %}
+
+    {% if perms.ace.delete_phone %}
+    <div class="btn-group">
+        <a href="{% url 'phone_delete' ramal.id %}" alt="Excluir" title="Excluir">
+            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+        </a>
+    </div>  
+    {% endif %}
+
+
+  <!-- /.panel -->
+</div>
+<!-- /.col-lg-6 -->      
+
+
+</div>
+
+
+
+
+
+
+
+</br>
+
+{% if ponto.rack or ponto or ponto.patchpanel or ramal.dist or ramal.blco or ramal.par or ramal.dg %}
+<div class="row">
+  <div class="col-lg-8">  
+  <div class="panel panel-default">
+    <div class="panel-heading">&nbsp;Informa&ccedil;&otilde;es conex&otilde;es -  PABX/Rede</strong></div> 
+
+      <div class="panel-body">
+        <table class="table table-striped table-hover table-bordered">
+          <thead>
+                                            
+            <th>Dist</th>
+            <th>Bloco</th>
+            <th>Par</th>
+            <th>DG</th>
+            <th>Rack</th>
+            <th>Ponto/Tomada</th>
+            <th>Patchpanel</th>
+            <th>Porta PP</th>
+            <th>Obs</th>
+          </thead>
+          <tr>
+            <td>{{ ramal.dist|default_if_none:"" }}</td>
+            <td> {{ ramal.bloco|default_if_none:"" }}</td>
+            <td>{{ ramal.par|default_if_none:"" }} </td>
+            <td>{{ ramal.dg|default_if_none:"" }}</td>
+            {% if ponto.rack %}
+            <td><a href="{% url 'rackdetail' ponto.rack.id %}">{{ ponto.rack.name|default_if_none:"" }}</a></td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            {% if ponto %}
+            <td><a href="{% url 'pointdetail' ponto.id %}">{{ ponto |default_if_none:"" }}</a></td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            {% if ponto.patchpanel %}
+            <td><a href="{% url 'patchpaneldetail' ponto.patchpanel.id %}">{{ ponto.patchpanel.num }}</td>
+            {% else %}
+            <td></td>            
+            {% endif %}
+            <td>{{ ponto.patchpanelport.num }}</td>
+            <td>{{ ponto.comments }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>                         
+  </div>
+</div>
+{% endif %}
+    
+
+
+
+<div class="row">
+
+  {% if phoneownership %}
+
+      <div class="col-lg-8">
+          <div class="panel panel-default">
+
+            <div class="panel-heading"><i class="fa  fa-phone fa-fw"></i> Hist&oacute;rico de uso</div> 
+              
+              
+              
+                  <table class="table table-striped table-bordered table-hover">
+                      <thead>
+                          <th>Usu&aacute;rio</th>                                            
+                          <th>Ativa&ccedil;&atilde;o em</th> 
+                          <th>Desativa&ccedil;&atilde;o em</th>                                    
+                      </thead>
+                      <tbody>
+                      {% for item in phoneownership %}
+                          {% if item.date_deactivation %}
+                          <tr class="text-muted">
+                              {% if item.user %}
+                              <td>{{ item.user.get_full_name |default_if_none:"" |upper }}</td>
+                              {% else %}
+                              <td> </td>
+                              {% endif %}
+
+                              <td>{{ item.date_activation |default_if_none:"---"}}</td>
+                              <td>{{ item.date_deactivation |default_if_none:"---"}}</td>
+                          </tr>
+                          {% else %}
+                          <tr>
+                              {% if item.user %}
+                              <td><a href="{% url 'userdetail' item.user.id %}">{{ item.user.get_full_name |default_if_none:"" |upper }}</a></td>
+                              {% else %}
+                              <td> </td>
+                              {% endif %}
+
+                              <td>{{ item.date_activation |default_if_none:"---"}}</td>
+                              <td>{{ item.date_deactivation |default_if_none:"---"}}</td>
+                          </tr>                          
+                          {% endif %}
+
+                      {% endfor %}
+                      </tbody>
+                  </table>
+              
+          </div>
+          <!-- /.panel -->
+      </div>
+
+  <!-- /.row -->
+</div>  
+  {% endif %} 
+            
+
+
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+
+
+{% endblock %}

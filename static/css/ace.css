@@ -409,12 +409,26 @@ table.dataTable thead .sorting:after {
 #searchbox {
     background-color: #f2f2f2;
     padding: 10px;
-} 
+    font-size: 12px;
+
+}
+
+.form-field {
+    padding:3px;
+}
+
+.searchbox {
+    background-color: #f2f2f2;
+    padding: 10px;
+    font-size: 10px;
+}
+
 
 .dashbox {
   background-color: #eee;
   /*color: #eee;*/
 }
+
 
 .filtercount {
     text-align: right;
@@ -466,3 +480,18 @@ table.dataTable thead .sorting:after {
     -moz-border-radius-topright: 5px;
      border-top-left-radius: 5px;
      border-top-right-radius: 5px;
+}
+
+a.disabled {
+  /* Make the disabled links grayish*/
+  color: gray;
+  /* And disable the pointer events */
+  pointer-events: none;
+}
+
+
+.invalid-feedback {
+    color: red;
+  }
+
+

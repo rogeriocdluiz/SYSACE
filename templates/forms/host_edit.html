@@ -1,0 +1,143 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+    {{ title | safe }}
+{% endblock %}
+
+{% block extra-css %}
+	{% load staticfiles %}   
+
+{% endblock %}
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+
+     {% if t == "printer" %}
+     <h3 class="page-header"><i class="fa fa-print fa-fw"></i>Cria&ccedil;&atilde;o/Ediç&atilde;o de Impressora</h3>
+     {% else %}
+     <h3 class="page-header"><i class="fa fa-desktop fa-fw"></i>Cria&ccedil;&atilde;o/Ediç&atilde;o de Host/Equipamento</h3>
+     {% endif %}
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+
+{% block conteudo1 %}
+    
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                                {% if perms.ace.add_ownerid or perms.ace.add_ownerid or perms.ace.add_os or perms.ace.add_devicemodel or perms.ace.add_manufactorer or perms.ace.add_place  %}
+                                <div class="dropdown pull-right">
+                                  <button class="btn btn-default dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Adicionar
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+
+                                    {% if perms.ace.add_ownerid %}
+                                    <li>
+                                        <a id="my_modal_runner" href='{% url "owneridmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Patrim&ocirc;nio
+                                        </a> 
+                                    </li>   
+                                    {% endif %}
+
+                                    {% if perms.ace.add_os %}
+                                    {% if t != "printer" %}                                  
+                                    <li>
+                                        <a id="my_modal_runner2" href='{% url "osmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Sistema operacional
+                                        </a> 
+
+                                    </li>                                    
+                                    {% endif %}
+                                    {% endif %}
+                                    <!-- <li>
+                                        <a id="my_modal_runner3" href='{% url "hosttypemodal" %}' alt="Adicionar" title="Adicionar">
+                                            Tipo de equipamento
+                                        </a> 
+                                    </li> -->
+                                    
+                                    {% if perms.ace.add_devicemodel %}
+                                    <li>
+                                        <a id="my_modal_runner4" href='{% url "devicemodelmodal" %}' alt="Adicionar" title="Adicionar">
+                                            Modelo de equipamento
+                                        </a> 
+                                    </li>    
+                                    {% endif %}                      
+
+                                    {% if perms.ace.add_manufactorer %}          
+                                    <li>
+                                        <a id="my_modal_runner5" href='{% url "manufactorermodal" %}' alt="Adicionar" title="Adicionar">
+                                            Fabricante
+                                        </a> 
+                                    </li>
+                                    {% endif %}
+                                    
+                                    {% if perms.ace.add_place %}
+                                    <li>
+                                        <a id="my_modal_runner6" href='{% url "placemodal" %}' alt="Adicionar" title="Adicionar">
+                                            Local
+                                        </a> 
+                                    </li>
+                                    {% endif %}
+
+                                  </ul>
+                                </div>  
+                                
+                                </br></br>
+                                {% endif %}
+
+                        </div>                        
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                    <!-- form-django -->      
+                                    
+				                    <form method="post" novalidate>
+				                      {% csrf_token %}
+				                      {% include 'includes/form.html' with form=form %}
+				                      <button type="submit" class="btn btn-primary">Salvar</button>
+
+                                      <input class="btn btn-default" type="button" value="Voltar" onclick="history.back()">
+				                    </form>
+                                    <!-- form-django -->  
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+{% endblock %}
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+{{ form.media }}
+
+
+{% endblock %}

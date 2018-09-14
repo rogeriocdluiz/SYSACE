@@ -1,0 +1,196 @@
+
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block extra-css %}
+    {% load staticfiles %}   
+
+
+
+{% endblock %}
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-sitemap fa-fw"></i>{{ title }}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            {% if filter.qs %}
+                            <div id="searchbox">
+                                <form action="" method="get" class="form-inline">                                    
+                                {{ filter.form.non_field_errors }}
+                                    <!-- <div class="form-control" -->
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.name.id_for_label }}">Número/id:</label>
+                                        {{ filter.form.num|add_class:"form-control"}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.pointtype.id_for_label }}">Tipo:</label>
+                                        {{ filter.form.pointtype|add_class:"form-control" }}
+                                    </div>                                      
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.place.id_for_label }}">Local:</label> 
+                                        {{ filter.form.place|add_class:"form-control"}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.rackid_for_label }}">Rack:</label> 
+                                        {{ filter.form.rack|add_class:"form-control"}}
+                                    </div>                                    
+
+                                    </br></br>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.patchpanel.id_for_label }}">Patchpanel:</label>
+                                        {{ filter.form.patchpanel|add_class:"form-control" }}    
+                                    </div>  
+
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.switch.id_for_label }}">Switch:</label>
+                                        {{ filter.form.switch|add_class:"form-control" }}    
+                                    </div>    
+
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.swport.id_for_label }}">Porta do switch:</label>
+                                        {{ filter.form.swport|add_class:"form-control" }}    
+                                    </div>
+                                    </br></br>
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.o.id_for_label }}">Ordenar:</label>
+                                        {{ filter.form.o|add_class:"form-control" }}    
+                                    </div>                                    
+
+                                    &nbsp;<button type="submit" class="btn btn-info"><i class="fa fa-search fa-fw"></i>&nbsp;Pesquisar</button>
+
+                                    <a href="{% url 'netpointlist' %}" alt="Limpar filtro" title="Limpar filtro">
+                                        <button class="btn btn-default" type="button"></i>&nbsp;Limpar filtro</button>
+                                    </a>  
+
+                                    <div class="btn-group btn-right">
+
+                                        <button class="btn btn-default">
+                                          <i class="glyphicon glyphicon-export"></i>&nbsp;Exportar
+                                        </button>
+
+                                        <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                                          <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li>
+                                            <a href="{% url 'netpointlist' %}{% querystring '_export'='csv' %}" title="exportar no formato csv" alt="exportar  no formato csv" target="blank">CSV</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'netpointlist' %}{% querystring '_export'='ods' %}" title="exportar  no formato Open/Libreoffice" alt="exportar  no formato pen/Libreoffice" target="blank">Open/Libreoffice</a>
+                                          </li>
+                                          <li>
+                                            <a href="{% url 'netpointlist' %}{% querystring '_export'='xls' %}" title="exportar no formato Excel" alt="exportar no formato Excel" target="blank">Excell</a>
+                                          </li>
+                                        </ul>
+                                    </div>
+
+                                </form>
+                            </div>
+                            </br>
+                            {% endif %}
+
+
+                                {% if filter.qs %}
+
+                                {% render_table table 'django_tables2/bootstrap.html' %}
+
+
+
+                                <div class="filtercount">      
+                                    <p>Encontrado(s) <b>{{ fc }}</b> resultado(s)</p>
+                                    <p>Total de {{ title }}: <b>{{ total }}</b></p>
+                                </div>
+
+
+                                {% else %}
+
+                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        
+                                        Nenhum resultado encontrado.
+                                </div>
+                
+                                {% endif %}                                
+
+                               
+
+                                </br>                                               
+                                {% if perms.ace.add_netpoint%}
+                                <!-- formulario de adição -->
+                                <div class="btn-group">
+                                    <a href="{% url 'netpoint_new' %}">
+                                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>Adicionar</button>
+                                    </a> 
+                                </div>
+                                <!-- formulario de adição -->
+                                {% endif %}                  
+
+                                {% if filter.qs %}
+                                    {% if free %}        
+                                    <div class="btn-group">    
+                                        <a href="{% url 'freepointsreport' %}" alt="Relat&oacute;rio de pontos livres" title="Relat&oacute;riode pontos livres" target="blank">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de pontos livres</button>
+                                        </a>    
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="btn-group">
+                                        <a href="{% url 'netpointsreport' %}" alt="Relat&oacute;rio de pontos de rede " title="Relat&oacute;rio de pontos de rede" target="blank">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de pontos de rede</button>
+                                        </a>   
+                                    </div>
+                                {% else %}
+
+                                <input class="btn btn-default" type="button" value="Voltar" onclick="history.back()">
+                                
+                                {% endif %}
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->                
+
+            </div>
+            <!-- /.row -->
+            
+
+
+{% endblock %}
+
+
+{% block extra-js %}
+    {% load staticfiles %}   
+
+
+
+
+
+{% endblock %}

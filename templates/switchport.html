@@ -1,0 +1,212 @@
+
+{% extends "base.html" %}
+
+
+
+{% block title %}
+	Porta do switch
+{% endblock %}
+
+
+{% block extra-css %}
+	{% load staticfiles %}   
+    <!-- DataTables CSS -->
+    <!-- <link href="{% static "bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" %}" rel="stylesheet"> -->
+
+    <!-- DataTables Responsive CSS -->
+    <link href="{% static "bower_components/datatables-responsive/css/dataTables.responsive.css" %}" rel="stylesheet">
+
+{% endblock %}
+
+
+
+
+
+{% block titulo %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-tasks  fa-fw"></i>Porta de switch Nº {{ portaswitch}}</h3>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+<!-- Lista de locais -->
+{% block conteudo1 %}
+            <div class="row">
+				<div class="col-lg-8">
+                    <div class="panel panel-default">
+
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="iteminfo">
+                                
+                               <p><b>Número:</b> {{ portaswitch.num }}</p>
+                               <p><b>Switch:</b><a href="{% url 'switchdetail' portaswitch.switch.pk %}"> {{ portaswitch.switch.name }}</a> - <a href="{% url 'placedetail' portaswitch.switch.place.pk %}"> {{ portaswitch.switch.place }}</a></p>
+                               <p><b>Tipo:</b> {{ portaswitch.tipo }}</p>
+                               {% if portaswitch.host %}
+                                <p>
+                                    <b>Host:</b>
+                                    {% if t == "host" %}
+                                    <a href="{% url 'hostdetail' portaswitch.host.pk %}">
+                                    {% elif t == "switch" %}
+                                    <a href="{% url 'switchdetail' portaswitch.host.pk %}">
+                                    {% elif t == "printer" %}
+                                    <a href="{% url 'printerdetail' portaswitch.host.pk %}">                                        
+                                    {% else %}
+                                    <a href="{% url 'stackdetail' portaswitch.host.pk %}">
+                                    {% endif %}
+                                        {{ portaswitch.host|default_if_none:"" }}
+                                    </a>
+                                </p>
+
+                               {% endif %}                               
+                           </br>
+                                {% if vlans %}
+                                <p><b>VLANs:</b> 
+                                    {% if trunk == "OK" %}
+                                        <span class="text-danger">(Trunk)</span>
+                                    {% endif %}
+                                    <ul>
+                                    {% for v in vlans %}                                       
+                                        <li> {{ v }} </li>
+                                    {% endfor %}                                    
+                                    </ul>
+                                </p>
+                               {% endif %}
+                            </div>
+                               {% if portaswitch.obs %}
+                                   <p><b>OBS:</b> {{ portaswitch.obs }}</p>
+                               {% endif %}                              
+                        </div>
+                        <!-- /.panel-body -->
+
+
+
+
+                    </div>
+                    <!-- /.panel -->
+
+                    {% if request.user.is_superuser %} 
+
+                    <!-- formulario de adição -->
+                    
+                    <div class="btn-group">
+                        <a href="{% url 'switchport_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a>                         
+                    </div>                    
+                    <!-- formulario de adição -->
+                    <div class="btn-group">
+                        <a href="{% url 'switchport_edit' pk=portaswitch.pk %}" alt="Editar" title="Editar">
+                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>
+                    </div> 
+                    <div class="btn-group">
+                        <a href="{% url 'switchport_delete' portaswitch.id %}" alt="Excluir" title="Excluir">
+                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>
+                    </div> 
+                    {% endif %}  
+                    <div class="btn-group">
+                        <a href="{% url 'switchdetail' portaswitch.switch.id %}" alt="Switch" title="Switch ">
+                            <button class="btn btn-default" type="button">&nbsp;Voltar para {{ portaswitch.switch.name }}</button>
+                        </a> 
+                    </div>
+
+                    </br></br>
+
+
+                </div>
+                <!-- /.col-lg-8 -->
+               
+
+            </div>
+            <!-- /.row -->
+
+
+
+
+            
+            
+
+{% endblock %}
+
+
+
+
+{% block extra-js %}
+ 	{% load staticfiles %}   
+
+    
+    <!-- DataTables JavaScript -->
+    <script src="{% static "bower_components/datatables/media/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js" %}"></script> -->
+
+    <script src="{% static "js/highcharts.js" %}"></script>
+    <script src="{% static "js/exporting.js"   %}"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var oTable = $('#lista').dataTable({
+              "oLanguage": {
+                "sUrl": "{% static "bower_components/datatables/media/js/datatables.translation" %}"
+              }
+
+            });
+        })
+    </script> 
+
+
+                                   
+
+    <script type="text/javascript">
+        $(function () {
+            $('#pontos').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Utilização de pontos - {{ local.tipo }} - {{ local.nome }}'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Percentagem',
+                    data: [
+                        ['Pontos de dados',     {{ pd }} ],
+                        ['Pontos de voz',      {{ pv }} ],
+                        {
+                            name: 'Pontos VoIP',
+                            y: {{ pvoip }},
+                            sliced: true,
+                            selected: true
+                        },
+                        ['Pontos desativados', {{ pdesat }} ]
+                    ]
+                }]
+            });
+        });
+    </script>
+
+
+{% endblock %}
