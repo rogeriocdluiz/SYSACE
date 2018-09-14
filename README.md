@@ -19,7 +19,7 @@ O ACE permite um controle centralizado de várias informações da infraestrutur
 
 Documentação
 ------------
-Compatível com **Django 1.8**
+Compatível com **Django 1.11**
 
 A documentação está disponível no [Readthedocs](http://django-sysace.readthedocs.io).
 
@@ -29,7 +29,7 @@ Requisitos (Requirements)
 ------------
 
 - Python 2.7
-- Django 1.8
+- Django 1.11
 
 
 
