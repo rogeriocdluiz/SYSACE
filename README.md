@@ -1,5 +1,5 @@
 Django-SysAce - Sistema de Administração de Cabeamento Estruturado e Infraestrutura de TI
-=============================================================================
+=========================================================================================
 
 [![Documentation Status](https://readthedocs.org/projects/django-sysace/badge/?version=latest)](http://django-sysace.readthedocs.io/en/latest/?badge=latest)
 
@@ -26,7 +26,7 @@ A documentação está disponível no [Readthedocs](http://django-sysace.readthe
 
 
 Requisitos (Requirements)
-------------
+-------------------------
 
 - Python 2.7
 - Django 1.11
@@ -38,4 +38,4 @@ Resources
 
 - [Git graciously hosted](https://github.com/rogeriocdluiz/Django-SysAce) by [GitHub](http://github.com)
 - [Documentation graciously hosted](http://django-sysace.readthedocs.io) by [RTFD](http://rtfd.org)
-- [Package graciously hosted](https://pypi.python.org/pypi/django-sysace) by [PyPi](http://pypi.python.org/pypi)
+- [Package graciously hosted](https://pypi.org/project/django-sysace/) by [PyPi](https://pypi.org)

@@ -1,6 +1,17 @@
 Changelog
 =========
 
+1.2.2
+-----
+- ajustes diversos em views e reports de hosts
+
+
+1.2.1
+-----
+- ajuste em tabelas diversas
+- ajustes em view de edição de telefones/senhas
+- correções em view de hosts
+
 
 
 1.2
@@ -9,10 +20,15 @@ Changelog
 - Removido django-pagination
 - incluido campo de grupos em device
 - chegagem de grupos para permissão de alteração
+- corrigida a exportacao de impressoras que somente exportava hosts.
+- Incluida verificação de ip fixo dentro do range de DHCP no salvamento da rede.
+- Alterado tamanho dos campos   password_email_text e password_email_html_text
+- Correções diversas
+
+
 
 1.1
 ---
-
 - ajustes diversos
 
 1.0.9.6
@@ -53,3 +69,4 @@ Changelog
 - correções diversas em VLAN
 - inclusão do modelo hostupdate
 - ajustes gerais em botões de ações em objetos.
+
