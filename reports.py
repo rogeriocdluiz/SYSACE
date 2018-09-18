@@ -242,13 +242,22 @@ def hostdetailreport(request, host_id):
         org = ""
 
     host = Host.objects.get(pk=host_id)
-    swport = Switchport.objects.all().filter(host=host_id)
-    i = Ip.objects.all().filter(device=host_id)
-    s = Service.objects.all().filter(ip=i)
+    swport = Switchport.objects.filter(host=host_id)
+    i = Ip.objects.filter(device=host_id)
+    s = []
+    for ip in i:
+        try:
+            service = Service.objects.get(ip=ip)
+            if service:
+                s.append(service)
+            stotal = s.count()
+        except:
+            stotal = 0
+
+
     u = host.hostupdate_set.all()    
     swporttotal = swport.count()
     itotal = i.count()
-    stotal = s.count()
     utotal = u.count()
     title = "Relat&oacute;rio do equipamento"
     return render_to_pdf(

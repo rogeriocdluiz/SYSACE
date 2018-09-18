@@ -1,280 +1,12 @@
-0.1.02
----
-Changelog
+1.2.2
+- ajustes diversos em views e reports de hosts
 
-- Ajustes gerais nos modelo Ponto para adequação à possível separação de andares em alas.
-- Integracao com smart selects no modelo Ponto.
-- Configurada tradução em datatables
 
+1.2.1
+- ajuste em tabelas diversas
+- ajustes em view de edição de telefones/senhas
+- correções em view de hosts
 
-0.1.03
-
-Changelog
-
-- Inserido o logo e feitos pequenos ajustes na lista de ramais..
-
-
-
-0.1.04
-
-Changelog
-
-- Alterado campo num do modelo ponto de CharField para Integer
-
-
-
-
-0.1.05
-
-- Inclusão de modelos IP, Rede e inclusão de campos gerenciavel e IP em modelo switch
-
-
-
-0.1.05.1
-
-- Correção de problemas com smart-seletcs
-- Inclusão de smart-selects e campos correlatos no modelo de ponto.
-
-
-0.1.06
-
-- Inclusão de modelos de serviços, sistemas operacionais e hosts
-
-
-0.1.06.2
-
-- Criado objeto device e configuradas as heranças
-- Necessario corrigir validação de IP - Switch Gerenciavel.
-
-
-0.1.08.4
-
-- inserido campo de memória em host
-- inserido campo cpu em host
-- feitas alterações estéticas em lista de vms e detalhes de host
-
-
-0.1.08.5
-
-- Ajustes diversos em views de pontos de rede, ramais, categorias de ramais.
-- incluida contagem de ips disponíveis em cada rede
-
-
-0.1.14
-
-- Inclusão de modal para adição de modelos em templates
-
-
-
-0.1.15
-
-- Inclusão de botao para envio de senha para ligacao telefonica por email  
-
-
-0.1.16
-
-- Remoção de modelo side e referências.
-- Inclusão de validação de pontos de rede repetidos no mesmo patchpanel ou local.
-- Incluída validação de IPs com endereço da rede.
-- remoçao de css e js não utilizados e limpeza geral em views
-
-
-0.1.18
-
-- Atualizado font-awesome para versão 4.6.3
-- Alterado campo hwtype do modelo host
-- Alterada listagem de hosts e vmhosts
-
-
-0.1.19
-
-- Iniciada a atualização do datatables versão 1.10.12
-- incluida paginacao em lista de hosts
-- incluide parametro unique=True no campo nome do model user
-- ajustes gerais na página principal
-
-0.2 (18/08/2016)
-
-- Inclusao de menu geral de adição de itens.
-- Remoção de templates iguais (pontos livres, todos os pontos e outros).
-- Implementado botão para envio de senhas para o email do usuário.
-- Implementado modelo solo para configurações via admin.
-
-0.3 (18/08/2016)
-
-- Criado tratamento para apagamento de foreignkey (on_delete=protect)
-
-0.4 (24/08/2016)
-
-- Alterada o logo do sistema e ajustes de CSS.
-- Ajuste no formulário de login com erro.
-- Alterado o fundo da tela de login
-
-
-0.5 (24/08/2016)
-
-- Incluído usuário em busca global.
-- Ajustes de html em tela principal.
-
-
-0.6 (24/08/2016)   
-- Remoção de templates extras de phones, passwords e hosts e incluída paginação.
-
-
-0.6.1 (24/08/2016)
-- Inslusão de paginação nos serviços.
-
-
-0.6.1, 0.6.2, 0.6.4, 0.6.5, 0.6.6 (24/08/2016)
-- Ajustes diversos
-
-
-0.6.7 (24/08/2016)
-- Desabilitação de botão de email para senhas desativadas.
-
-0.6.8 (25/08/2016)
-- Inclusão de número de telefone em view de usuário.
-
-0.6.8.1 (29/08/2016)
-- Inclusão de número de telefone em view de usuário.
-
-
-0.7 (30/08/2016)
-- Inclusão de campo Fabricante em device.
-- Incluída view de fabricante com devices
-- Incluída view de lista de fabricante
-- corrigida localização de template de reports de locais.
-- correção em botão "todos os serviços" no template servicedetail.html
-
-
-0.8 (09/09/2016)
-- Inclusão de filtro para hosts - django-filter
-- Inclusão de app para paginação de filtro - django-pagination
-- Ajustes de estilo para filtro
-- Inclusão de campo ativo em Device
-- Inclusão do app django-widget-tweaks para ajustes de estilo
-- Removido smartselects - substituido por autocomplete-light na interface admin
-
-
-
-0.9 (09/09/2016)
-- Ajustes gerais de estilo
-
-0.9.5 (22/09/2016)
-- Remoção de arquivos estáticos extras
-- Ajustes de estilos em templates
-- remoção do smart_selects
-
-
-
-0.9.9 (27/10/2016)
-- Alteração de paginador. Remoção do django-pagination e alteradas as views para usar paginador padrão.
-- Corrigido erro de porta de switch duplicada no cadastro de ponto de rede. Não estava sendo exibido o erro no formulário e sim exibido erro do django.
-- Alterações em template de detalhes de local.
-- Correção em relatório de local.
-- incluida porta de switch em filtro de pontos de rede.
-
-
-1.0
-- Removido campo photype estático e substituído por model phonetype.
-
-1.0.1
-- Correções diversas em views de telefones
-
-
-1.0.2
-- Ajustes em views de telefones
-
-1.0.3
-- Mudança de paginador
-- Inclusão de configuração para número de itens a exibir nas listagens
-- Inclusão de configuração para nome de organização
-- Incluído tinymce em formulário de configuração
-
-
-
-1.0.4
-- Remoção de model User para utilização de modelo user nativo
-
-
-1.0.5
-- Remoção de model phonepassword
-
-
-1.0.6
-- Correções diversas em modelo phone e ajustes em formulários.
-- Correções em listagem de usuários
-
-
-1.0.6.3
-- Correções diversas
-- testes com fabric
-
-
-1.0.6.4    
-- correção em relatorio de pontos de rede e telefones de locais.
-- implementada exportação csv no admin
-
-
-1.0.7.1
-- correção em formulários de host
-- alteração em templates de pontos e telefones
-- alteraçaõ em relatórios de local
-
-
-1.0.8
-- ajustes em permissões de views.
-- inclusão de tela de erro 403 e 404
-- corrigido problema de erro quando não há configuração realizada.
-- mudança do tema da tela de login
-
-
-1.0.8.1
-- crida view para ativação e desativação de telefone
-- correção do erro ao tentar cadastrar usuário que já existe
-- correção na ordenação de fabricantes
-- incluida busca dinamica em campo usuário phoneownership
-- colocado ícone de usuário em botão de associação do telefone    
-- incluído recurso de VLAN
-- incluído campo gateway em objeto rede
-
-
-1.0.9
-- correções diversas em VLAN
-- inclusão do modelo hostupdate
-- ajustes gerais em botões de ações em objetos.
-
-1.0.9.1
-- correções diversas em documentação.
-
-1.0.9.2
-- correções diversas em documentação. 
-
-1.0.9.3
-- inclusão de campo localização em modelo host
-- removida o requisito de django 1.8 do arquivo setup.py
-- melhorias na documentação
-
-
-1.0.9.4
-- correção em template de locais
-- atualização da domcumentação
-- ajustes no fomulário de edição de pontos de rede.
-- correção de autocomplete de usuários
-
-
-1.0.9.5
-- ajustes tela de login
-- ajustes modal de exclusão de telefone
-- inclusão de listagem de locais em view de setor
-
-
-1.0.9.6
-- ajustes diversos
-
-
-1.1
-- ajustes diversos
 
 1.2
 - Suporte para Django 1.11
@@ -286,7 +18,49 @@ Changelog
 - Alterado tamanho dos campos   password_email_text e password_email_html_text
 - Correções diversas
 
-1.2.1
-- ajuste em tabelas diversas
-- ajustes em view de edição de telefones/senhas
-- correções em view de hosts
+
+
+1.0.9.6
+- ajustes diversos
+
+
+1.0.9.5
+- ajustes tela de login
+- ajustes modal de exclusão de telefone
+- inclusão de listagem de locais em view de setor
+
+
+
+1.0.9.4
+- correção em template de locais
+- atualização da domcumentação
+- ajustes no fomulário de edição de pontos de rede.
+- correção de autocomplete de usuários
+
+
+
+1.0.9
+- correções diversas em VLAN
+- inclusão do modelo hostupdate
+- ajustes gerais em botões de ações em objetos.
+
+
+1.0.9.3
+- inclusão de campo localização em modelo host
+- removida o requisito de django 1.8 do arquivo setup.py
+- melhorias na documentação
+
+
+
+1.0.9.2
+- correções diversas em documentação. 
+
+
+
+1.0.9.1
+- correções diversas em documentação.
+
+
+
+
+

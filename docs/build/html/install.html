@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
@@ -163,7 +162,7 @@
   <div class="section" id="instalacao">
 <h1>Instalação<a class="headerlink" href="#instalacao" title="Link permanente para este título">¶</a></h1>
 <p>Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.</p>
-<p>Versão 1.2 compatível com <strong>Django 1.11</strong></p>
+<p>Versão 1.2.x compatível com <strong>Django 1.11</strong></p>
 <ol class="arabic">
 <li><p class="first">Instale o ACE com o comando a seguir:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">django</span><span class="o">-</span><span class="n">sysace</span>
@@ -182,30 +181,25 @@
     <span class="s1">&#39;dal_select2&#39;</span><span class="p">,</span>
     <span class="s1">&#39;mail_templated&#39;</span><span class="p">,</span>
     <span class="s1">&#39;solo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;tinymce&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;widget_tweaks&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_modalview&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_cron&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mail_templated&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;localflavor&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_extensions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dbbackup&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_tables2&#39;</span><span class="p">,</span>
     <span class="s1">&#39;import_export&#39;</span><span class="p">,</span>
     <span class="s1">&#39;massadmin&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;widget_tweaks&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;session_security&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pagination&#39;</span><span class="p">,</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Inclua no arquivo <strong>settings.py</strong> em <strong>MIDDLEWARE_CLASSES</strong> as linhas <strong>pagination.middleware.PaginationMiddleware</strong> e <strong>session_security.middleware.SessionSecurityMiddleware</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="o">...</span>
-    <span class="s1">&#39;session_security.middleware.SessionSecurityMiddleware&#39;</span><span class="p">,</span>
-    <span class="o">...</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Inclua a linha abaixo no arquivo <strong>settings.py</strong> para habilitar a expiração de sessão:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SESSION_SECURITY_INSECURE</span> <span class="o">=</span> <span class="kc">True</span>
-</pre></div>
-</div>
-</li>
+</ol>
+<ol class="arabic" start="4">
 <li><p class="first">Inclua no arquivo urls.py do projeto URLconf do ace no arquivo urls.py do projeto como mostrado a seguir:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ace/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;ace.urls&#39;</span><span class="p">)),</span>
-<span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;session_security/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;session_security.urls&#39;</span><span class="p">)),</span>
 </pre></div>
 </div>
 </li>
@@ -276,13 +270,11 @@
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

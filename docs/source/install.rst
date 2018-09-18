@@ -4,7 +4,7 @@ Instalação
 
 Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.
 
-Versão 1.2.1 compatível com **Django 1.11**
+Versão 1.2.x compatível com **Django 1.11**
 
 1. Instale o ACE com o comando a seguir::
 

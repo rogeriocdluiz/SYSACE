@@ -21,7 +21,7 @@ Changelog
 
 
 
-Versão 1.2.1
+Versão 1.2.x
 
 Compatível com Django 1.11
 

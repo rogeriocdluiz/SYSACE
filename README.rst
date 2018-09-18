@@ -80,7 +80,7 @@ Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamen
 
 Documentação
 ------------
-Compatível com **Django 1.8**
+Compatível com **Django 1.11**
 
 A documentação está disponível no [Readthedocs](http://django-sysace.readthedocs.io).
 
