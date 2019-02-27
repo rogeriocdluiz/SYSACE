@@ -478,9 +478,19 @@
                             <td><i class="fa fa-tasks"></i></td>
                         {% else %}
                             <td><i class="fa fa-wrench"></i></td>
-                            <td>{{ log.record_name }}</td>
                         {% endif %}
-                            <td>{{ log.record_name }}</td>
+                            <td>
+                                {% if log.record_type != "password" %}
+                                    {{ log.record_name }}
+                                {% else %}
+                                    {% if perms.ace.view_password %}
+                                        {{ log.record_name }}
+                                    {% else %}
+                                        ******
+                                    {% endif %}
+                                {% endif %}
+
+                            </td>
                             <td><small class="text-muted">{{ log.event}} </small></td>
                             <td><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ log.event_date}} por &nbsp;<i class="fa fa-user"></i> {{ log.actor }}</small></td>
                     </tr>

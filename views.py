@@ -1935,7 +1935,10 @@ def phone_new(request):
                 phone.save()
 
                 #cria log
-                addlog(phone, "Phone/Password add", phone_date, user, "phone", phone.id)
+                if phone.password==False:
+                    addlog(phone, "Phone add", phone_date, user, "phone", phone.id)
+                else:
+                    addlog(phone, "Password add", phone_date, user, "password", phone.id)
 
                 #envia notificação de cadastro de telefone
                 sendphone_notification(p.phone, p.user, phone_date, p)
@@ -1945,7 +1948,11 @@ def phone_new(request):
                 phone = form.save(commit=True)
                 phone.save()                
                 #cria log
-                addlog(phone, "Phone/Password add", phone_date, user, "phone", phone.id)
+                if phone.password==False:
+                    addlog(phone, "Phone add", phone_date, user, "phone", phone.id)
+                else:
+                    addlog(phone, "Password add", phone_date, user, "password", phone.id)
+
                 return redirect('phonedetail', phone.id)
 
         else:
@@ -1994,7 +2001,11 @@ def phone_edit(request, pk):
                    
                 
                 #cria log
-                addlog(phone, "Phone/Password edit", phone_date, user, "phone", phone.id)
+                if phone.password==False:
+                    addlog(phone, "Phone edit", phone_date, user, "phone", phone.id)
+                else:
+                    addlog(phone, "Password edit", phone_date, user, "password", phone.id)
+
                 return redirect('phonedetail', phone.id)
             else:
                 phone = form.save(commit=False)
@@ -2015,7 +2026,11 @@ def phone_edit(request, pk):
                         phone.save()                      
 
                 #cria log
-                addlog(phone, "Phone/Password edit", phone_date, user, "phone", phone.id)
+                if phone.password==False:
+                    addlog(phone, "Phone edit", phone_date, user, "phone", phone.id)
+                else:
+                    addlog(phone, "Password edit", phone_date, user, "password", phone.id)
+
                 return redirect('phonedetail', phone.id)
         else:
             return render(request, 'forms/phone_edit.html', {'form': form, 'title':title})
@@ -2038,8 +2053,13 @@ def phone_delete(request, pk, template_name='phone_confirm_delete.html'):
         return render(request, template, {'obj': phone, 'itens': itens})
     if request.method == 'POST':
         phone.delete()
-        #cria log
-        addlog(phone, "Phone/Password delete", datetime.datetime.today(), user, "phone", phone.id)
+
+        if phone.password == False:
+            addlog(phone, "Phone delete", phone_date, user, "phone", phone.id)
+        else:
+            addlog(phone, "Password delete", phone_date, user, "password", phone.id)
+
+
         return redirect('phonelist')
     return render(request, template_name, {'phone': phone, })
 
