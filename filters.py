@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ace.models import Switch, Netpoint, Phone, Switchport, Place, Stack, Rack, Host, Service, Ip, Network, Ownerid, Device, Servicecategory, User, Patchpanel, Patchpanelport, Phonecategory, Sector, Printer
+from ace.models import Switch, Netpoint, Phone, Switchport, Place, Stack, Rack, Host, Service, Ip, Network, Ownerid, Device, Servicecategory, User, Patchpanel, Patchpanelport, Phonecategory, Sector, Printer, Phoneownership
 
 from django import forms  
 from django.forms import ModelForm, TextInput, Select, CheckboxInput, NumberInput, SelectMultiple, NullBooleanSelect, CheckboxInput, URLInput, NumberInput, DateInput, EmailInput, Textarea
@@ -47,7 +47,6 @@ class SwitchFilter(django_filters.FilterSet):
 
     name = django_filters.CharFilter(lookup_expr='icontains')
     model = django_filters.CharFilter(lookup_expr='icontains')
-    #active = BooleanFilter(widget=BooleanWidget())
 
 
     class Meta:
@@ -238,7 +237,36 @@ class PasswordFilter(django_filters.FilterSet):
             ('phonecategory', 'Categoria'),
         )
 
-         
+
+class PhoneAssociationFilter(django_filters.FilterSet):
+    phone__num = django_filters.CharFilter(lookup_expr='icontains')
+    user__username = django_filters.CharFilter(lookup_expr='icontains')
+    user__first_name = django_filters.CharFilter(lookup_expr='icontains')
+    user__last_name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Phoneownership
+        fields = ['active','date_activation','date_deactivation' ]
+        order_by = (
+            ('phone', 'Phone'),
+            ('user', 'Usuário'),
+        )
+
+
+class PasswordAssociationFilter(django_filters.FilterSet):
+    user__username = django_filters.CharFilter(lookup_expr='icontains')
+    user__first_name = django_filters.CharFilter(lookup_expr='icontains')
+    user__last_name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Phoneownership
+        fields = ['active','date_activation','date_deactivation' ]
+        order_by = (
+            ('phone', 'Phone'),
+            ('user', 'Usuário'),
+        )
+
+
 
 class UserFilter(django_filters.FilterSet):
 

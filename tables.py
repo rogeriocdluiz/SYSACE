@@ -370,10 +370,6 @@ class VlanTable(tables.Table):
             'id',
       
         )
-        #sequence = ('name', 'ownerid', 'printer_type', 'manufactorer', 'place')
-        #export_name = 'switch'
-        #export_formats = ('csv', 'xls', 'xlsx', 'ods')              
-
 
 
 class PhoneTable(tables.Table):
@@ -418,7 +414,6 @@ class PasswordTable(tables.Table):
         exclude_from_export=True
     )
 
-
     class Meta:
         model = Phone
         template = 'django_tables2/bootstrap.html'
@@ -454,7 +449,6 @@ class UserTable(tables.Table):
         exclude_from_export=True
     )
 
-
     class Meta:
         model = User
         template = 'django_tables2/bootstrap.html'
@@ -470,4 +464,51 @@ class UserTable(tables.Table):
         )
         #sequence = ('firstname', 'lastname','email')
         export_name = 'user'
-        export_formats = ('csv', 'xls', 'xlsx', 'ods')           
+        export_formats = ('csv', 'xls', 'xlsx', 'ods')
+
+
+
+class PhoneAssociationTable(tables.Table):
+
+    #phone = tables.LinkColumn('phonedetail', args=[A('pk')])
+    #user = tables.LinkColumn('userdetail', text=lambda record: record, args=[A('record.user.pk')])
+    #password = tables.Column(accessor='phone.password')
+    acoes = tables.TemplateColumn(
+        '<a class="btn btn-success btn-sm" href="/ace/phone/{{record.phone.id}}" title="visualizar" alt="visualizar"><i class="fa fa-search fa-fw"></i></a> ',
+        verbose_name=u'Ações',
+        orderable=False,
+        exclude_from_export=True
+    )
+
+    class Meta:
+        model = Phoneownership
+        template = 'django_tables2/bootstrap.html'
+        attrs = {"class": "table table-striped table-advance table-hover"}
+        exclude = (
+            'id',
+        )
+        export_name = 'phone'
+        export_formats = ('csv', 'xls', 'xlsx', 'ods')
+        sequence = ('active', 'phone', 'user', 'date_activation', 'date_deactivation')
+
+
+class PasswordAssociationTable(tables.Table):
+
+    acoes = tables.TemplateColumn(
+        '<a class="btn btn-success btn-sm" href="/ace/phone/{{record.phone.id}}" title="visualizar" alt="visualizar"><i class="fa fa-search fa-fw"></i></a> ',
+        verbose_name=u'Ações',
+        orderable=False,
+        exclude_from_export=True
+    )
+
+    class Meta:
+        model = Phoneownership
+        template = 'django_tables2/bootstrap.html'
+        attrs = {"class": "table table-striped table-advance table-hover"}
+        exclude = (
+            'id',
+            'phone',
+        )
+        export_name = 'phone'
+        export_formats = ('csv', 'xls', 'xlsx', 'ods')
+        sequence = ('active','phone', 'user', 'date_activation', 'date_deactivation')

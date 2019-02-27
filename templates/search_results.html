@@ -41,7 +41,7 @@
        	                            <div class="alert alert-danger" role="alert">
 		                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 		                              <span class="sr-only">Erro:</span>
-		                              Por favor adicione um termo para a pesquisa.
+		                              Por favor insira um termo para a pesquisa.
 		                            </div>
                             {% else %}
 
@@ -143,7 +143,7 @@
 										{% if ramal.user ==  None %}
 										<td> --- </td>
 										{% else %}
-										<td>{{ ramal.user.get_full_name |default_if_none:"" | upper }}</td>
+										<td><a href="{% url 'userdetail' ramal.user.id %}"> {{ ramal.user.get_full_name |default_if_none:"" | upper }}</a></td>
 										{% endif %}
 										{% if ramal.password == False %}
 										<td>{{ ramal.place |default_if_none:""}} </td>
@@ -257,8 +257,6 @@
                             </div>
                             <!-- /.table-responsive -->  
 
-
-
                            <div class="dataTable_wrapper">                             
                                 
 							{% if services %}
@@ -268,13 +266,17 @@
 							    <table class="table table-striped">
 							      <thead>
 							        <tr>
-							          <th>Nome</th>					          
+                                        <th>Nome</th>
+                                        <th>IP</th>
+                                        <th>Dispositivo</th>
 							        </tr>
 							      </thead>
 							      <tbody>
 							        {% for service in services %}
 							        <tr>
-							          <td><a href="{% url 'servicedetail' service.id %}">{{ service.name }}</a></td>
+                                        <td><a href="{% url 'servicedetail' service.id %}">{{ service.name }}</a></td>
+                                        <td><a href="{% url 'ipdetail' service.ip.id %}">{{ service.ip }}</a></td>
+                                        <td><a href="{% url 'hostdetail' service.ip.device.id %}">{{ service.ip.device }}</a></td>
 							        </tr>
 							        {% endfor %}
 							      </tbody>

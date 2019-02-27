@@ -70,25 +70,72 @@ from django_tables2.export.export import TableExport
 
 from django.http import QueryDict
 
-from mail_templated import EmailMessage
-
 from django_modalview.generic.edit import ModalCreateView
 from django_modalview.generic.component import ModalResponse
 
+from mail_templated import EmailMessage
+
+from django.views.generic.list import ListView
+
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 
-def addlog(h, e, e_date, a, t):
-    #h=host, e=event, e_date=event_date, a=actor, t=record_type
+def addlog(h, e, d, a, t, i):
+    #h=host or other action, e=event, d=event_date, a=actor, t=record_type
     log = Log.objects.create(
         record_name=h,
         event=e,
-        event_date=e_date,
+        event_date=d,
         actor=a,
         record_type=t,
+        object_id=i
     )
     return log
 
 
+
+def sendphone_notification(p, u, d, o):
+
+    try:
+        config = AceConfig.objects.get()
+        from_email = config.email_from
+        co_email = config.email_co
+        to_email = config.email_to
+
+    except:
+        from_email = "no-reply@localhost"
+        co_email = "no-reply@localhost"
+        to_email = "no-reply@localhost"
+
+    if p.password==True:
+        pwd = "ok"
+
+        if o.active == True:
+            m = "associado"
+            c = "à"
+            d = o.date_activation
+        else:
+            m = "desassociado"
+            c = "da"
+            d = o.date_deactivation
+
+    else:
+        pwd = "nok"
+
+        if o.active == True:
+            m = "associado"
+            c = "ao"
+            d = o.date_activation
+        else:
+            m = "desassociado"
+            c = "do"
+            d = o.date_deactivation
+
+    message = EmailMessage('email/notification_email.tpl', {'p': p, 'u': u, 'd': d,'m':m, 'c':c, 'pwd':pwd }, from_email, to=[to_email], bcc=[co_email])
+    message.send()
+
+    return message
 
 @login_required(login_url='/ace/login/')
 def index(request):
@@ -111,10 +158,7 @@ def index(request):
     ramal_ativos = Phone.objects.filter(active=True, password=False).order_by('num')
     total_ramal_ativos = ramal_ativos.count()
 
-    # senha_ativos = Phone.objects.filter(active=True, password=True).order_by('num')
-
     pontovoz_modificados = Netpoint.objects.filter(pointtype='voz').order_by('-modification_date')[:3]
-    # pontovoip_modificados = Netpoint.objects.filter(pointtype='voip').order_by('-modification_date')[:3]
     ramal_modificados = Phone.objects.filter(password=False).order_by('-date_modification')[:3]
     senha_modificados = Phone.objects.filter(password=True).order_by('-date_modification')[:3]
     ip_modificados = Ip.objects.filter().order_by('-modification_date')[:3]
@@ -126,7 +170,6 @@ def index(request):
     total_ramal_livres = Phone.objects.filter(active=False, password=False).count()
     total_senha_ativos = Phone.objects.filter(password=True, active=True).count()
 
-    #senha_livres = Phone.objects.filter(password=True, active=False, newpassword=True).count()
     senha_livres = Phone.objects.filter(password=True, active=False).count()
     total_switches = switches.count()
     total_pontos = Netpoint.objects.all().count()
@@ -135,7 +178,6 @@ def index(request):
     total_phone = Phone.objects.filter(active=True).count()
     total_ramal = Phone.objects.filter(password=False).count()
     total_senha = Phone.objects.filter(password=True).count()
-    #total_senha_d = Phone.objects.filter(password=True, active=False, newpassword=False).count()
     total_senha_d = Phone.objects.filter(password=True, active=False).count()
 
     ponto_livres = (total_pontos - (total_pontodados + total_pontovoz + total_pontovoip))
@@ -150,19 +192,12 @@ def index(request):
     host_bsd = Host.objects.filter(osplatform='bsd').count()
     host_other = Host.objects.filter(osplatform='other').count()
     servicecategories = Servicecategory.objects.all()
-    # servicecategories = Servicecategory.objects.annotate(num_serv=Count('service'))
 
     phonecats = Phonecategory.objects.annotate(num_phones=Count('phone'))
     phonetypes = Phonetype.objects.annotate(num_phones=Count('phone'))
-    # passwordcats = Phonecategory.objects.filter(password=True,active=True).annotate(num_phones=Count('phone'))
 
-    logs = Log.objects.all().order_by('-event_date')
+    logs = Log.objects.all().order_by('-event_date')[:10]
 
-
-    #template = loader.get_template('index.html')
-    
-    
-    #context = {
     return render ( request, 'index.html',
         {
         'pontodados_ativos': pontodados,
@@ -187,11 +222,6 @@ def index(request):
         'pontovoz_modificados': pontovoz_modificados,
         'ramal_modificados': ramal_modificados,
         'senha_modificados': senha_modificados,
-
-        # TODO remover isso
-        # 'total_senha_ddd': total_senha_ddd,
-        # 'total_senha_ddi': total_senha_ddi,
-        # 'total_senha_c': total_senha_c,
         'total_senha_d': total_senha_d,
         'total_service': total_service,
         'total_host': total_host,
@@ -221,11 +251,6 @@ def index(request):
 #        return HttpResponse(template.render(context))
 
 
-  
-
-
-
-
 
 @login_required(login_url='/ace/login/')
 def config(request):
@@ -238,18 +263,13 @@ def config(request):
 
     title = "Configurações"
 
-    #template = loader.get_template('config.html')
-    #context = {'config': config, 'title': title}
-
+    print config.email_to
     return render ( request, 'config.html',
         {'title':title,
+         'config':config,
         })
 
-    #if not request.user.is_authenticated():
-    #    return HttpResponse("You are not logged in.")
 
-    #else:
-    #    return HttpResponse(template.render(context))
 
 
 @login_required(login_url='/ace/login/')
@@ -283,7 +303,7 @@ def config_edit(request):
         form = ConfigForm(request.POST, instance=config)
         if form.is_valid():
             config = form.save()
-            addlog("Config", "Config edit", datetime.datetime.today(), user, 'config')
+            addlog("Config", "Config edit", datetime.datetime.today(), user, 'config', config.id)
             return redirect('config')
     else:
         form = ConfigForm(instance=config)
@@ -391,7 +411,6 @@ def userdetail(request, user_id):
     try:
         usr = User.objects.get(pk=user_id)
         phones = Phone.objects.filter(user=usr)
-        # phoneownership = Phoneownership.objects.filter(user=usr).order_by('-date_activation')
         po = Phoneownership.objects.filter(user=usr)
         totalpo = po.count()
         phoneownership = po.order_by('-active')
@@ -570,7 +589,6 @@ def pointdetail(request, ponto_id):
 @login_required(login_url='/ace/login/')
 def phonelist(request):
     user = request.user
-    #phones = Phone.objects.all()
     phones = Phone.objects.filter(password=False)
     f = PhoneFilter(request.GET, queryset=phones)
     fc = f.qs.count()
@@ -593,7 +611,6 @@ def phonelist(request):
     if TableExport.is_valid_format(export_format):
         exporter = TableExport(export_format, table)
         return exporter.response('table.{}'.format(export_format))        
-
 
     return render(request, 'phonelist.html',
                   {'filter': f, "total": total, "title": title, 'fc': fc, 'table':table, })
@@ -629,7 +646,55 @@ def passwordlist(request):
 
     return render(request, 'phonelist.html',
                   {'filter': f, "total": total, "title": title, 'fc': fc, 'table':table, 'passwords':passwords,  })
-    
+
+
+
+@login_required(login_url='/ace/login/')
+def phoneassociation(request):
+    user = request.user
+    po = Phoneownership.objects.filter(phone__password=False).order_by('-date_activation', '-date_deactivation')
+    f = PhoneAssociationFilter(request.GET, queryset=po)
+    fc = f.qs.count()
+    total = po.count()
+    title = "Associações de usuário a telefone"
+    object_type = "phone"
+
+    # tabela
+    table = PhoneAssociationTable(f.qs)
+    RequestConfig(request, paginate={'per_page': 15}).configure(table)
+
+    # export
+    export_format = request.GET.get('_export', None)
+    if TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, table)
+        return exporter.response('table.{}'.format(export_format))
+
+    return render(request, 'phoneassociation-list.html',
+                  {'filter': f, "total": total, "title": title, 'fc': fc, 'table': table, 'object_type':object_type })
+
+
+@login_required(login_url='/ace/login/')
+def passwordassociation(request):
+    user = request.user
+    po = Phoneownership.objects.filter(phone__password=True).order_by('-date_activation', '-date_deactivation')
+    f = PasswordAssociationFilter(request.GET, queryset=po)
+    fc = f.qs.count()
+    total = po.count()
+    title = "Associações de usuário a senhas"
+    object_type = "password"
+
+    # tabela
+    table = PasswordAssociationTable(f.qs)
+    RequestConfig(request, paginate={'per_page': 15}).configure(table)
+
+    # export
+    export_format = request.GET.get('_export', None)
+    if TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, table)
+        return exporter.response('table.{}'.format(export_format))
+
+    return render(request, 'phoneassociation-list.html',
+                  {'filter': f, "total": total, "title": title, 'fc': fc, 'table': table, 'object_type':object_type })
 
 
 
@@ -979,22 +1044,11 @@ def hostdetail(request, host_id):
         history = host.history.all()
         swport = Switchport.objects.filter(host=host_id)
         i = Ip.objects.filter(device=host_id)
-        #s = Service.objects.filter(ip=i)
-        #s = Service.objects.all()
-        #n = Netpoint.objects.filter(swport=swport)
-        #        v = Vlan.objects.filter()
         u = host.hostupdate_set.all()
-        #p = host.phone_set.all()
-        s = []
+        # u = host.hostupdate_set.all().order_by('aplication_date')
+        s = Service.objects.filter(ip=i)
         n = []
-        for ip in i:
-            try:
-                service = Service.objects.get(ip=ip)
-                if service:
-                    s.append(service)
-            except:
-                pass
-        
+
         for swp in swport:
             try:
                 netpoint = Netpoint.objects.get(swport=swp)
@@ -1003,8 +1057,6 @@ def hostdetail(request, host_id):
             except:
                 pass
 
-
-        # u = host.hostupdate_set.all().order_by('aplication_date')
 
     #        login = host.admuser
     #        server = host.name
@@ -1032,6 +1084,8 @@ def hostdetail(request, host_id):
     except Host.DoesNotExist:
         raise Http404
 
+    print "swport", swport
+
     return render(request, 'hostdetail.html',
                   {'host': host, 's': s, 'i': i, 'swport': swport, 'n': n, 'u': u, 'title': title, 'history':history})
 
@@ -1043,10 +1097,7 @@ def printerdetail(request, printer_id):
         history = host.history.all()
         title = "Impressora"
         t = "printer"
-        # swport = Switchport.objects.all().filter(host=host_id)
         i = Ip.objects.all().filter(device=printer_id)
-        # s = Service.objects.all().filter(ip=i)
-        # n = Netpoint.objects.all().filter(swport=swport)
 
     except Printer.DoesNotExist:
         raise Http404    
@@ -1332,7 +1383,6 @@ def search(request):
             pontos = Netpoint.objects.filter(num__icontains=q)
             locais = Place.objects.filter(name__icontains=q)
             ramais = []
-            # ramais = Phone.objects.filter(num__icontains=q)
             phones = Phone.objects.filter(password=False,num__icontains=q)
             phonetypes = Phone.objects.filter(telephonetype__name__icontains=q)
             phonecat = Phone.objects.filter(phonecategory__name__icontains=q)
@@ -1344,8 +1394,6 @@ def search(request):
             ips = Ip.objects.filter(address__icontains=q)
             networks = Network.objects.filter(name__icontains=q)
             ownerids = Ownerid.objects.filter(num__icontains=q)
-            # users=[]
-            # users = User.objects.filter(username__icontains=q)
             userslogin = User.objects.filter(username__icontains=q)
             usersfname = User.objects.filter(first_name__icontains=q)
             userslname = User.objects.filter(last_name__icontains=q)
@@ -1382,19 +1430,12 @@ def host_new(request):
         print default_host_group
 
         if form.is_valid():
-            #host = form.save(commit=False)
             host = form.save()
             host.save()
             #cria log
-            addlog(host.name, "host creation", host.modification_date, user, "host")
-            #Log.objects.create(
-            #    record_name=host.name,
-            #    event="host creation",
-            #    event_date=host.modification_date,
-            #    actor=user
-            #)
+            addlog(host.name, "host creation", host.modification_date, user, "host", host.id)
             if default_host_group:
-                host.groups.add(default_host_group.id)  
+                host.groups.add(default_host_group.id)
             return redirect('hostdetail', host.id)
         else:
             return render(request, 'forms/host_edit.html', {'form': form, 'title':title})
@@ -1402,6 +1443,50 @@ def host_new(request):
     else:
         form = HostForm()
         return render(request, 'forms/host_edit.html', {'form': form, 'title':title})
+
+
+# testes json ajax form
+@login_required(login_url='/ace/login/')
+@permission_required('ace.add_host', raise_exception=True)
+def host_create(request):
+    title = "Cria&ccedil;&atilde;o/Ediç&atilde;o de Host/Equipamento"
+    data = dict()
+
+    if request.method == "POST":
+        user = request.user
+        form = HostForm(request.POST)
+
+        try:
+            config = AceConfig.objects.get()
+            default_host_group = config.default_host_group
+
+        except AceConfig.DoesNotExist:
+            config = ""
+            default_host_group = ""
+
+        if form.is_valid():
+            form.save()
+            # host = form.save()
+            data['form_is_valid'] = True
+            # cria log
+            # addlog(host.name, "host creation", host.modification_date, user, "host", host.id)
+            if default_host_group:
+                host.groups.add(default_host_group.id)
+        else:
+            data['form_is_valid'] = False
+
+    else:
+        form = HostForm()
+
+    context = {'form': form}
+    data['html_form'] = render_to_string('includes/partial_host_create.html',
+                                         context,
+                                         request=request
+                                         )
+    return JsonResponse(data)
+
+    # return render(request, 'forms/host_edit.html', {'form': form, 'title':title})
+
 
 
 @login_required(login_url='/ace/login/')
@@ -1437,7 +1522,7 @@ def host_edit(request, pk):
                 host = form.save()
                 host.save()
                 #cria log
-                addlog(host.name, "host edit", host.modification_date, user, "host") 
+                addlog(host.name, "host edit", host.modification_date, user, "host", host.id)
                 if default_host_group:
                     host.groups.add(default_host_group.id)                                
                 return redirect('hostdetail', host.id)
@@ -1479,7 +1564,7 @@ def host_delete(request, pk, template_name='host_confirm_delete.html'):
         if request.method == 'POST':
             host.delete()
             #cria log
-            addlog(host.name, "host delete", datetime.datetime.today(), user, "host")
+            addlog(host.name, "host delete", datetime.datetime.today(), user, "host", host.id)
             return redirect('hostlist')
         print title
         return render(request, template_name, {'host': host, 'title': title})
@@ -1511,7 +1596,7 @@ def printer_new(request):
             printer = form.save()
             printer.save()
             #cria log
-            addlog(printer.name, "printer add", datetime.datetime.today(), user, "printer")
+            addlog(printer.name, "printer add", datetime.datetime.today(), user, "printer", printer.id)
             if default_printer_group:
                 printer.groups.add(default_printer_group.id)            
             return redirect('printerdetail', printer.id)
@@ -1557,7 +1642,7 @@ def printer_edit(request, pk):
                 host = form.save()
                 host.save()
                 #cria log
-                addlog(host.name, "printer edit", datetime.datetime.today(), user, "printer")
+                addlog(host.name, "printer edit", datetime.datetime.today(), user, "printer", printer.id)
                 if default_printer_group:
                     host.groups.add(default_printer_group.id)  
                 return redirect('printerdetail', host.id)
@@ -1600,7 +1685,7 @@ def printer_delete(request, pk, template_name='host_confirm_delete.html'):
         if request.method == 'POST':
             printer.delete()
             #cria log
-            addlog(printer.name, "printer delete", datetime.datetime.today(), user, "printer")
+            addlog(printer.name, "printer delete", datetime.datetime.today(), user, "printer", printer.id)
             return redirect('printerlist')
         return render(request, template_name, {'host': printer, 't': t, 'title': title})
     else:
@@ -1621,7 +1706,7 @@ def service_new(request):
             service = form.save(commit=True)
             service.save()
             #cria log
-            #addlog(service.name, "service add", datetime.datetime.today(), user)
+            #addlog(service.name, "service add", datetime.datetime.today(), user, service.id)
             return redirect('servicedetail', service.id)
         else:
             return render(request, 'forms/service_edit.html', {'form': form})
@@ -1641,7 +1726,7 @@ def service_edit(request, pk):
             service = form.save()
             service.save()
             #cria log
-            #addlog(service.name, "service edit", datetime.datetime.today(), user)            
+            #addlog(service.name, "service edit", datetime.datetime.today(), user)
             return redirect('servicedetail', service.id)
         else:
             return render(request, 'forms/service_edit.html', {'form': form})
@@ -1675,7 +1760,7 @@ def network_new(request):
             network = form.save(commit=True)
             network.save()
             #cria log
-            addlog(network.name, "network add", datetime.datetime.today(), user, "network")            
+            addlog(network.name, "network add", datetime.datetime.today(), user, "network", network.id)
             return redirect('networkdetail', network.id)
         else:
             return render(request, 'forms/network_edit.html', {'form': form})
@@ -1695,7 +1780,7 @@ def network_edit(request, pk):
             network = form.save(commit=False)
             network.save()
             #cria log
-            addlog(network.name, "network edit", datetime.datetime.today(), user)                 
+            addlog(network.name, "network edit", datetime.datetime.today(), user, network.id)
             return redirect('networkdetail', network.id)
         else:
             return render(request, 'forms/network_edit.html', {'form': form})
@@ -1721,7 +1806,7 @@ def network_delete(request, pk, template_name='network_confirm_delete.html'):
     if request.method == 'POST':
         network.delete()
         #cria log
-        addlog(network.name, "network delete", datetime.datetime.today(), user, "network")            
+        addlog(network.name, "network delete", datetime.datetime.today(), user, "network", networks.id)
         return redirect('networklist')
     return render(request, template_name, {'network': network})
 
@@ -1740,7 +1825,7 @@ def ip_new(request):
             ip = form.save(commit=True)
             ip.save()
             #cria log
-            addlog(ip, "IP add", datetime.datetime.today(), user)                
+            addlog(ip, "IP add", datetime.datetime.today(), user, "ip", ip.id)
             return redirect('ipdetail', ip.id)
         else:
             return render(request, 'forms/ip_edit.html', {'form': form})
@@ -1773,7 +1858,7 @@ def ip_new2(request, pk, ipaddr):
         if form.is_valid():
             ip = form.save(commit=True)
             #cria log
-            addlog(ip, "IP add", datetime.datetime.today(), user, "ip")  
+            addlog(ip, "IP add", datetime.datetime.today(), user, "ip", ip.id)
 
             return redirect('ipdetail', ip.id)
         else:
@@ -1797,7 +1882,7 @@ def ip_edit(request, pk):
             ip = form.save(commit=False)
             ip.save()
             #cria log
-            addlog(ip, "IP edit", datetime.datetime.today(), user, "ip")  
+            addlog(ip, "IP edit", datetime.datetime.today(), user, "ip", ip.id)
             return redirect('ipdetail', ip.id)
         else:
             return render(request, 'forms/ip_edit.html', {'form': form})
@@ -1821,7 +1906,7 @@ def ip_delete(request, pk, template_name='ip_confirm_delete.html'):
     if request.method == 'POST':
         ip.delete()
         #cria log
-        addlog(ip, "IP delete", datetime.datetime.today(), user, "ip")          
+        addlog(ip, "IP delete", datetime.datetime.today(), user, "ip", ip.id)
         return redirect('iplist')
     return render(request, template_name, {'ip': ip})
 
@@ -1834,6 +1919,7 @@ def ip_delete(request, pk, template_name='ip_confirm_delete.html'):
 @permission_required('ace.add_phone', raise_exception=True)
 def phone_new(request):
     user = request.user
+    phone_date = datetime.datetime.today()
     if request.method == "POST":
         form = PhoneForm(request.POST)
 
@@ -1846,16 +1932,20 @@ def phone_new(request):
                 p = Phoneownership(active=True, phone=phone, user=user)
                 p.save()
                 phone.active = True
-                #phone.newpassword = False
                 phone.save()
+
                 #cria log
-                addlog(phone, "Phone/Password add", datetime.datetime.today(), user, "phone")  
+                addlog(phone, "Phone/Password add", phone_date, user, "phone", phone.id)
+
+                #envia notificação de cadastro de telefone
+                sendphone_notification(p.phone, p.user, phone_date, p)
+
                 return redirect('phonedetail', phone.id)
             else:
                 phone = form.save(commit=True)
                 phone.save()                
                 #cria log
-                addlog(phone, "Phone/Password add", datetime.datetime.today(), user, "phone")                  
+                addlog(phone, "Phone/Password add", phone_date, user, "phone", phone.id)
                 return redirect('phonedetail', phone.id)
 
         else:
@@ -1870,6 +1960,7 @@ def phone_new(request):
 def phone_edit(request, pk):
     user = request.user    
     phone = get_object_or_404(Phone, pk=pk)
+    phone_date = datetime.datetime.today()
     title = "Editar telefone"
     if request.method == "POST":
         form = PhoneForm(request.POST, instance=phone)
@@ -1885,22 +1976,25 @@ def phone_edit(request, pk):
                     po = Phoneownership.objects.get(phone=phone, active=True)   
                                 
                     if po:
-                        print "tem usuario vinculado" 
                         if po.user == user:
                             pass
                         else:
-                            po.date_deactivation = datetime.datetime.today()
+                            po.date_deactivation = phone_date
                             po.active = False
                             po.save()                        
                             p = Phoneownership(active=True, phone=phone, user=user)
-                            p.save()                                            
+                            p.save()
+                            # envia notificação de cadastro de telefone
+                            sendphone_notification(p.phone, p.user, phone_date, p)
                 except:
                     p = Phoneownership(active=True, phone=phone, user=user)
-                    p.save()                    
+                    p.save()
+                    # envia notificação de cadastro de telefone
+                    sendphone_notification(p.phone, p.user, phone_date, p)
                    
                 
                 #cria log
-                addlog(phone, "Phone/Password edit", datetime.datetime.today(), user, "phone")         
+                addlog(phone, "Phone/Password edit", phone_date, user, "phone", phone.id)
                 return redirect('phonedetail', phone.id)
             else:
                 phone = form.save(commit=False)
@@ -1908,17 +2002,20 @@ def phone_edit(request, pk):
                 try:
                     po = Phoneownership.objects.get(phone=phone, active=True)                  
                     if po:
-                        po.date_deactivation = datetime.datetime.today()
+                        po.date_deactivation = phone_date
                         po.active = False
                         po.save() 
                         phone.active = False 
-                        phone.save()                      
+                        phone.save()
+                        # envia notificação de cadastro de telefone
+                        sendphone_notification(p.phone, p.user, phone_date, po)
+
                 except:
                         phone.active = False 
                         phone.save()                      
 
                 #cria log
-                addlog(phone, "Phone/Password edit", datetime.datetime.today(), user, "phone")              
+                addlog(phone, "Phone/Password edit", phone_date, user, "phone", phone.id)
                 return redirect('phonedetail', phone.id)
         else:
             return render(request, 'forms/phone_edit.html', {'form': form, 'title':title})
@@ -1942,7 +2039,7 @@ def phone_delete(request, pk, template_name='phone_confirm_delete.html'):
     if request.method == 'POST':
         phone.delete()
         #cria log
-        addlog(phone, "Phone/Password delete", datetime.datetime.today(), user, "phone")         
+        addlog(phone, "Phone/Password delete", datetime.datetime.today(), user, "phone", phone.id)
         return redirect('phonelist')
     return render(request, template_name, {'phone': phone, })
 
@@ -2179,7 +2276,7 @@ def switch_new(request):
             switch = form.save(commit=True)
             switch.save()
             #cria log
-            addlog(switch, "Switch add", datetime.datetime.today(), user, "switch")  
+            addlog(switch, "Switch add", datetime.datetime.today(), user, "switch", switch.id)
             return redirect('switchdetail', switch.id)
         else:
             return render(request, 'forms/switch_edit.html', {'form': form})
@@ -2199,7 +2296,7 @@ def switch_edit(request, pk):
             switch = form.save(commit=False)
             switch.save()
             #cria log
-            addlog(switch, "Switch edit", datetime.datetime.today(), user, "switch")              
+            addlog(switch, "Switch edit", datetime.datetime.today(), user, "switch", switch.id)
             return redirect('switchdetail', switch.id)
         else:
             return render(request, 'forms/switch_edit.html', {'form': form})
@@ -2217,7 +2314,7 @@ def switch_delete(request, pk, template_name='switch_confirm_delete.html'):
     if request.method == 'POST':
         switch.delete()
         #cria log
-        addlog(switch, "Switch delete", datetime.datetime.today(), user, "switch")        
+        addlog(switch, "Switch delete", datetime.datetime.today(), user, "switch", switch.id)
         return redirect('switchlist')
     return render(request, template_name, {'switch': switch, })
 
@@ -2523,8 +2620,10 @@ def patchpanelport_delete(request, pk, template_name='patchpanelport_confirm_del
 @login_required(login_url='/ace/login/')
 @permission_required('ace.add_phoneownership', raise_exception=True)
 def phoneownership_new(request, pk):
+    user = request.user
     phone = get_object_or_404(Phone, pk=pk)
     po = Phoneownership.objects.filter(phone=phone, active=True)
+    today = datetime.datetime.now()
     if not po:
 
         if request.method == "POST":
@@ -2532,11 +2631,7 @@ def phoneownership_new(request, pk):
             p = form['place'].value()
             t = form['telephonetype'].value()
             c = form['phonecategory'].value()
-            # phonecategory = get_object_or_404(Phonecategory, pk=c)
-            #try:
-            #    phonecategory = Phonecategory.objects.get(pk=c)
-            #except Phonecategory.DoesNotExist:
-            #    phonecategory = ""
+
             if c:
                 phonecategory = Phonecategory.objects.get(pk=c)
 
@@ -2548,25 +2643,24 @@ def phoneownership_new(request, pk):
                 phonetype = get_object_or_404(Phonetype, pk=t)
                 phone.telephonetype = phonetype
 
-
-            # if not phone.password:
-            #    place = get_object_or_404(Place, pk=p)
-            #    phonetype = get_object_or_404(Phonetype, pk=t)
-            # phoneform =
-            # phone = get_object_or_404(Phone, pk=pk)
-
             if form.is_valid():
                 phoneownership = form.save(commit=False)
                 phoneownership.phone = phone
                 phoneownership.save()
-                # phone = phoneownership.phone
+                p = phoneownership
                 phone.active = True
-                #phone.newpassword = False
                 phone.user = phoneownership.user
                 phone.phonecategory = phonecategory
-          #      if not phone.password:
-                    
                 phone.save()
+
+                # envia notificação de cadastro de telefone
+                sendphone_notification(p.phone, p.user, today, p)
+
+                if p.phone.password == True:
+                    addlog(p.phone.user, "password association", datetime.datetime.today(), user, 'password', phone.id)
+                else:
+                    addlog(p.phone, "phone association", datetime.datetime.today(), user, 'phone', phone.id)
+
                 return redirect('phonedetail', phone.id)
             else:
                 return render(request, 'forms/phoneownership_edit.html', {'form': form, 'phone': phone})
@@ -2581,6 +2675,7 @@ def phoneownership_new(request, pk):
 
 @permission_required('ace.delete_phoneownership', raise_exception=True)
 def phoneownership_disable(request, pk):
+    user = request.user
     today = datetime.datetime.now()
     phone = get_object_or_404(Phone, pk=pk)
     phoneownership = Phoneownership.objects.get(phone=phone, active=True)
@@ -2590,18 +2685,29 @@ def phoneownership_disable(request, pk):
             phoneownership.date_deactivation = today
             phoneownership.active = False
             phoneownership.save()
+            p = phoneownership
             phone.active = False
             phone.phonecategory = None
             phone.telephonetype = None
             phone.user = None
             phone.place = None
             phone.save()
+            # envia notificação de cadastro de telefone
+            sendphone_notification(p.phone, p.user, today, p)
+
+            if p.phone.password == True:
+                addlog(p.user, "password disassociation", datetime.datetime.today(), user, 'password', phone.id)
+            else:
+                addlog(p.phone, "phone disassociation", datetime.datetime.today(), user, 'phone', phone.id)
 
             return redirect('phonedetail', phone.id)
 
     else:
 
         return redirect('phonedetail', phone.id)
+
+
+
 
 
 """ formularios VLAN """

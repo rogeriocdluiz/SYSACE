@@ -39,9 +39,12 @@ Model AceConfig where is registered system configuration
 
 class AceConfig(SingletonModel):
     org = models.TextField(u'Nome da organização/empresa.', max_length=2000, default='Empresa Exemplo', blank=True, null=True)
-    email_from = models.EmailField(u'Email de senhas: Endereço de remetente.', max_length=75,
+    email_to = models.EmailField(u'Endereço de destinatário.', max_length=75,
                                    default='no-reply@empresa.com',
-                                   help_text="Campo De do email. Ex: <em>fulano@empresa.com</em>.")
+                                   help_text="Notificações de alteração de ramais/senhas:  - Ex: <em>fulano@empresa.com</em>.")
+    email_from = models.EmailField(u'Endereço de remetente.', max_length=75,
+                                   default='no-reply@empresa.com',
+                                   help_text="Email de senhas e notificações de alteração de ramais/senhas - Ex: <em>fulano@empresa.com</em>.")
     email_co = models.EmailField(u'Email - Cópia: Endereço de destino.', max_length=75, default='no-reply@empresa.com',
                                  help_text="Campo do email para envio de cópia de mensagem. Ex: <em>fulano@empresa.com</em>.")
     password_email_text = models.TextField(u'Mensagem adicional (Texto puro).', max_length=6000,
@@ -83,6 +86,7 @@ class Log(models.Model):
     event_date = models.DateTimeField(u'Data de modificação',editable=False,blank=True,null=True)
     record_type = models.CharField(max_length=50,editable=False,blank=True,null=True)
     actor = models.CharField(max_length=200,editable=False,)
+    object_id = models.CharField(max_length=30,editable=False,null=True)
 
     def __unicode__(self):
         return self.record_name
@@ -1042,7 +1046,7 @@ class Phoneownership(models.Model):
         verbose_name = 'Posse de telefone'
         verbose_name_plural = 'Posses de telefone'
 
-    active = models.BooleanField(editable=False, default=True)
+    active = models.BooleanField(editable=False, default=True, verbose_name="Ativo(a)")
     phone = models.ForeignKey(Phone, blank=True, null=True, verbose_name='Telefone')
     user = models.ForeignKey(User, blank=True, null=True, verbose_name=u'Usuário')
     date_activation = models.DateTimeField(u'Data de ativação', blank=True, null=True, editable=False,

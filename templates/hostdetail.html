@@ -64,7 +64,7 @@
 <!-- Lista de locais -->
 {% block conteudo1 %}
             <div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-body panel-primary">
                             <div class="iteminfo"> 
@@ -106,8 +106,6 @@
                                 {% if host.place %}
                                 <p><b>Local:&nbsp;</b> <a href="{% url 'placedetail' host.place.id %}">{{ host.place }}</a></p>
                                 {% endif %} 
-
-
 
 
                                 {% if host.osplatform %}
@@ -162,12 +160,12 @@
 
                             {% endif %} 
 
-                            {% if history %}
+                            <!-- {% if history %}
                             <small class="text-muted">
                                 <em><i class="fa fa-clock-o "></i>&nbsp;&Uacute;ltima altera&ccedil;&atilde;o em: {{ history.0.history_date }} realizada por {{ history.0.history_user }}</em>
                             </small>
                             <br>
-                            {% endif %}
+                            {% endif %} -->
 
 
 
@@ -183,84 +181,104 @@
                             <!-- <p><b>Mem&oacute;ria total:</b> {{ ram }} MB </p>
                             <p><b>Quantidade de CPU's:</b> {{ cpu }} </p> -->
 
-                            </br>
 
-                            
-                            {% if t == "printer" %}
-
-                                <div class="btn-group">
-                                    <a href="{% url 'printer_edit' pk=host.pk %}" alt="Editar" title="Editar">
-                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
-                                    </a>                                                      
-                                </div>    
-                                <div class="btn-group">
-                                    <a href="{% url 'printer_delete' host.id %}" alt="Excluir" title="Excluir">
-                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
-                                    </a>                                                                                 
-                                </div>                                 
-                            {% else %}
-
-                   
-                                {% if perms.ace.edit_host %}
-                                <div class="btn-group">
-                                    <a href="{% url 'host_edit' pk=host.pk %}" alt="Editar" title="Editar">
-                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
-                                    </a>                                                      
-                                </div>    
-                                {% endif %}
-                                {% if perms.ace.delete_host %}
-                                <div class="btn-group">
-                                    <a href="{% url 'host_delete' host.id %}" alt="Excluir" title="Excluir">
-                                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
-                                    </a>                                                                                 
-                                </div>   
-                                {% endif %}
-                                <div class="btn-group">
-                                    <a href="{% url 'hostdetailreport' host_id=host.pk %} " alt="Imprimir" title="Imprimir" target="blank">
-                                        <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Imprimir</button>
-                                    </a>                                                                                                  
-                                </div>   
-                           
-                            {% endif %}
-                          
                         </div>
-
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
-            </div>          
+
+
+
+
+                {% if host.groups.all  %}
+                <div class="col-lg-4">
+                  <div class="panel panel-default"><div class="panel-heading"><i class="fa fa-users fa-fw"></i>&nbsp;&Aacute;reas respons&aacute;veis</div>
+                    <div class="panel-body">
+
+                        <ul class="list-group">
+                          {% for g in host.groups.all %}
+                          <li class="list-group-item">{{ g }}</li>
+                          {% endfor %}
+                        </ul>
+
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+
+            <!-- /.panel -->
+
+
+            </div>
+
+
 
             <div class="row">
                 <div class="col-lg-12">
                     {% if t == "printer" %}
-                        <div class="btn-group">
-                            <a href="{% url 'printerlist' %}" alt="Todas as impressoras" title="Todos as impressoras">
-                                <button class="btn btn-default" type="button">Todas as impressoras</button>
-                            </a>
-                        </div>
 
-                        {% if perms.ace.add_printer %}
-                        <div class="btn-group">
-                            <a href="{% url 'printer_new' %}" alt="Adicionar" title="Adicionar">
-                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
-                            </a>                             
-                        </div>
-                        {% endif %}                            
+                    <div class="btn-group">
+                        <a href="{% url 'printerlist' %}" alt="Todas as impressoras" title="Todos as impressoras">
+                            <button class="btn btn-default" type="button">Todas as impressoras</button>
+                        </a>
+                    </div>
+
+                    {% if perms.ace.add_printer %}
+                    <div class="btn-group">
+                        <a href="{% url 'printer_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <div class="btn-group">
+                        <a href="{% url 'printer_edit' pk=host.pk %}" alt="Editar" title="Editar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'printer_delete' host.id %}" alt="Excluir" title="Excluir">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>
+                    </div>
+
+
                     {% else %}
 
-                        <div class="btn-group">
-                            <a href="{% url 'hostlist' %}" alt="Todos os Hosts" title="Todos os Hosts">
-                                <button class="btn btn-default" type="button">Todos os Hosts</button>
-                            </a>
-                        </div>
-                        {% if perms.ace.add_host %}
-                        <div class="btn-group">
-                            <a href="{% url 'host_new' %}" alt="Adicionar" title="Adicionar">
-                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
-                            </a>                             
-                        </div>   
-                        {% endif %}                            
+                    <div class="btn-group">
+                        <a href="{% url 'hostlist' %}" alt="Todos os Hosts" title="Todos os Hosts">
+                            <button class="btn btn-default" type="button">Todos os Hosts</button>
+                        </a>
+                    </div>
+                    {% if perms.ace.add_host %}
+                    <div class="btn-group">
+                        <a href="{% url 'host_new' %}" alt="Adicionar" title="Adicionar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i>&nbsp;Adicionar</button>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {% if perms.ace.edit_host %}
+                    <div class="btn-group">
+                        <a href="{% url 'host_edit' pk=host.pk %}" alt="Editar" title="Editar">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-pencil text-info"></i>&nbsp;Editar</button>
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if perms.ace.delete_host %}
+                    <div class="btn-group">
+                        <a href="{% url 'host_delete' host.id %}" alt="Excluir" title="Excluir">
+                            <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove text-danger"></i>&nbsp;Excluir</button>
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="btn-group">
+                        <a href="{% url 'hostdetailreport' host_id=host.pk %} " alt="Imprimir" title="Imprimir" target="blank">
+                            <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Imprimir</button>
+                        </a>
+                    </div>
+
                     {% endif %}                    
 
                     
@@ -308,31 +326,9 @@
                 </div>
             </div>
 
-
-            
-
             
             <div class="row">
-
-
-                {% if host.groups.all  %}
-                <div class="col-lg-4">
-                  <div class="panel panel-default"><div class="panel-heading"><i class="fa fa-users fa-fw"></i>&nbsp;&Aacute;reas respons&aacute;veis</div>
-                    <div class="panel-body">   
-                                  
-                        <ul class="list-group">
-                          {% for g in host.groups.all %}   
-                          <li class="list-group-item">{{ g }}</li>
-                          {% endfor %}
-                        </ul>
-
-                      
-                    </div>
-                  </div>
-                </div>      
-                {% endif %} 
-
-                {% if host.vm == False %} 
+                {% if host.vm == False %}
                 <!-- PORTAS DE SWITCH -->
                 <div class="col-lg-4">
                     {% if swport %}
@@ -385,8 +381,8 @@
                 <!-- PORTAS DE SWITCH -->
                 
                 <!-- pontos de rede -->
+                {% if n %}
                 <div class="col-lg-4">
-                {% if n %}                    
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-check fa-fw"></i> Pontos de rede
@@ -409,30 +405,14 @@
                                 </table>
                     </div>
                     <!-- /.panel-body -->
-     
-                {% endif %}                     
                 </div>
+                {% endif %}
                 <!-- /.panel -->         
                 <!-- /pontos de rede-->
                 {% endif %}
 
-
-   
-
-
-
-                
-            </div>
-            
-
-
-            <div class="row">    
-
-                  
-
-
                 <!-- IPS -->
-                <div class="col-lg-4">                         
+                <div class="col-lg-4">
                     {% if i %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -457,14 +437,15 @@
                                 </table>
                     </div>
                     <!-- /.panel -->
-                    {% endif %} 
-                                      
+                    {% endif %}
+
                 </div>
                 <!-- /IPS -->
 
                 {% if t != "printer" %}
                 <!-- serviços -->
                 <div class="col-lg-4">
+
                     {% if s %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -472,37 +453,37 @@
                         </div>
                         <!-- /.panel-heading -->
 
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <th>Nome</th>
-                                        <th>IP</th>
-                                    </thead>
-                                    <tbody>
-                                    {% for service in s %}
-                                    <tr>
-                                        <td><a href="{% url 'servicedetail' service.id %}">{{ service.name }}</a></td>
-                                        <td><a href="{% url 'ipdetail' service.ip.id %}">{{ service.ip }}</a></td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <th>Nome</th>
+                                <th>IP</th>
+                            </thead>
+                            <tbody>
+                            {% for service in s %}
+                            <tr>
+                                <td><a href="{% url 'servicedetail' service.id %}">{{ service.name }}</a></td>
+                                <td><a href="{% url 'ipdetail' service.ip.id %}">{{ service.ip }}</a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
 
                     </div>
                     <!-- /.panel -->
-                    {% endif %}   
+                    {% endif %}
 
                 </div>
-                <!-- /.col-lg-12 -->   
+                <!-- /.col-lg-12 -->
                 <!-- /serviços -->
-                {% endif %} 
+                {% endif %}
 
-            </div>
+
             
-            <div class="row">                      
 
                 {% if t != "printer" %}
                 <!-- updates -->
-                <div class="col-lg-12">
+
+                <div class="col-lg-8">
                     {% if u %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -535,7 +516,7 @@
 
                     </div>
                     <!-- /.panel-body -->                      
-                    {% endif %}                                    
+                    {% endif %}
 
                 </div>
                 <!-- /.col-lg-12 -->  

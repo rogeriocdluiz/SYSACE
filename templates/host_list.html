@@ -194,7 +194,7 @@
 
 
 
-                                {% if filter.qs %}
+                            {% if filter.qs %}
 
 
                                 {% render_table table 'django_tables2/bootstrap.html' %}
@@ -206,20 +206,24 @@
 
                             {% else %}
 
-                            <br>
-                            <div class="alert alert-danger" role="alert">
-                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                    
-                                    Nenhum resultado encontrado.
+                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 
+                                        Nenhum resultado encontrado.
 
-                            </div>
+                                </div>
             
                             {% endif %}
-                        </br>
+                             </br>
 
-                              <input class="btn btn-default" type="button" value="Voltar" onclick="history.back()">
-
+                        <!-- testes json ajax form -->
+                          <!-- <p>
+                            <button type="button" class="btn btn-primary js-create-host">
+                              <span class="glyphicon glyphicon-plus"></span>
+                              New book
+                            </button>
+                          </p> -->
 
 
                             {% if t == "printer" %}                         
@@ -243,11 +247,8 @@
                             <!-- formulario de adição -->                            
                             {% endif %}     
 
+                            <input class="btn btn-default" type="button" value="Voltar" onclick="history.back()">
 
-
-
-
-                            
                             {% if filter.qs %}
                             {% if t == "printer" %}
                             <a href="{% url 'printerreport' %}" alt="Relat&oacute;rio de impressoras" title="Relat&oacute;rio de impressoras" target="blank">
@@ -260,14 +261,22 @@
                             {% endif %}       
                             {% endif %} 
 
-                                                      
-
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
-                <!-- /.col-lg-12 -->                
+                <!-- /.col-lg-12 -->
+
+
+                <!-- THE MODAL WE WILL BE USING -->
+                    <div class="modal fade" id="modal-host">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                          </div>
+                        </div>
+                    </div>
+
 
             </div>
             <!-- /.row -->
@@ -278,7 +287,9 @@
 
 
 {% block extra-js %}
-    {% load staticfiles %}   
+    {% load staticfiles %}
+
+    <script src="{% static 'js/host.js' %}"></script>
 
 
 {% endblock %}

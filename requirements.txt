@@ -24,6 +24,10 @@ django-session-security==2.5.1
 django-mass-edit==3.1
 django-tables2==1.19.0
 tablib==0.12.1
+django-tinymce
+django-cron
+django-localflavor
+django-extensions
 
 
 

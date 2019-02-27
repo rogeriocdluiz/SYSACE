@@ -10,7 +10,7 @@
 
 - problema ao tentar vingular senha ou telefone a usuário senha categoria ou local. - OK
 
-- problema ao buscar serviços e ips em host. Busca todos os ips mas não busca mais de um serviço.
+- problema ao buscar serviços e ips em host. Busca todos os ips mas não busca mais de um serviço. OK
 
 
 

@@ -47,8 +47,9 @@
 
                             <div class="iteminfo">                                 
 
+                            {% if categories %}
                             <p><b>Categorias:</b>
-                                {% if categories %}
+
                                   <ul>
                                   {% for cat in categories %}
                                     <!-- <li>{{ cat.name }}</li> -->
@@ -57,8 +58,9 @@
 
                                   {% endfor %}
                                   </ul>
-                                {% endif %} 
+
                             </p>
+                            {% endif %}
 
                             </div>                                
 

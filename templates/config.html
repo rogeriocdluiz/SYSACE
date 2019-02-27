@@ -30,18 +30,6 @@
 <!-- Lista de locais -->
 {% block conteudo1 %}
 
-
-        
-
-
-
-
-
-
-
-
-
-
             <div class="row">
 
                 <div class="col-lg-12">
@@ -58,14 +46,47 @@
                 </div>
 
 
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Configura&ccedil;&otilde;es globais para envio de notifica&ccedil;&otilde;es por email</b>
+                        </div>
+                        <div class="panel-body">
+
+                            <p><b>Email de origem:</b> {{config.email_from|default_if_none:"---"}} </p>
+
+                            <p><b>Email de destino (CO):</b> {{config.email_co|default_if_none:"---"}}</p>
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Notifica&ccedil;&otilde;es de altera&ccedil;&otilde;es de ramais/senhas</b>
+                        </div>
+                        <div class="panel-body">
+
+                            <p><b>Email de destino:</b> {{config.email_to|default_if_none:"---"}}</p>
+
+                        </div>
+                        <!-- /.panel-body -->
+
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <b>Configura&ccedil;&otilde;es para envio de senhas por email</b>
+                            <b>Instruções para uso de senha</b>
                         </div>
                         <div class="panel-body">
-					        <p><b>Email de origem:</b> {{config.email_from}} - <b>Email de destino (CO):</b> {{config.email_co}}</p>
-					        <hr></hr>
+
 					        <p><b>Texto do Email de senhas:</b></p>
 					        <p> {{config.password_email_text}}</p>
 					        <hr></hr>
@@ -75,7 +96,9 @@
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
+
                 </div>
+
 
 
 				<div class="col-lg-6">

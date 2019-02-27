@@ -91,18 +91,7 @@
                                     </div>     
                                     {% endif %}            
 
-                                    {% if passwords %}                                                         
-                                    <!-- <div class="form-group">
-                                        <label for="{{ filter.form.password.id_for_label }}">Senha:</label>
-                                        {{ filter.form.password|add_class:"form-control" }}
-                                    </div> &nbsp; 
 
-                                    <div class="form-group">
-                                        <label for="{{ filter.form.newpassword.id_for_label }}">Senha nova:</label>
-                                        {{ filter.form.newpassword|add_class:"form-control" }}
-                                    </div>  -->
-                                    {% endif %}
-                                 
                                     <div class="form-group">
                                         <label for="{{ filter.form.comments.id_for_label }}">Obs:</label> 
                                         {{ filter.form.comments|add_class:"form-control"}}
@@ -195,11 +184,16 @@
 
                                 {% if not passwords %}
 
-                                <div class="btn-group">
-                                    <a href="{% url 'phonereport' %}" alt="Relat&oacute;rio de telefones ativos" title="Relat&oacute;rio de telefones ativos" target="blank">
-                                        <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de telefones ativos</button>
-                                    </a>
-                                </div>                                    
+                                    <div class="btn-group">
+                                        <a href="{% url 'phonereport' %}" alt="Relat&oacute;rio de telefones ativos" title="Relat&oacute;rio de telefones ativos" target="blank">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de telefones ativos</button>
+                                        </a>
+                                    </div>
+                                    <div class="btn-group">
+                                        <a href="{% url 'phoneassociation' %}">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-phone fa-fw"></i>Telefone x <i class="fa fa-user fa-fw"></i>Usu&aacute;rio</button>
+                                        </a>
+                                    </div>
                                 {% endif %}
 
                                 {% if passwords %}
@@ -210,13 +204,20 @@
                                             <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de senhas ativas</button>
                                         </a>
                                     </div>
+
                                     {% else %}     
                                     <div class="btn-group">
                                         <a href="{% url 'pwreportopen' %}" alt="Relat&oacute;rio de senhas" title="Relat&oacute;rio de senhas" target="blank">
                                             <button class="btn btn-default" type="button"><i class="fa fa-file-pdf-o fa-fw"></i>Relat&oacute;rio de senhas ativas</button>
                                         </a>
-                                    </div>                                      
+                                    </div>
                                     {% endif %}
+
+                                    <div class="btn-group">
+                                        <a href="{% url 'passassociation' %}">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-lock fa-fw"></i>Senha x <i class="fa fa-user fa-fw"></i>Usu&aacute;rio</button>
+                                        </a>
+                                    </div>
                                     
                                                 
                                 {% endif %}                                

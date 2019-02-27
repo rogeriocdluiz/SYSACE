@@ -61,6 +61,9 @@ urlpatterns = [
 
     url(r'^passwordlist/$', views.passwordlist, name='passwordlist'),
 
+    url(r'^phoneassociation/$', views.phoneassociation, name='phoneassociation'),
+
+    url(r'^passassociation/$', views.passwordassociation, name='passassociation'),
 
     url(r'^switch/(?P<switch_id>\d+)/$', views.switchdetail, name='switchdetail'),
 
@@ -141,6 +144,10 @@ urlpatterns = [
 
     url(r'^host/new/$', views.host_new, name='host_new'),
 
+    #testes
+    url(r'^host/create/$', views.host_create, name='host_create'),
+
+
     url(r'^host/(?P<pk>[0-9]+)/edit/$', views.host_edit, name='host_edit'),
 
     url(r'^hostdel/(?P<pk>\d+)$', views.host_delete, name='host_delete'),
@@ -198,7 +205,6 @@ urlpatterns = [
     url(r'^phoneownership/(?P<pk>\d+)$', views.phoneownership_new, name='phoneownership_new'),
 
     url(r'^phoneownership/disable/(?P<pk>[0-9]+)$', views.phoneownership_disable, name='phoneownership_disable'),
-
 
 
     url(r'^place/new/$', views.place_new, name='place_new'),

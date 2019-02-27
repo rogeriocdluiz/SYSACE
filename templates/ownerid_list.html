@@ -102,24 +102,28 @@
 
                             {% else %}
 
-                            <br>
-                            <div class="alert alert-danger" role="alert">
-                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                    
-                                    Nenhum resultado encontrado.
-                            </div>
-            
+                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+
+                                        Nenhum resultado encontrado.
+                                </div>
+
                             {% endif %}                              
 
                             </br>                                               
                             {% if perms.ace.add_ownerid %}
 
-                            <!-- formulario de adição -->
-                            <a href="{% url 'ownerid_new' %}" alt="Adicionar" title="Adicionar">
-                                <button class="btn btn-default" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
-                            </a> 
-                            <!-- formulario de adição -->
-                            {% endif %}                                 
+                                <!-- formulario de adição -->
+                                <a href="{% url 'ownerid_new' %}" alt="Adicionar" title="Adicionar">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-plus fa-1x text-default"></i>&nbsp;Adicionar</button>
+                                </a>
+                                <!-- formulario de adição -->
+
+                            {% endif %}
+
+                            <input class="btn btn-default" type="button" value="Voltar" onclick="history.back()">
+
                         </div>
                         <!-- /.panel-body -->
                     </div>
