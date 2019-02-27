@@ -1,7 +1,8 @@
 
 {% extends "base.html" %}
 
-
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
 
 {% block title %}
 	Detalhes da Rede
@@ -115,9 +116,6 @@
                         </div>
                         <div class="panel-body">
 
-
-
-
                            {% if free %}
 
                             <ul class="sidelist">
@@ -131,9 +129,6 @@
                             </br></br>
                             <hr>
 
-
-
-                                   
                             </br></br>
                             {% else %}
                             <br>
@@ -145,10 +140,8 @@
                 
                             {% endif %}
 
-
-
-
                         </div>
+                        <div class="panel-footer">Total: {{ d }}</div>
 
                     </div>
 
@@ -158,28 +151,14 @@
                 {% if i %}   
                 <div class="col-lg-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><i class="fa  fa-globe fa-fw"></i> Endere&ccedil;os IP fixos</div> 
-                    
-                            <div class="dataTable_wrapper">                             
-                                <table class="table table-striped table-hover" id="lista2">
-                                    <thead>
-                                        <th>Endere&ccedil;o</th>
-                                        <th>Host</th>
-                                        <th>Observa&ccedil;&otilde;es:</th>
-                                    </thead>
-                                    <tbody>
-                                    {% for ip in i %}
-                                    <tr>
-                                        <td><a href="{% url 'ipdetail' ip.id %}">{{ ip.address }}</a></td>
-                                        <td>{{ ip.device.name}}</td>
-                                        <td>{{ ip.comments|default_if_none:""}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                        
+                        <div class="panel-heading"><i class="fa  fa-globe fa-fw"></i> Endere&ccedil;os IP fixos</div>
+                         <div class="panel-body">
+
+                               {% render_table table 'django_tables2/bootstrap.html' %}
+
+                        </div>
+                        <div class="panel-footer">Total: {{ qf }}</div>
+
                     </div>
                     <!-- /.panel -->
                 </div>

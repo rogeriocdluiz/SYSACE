@@ -82,7 +82,7 @@ from django.template.loader import render_to_string
 
 
 def addlog(h, e, d, a, t, i):
-    #h=host or other action, e=event, d=event_date, a=actor, t=record_type
+    #h=host or other action, e=event, d=event_date, a=actor, t=record_type, i=object_id
     log = Log.objects.create(
         record_name=h,
         event=e,
@@ -1255,7 +1255,7 @@ def networkdetail(request, rede_id):
         # rede + mascara ex: 192.168.0.0/24
         rm = r + "/" + m
         # ips fixos
-        i = Ip.objects.all().filter(network=network)
+        i = Ip.objects.filter(network=network)
         # total de ips da rede
         qf = i.count()
         # lista de todos os objetos ipaddress da rede
@@ -1271,7 +1271,6 @@ def networkdetail(request, rede_id):
 
         for j in i:
             lips.append(j.address)
-
 
         # qtotal = len(list(ipaddress.ip_network(rm).hosts()))
 
@@ -1301,11 +1300,21 @@ def networkdetail(request, rede_id):
             free = list(set(ltotal) - set(lips))
             qdhcp = ""
 
+        # tabela
+        table = IpTable(i)
+        RequestConfig(request, paginate={'per_page': 15 }).configure(table)
+
+        # export
+        export_format = request.GET.get('_export', None)
+        if TableExport.is_valid_format(export_format):
+            exporter = TableExport(export_format, table)
+            return exporter.response('table.{}'.format(export_format))
+
+
     except Network.DoesNotExist:
         raise Http404
-
     return render(request, 'networkdetail.html',
-                  {'network': network, 'i': i, 'd': d, 'free': free, 'qdhcp': qdhcp, 'broadcast': broadcast})
+                  {'network': network, 'i': i, 'd': d, 'free': free, 'qdhcp': qdhcp, 'broadcast': broadcast, 'qf':qf, 'table':table})
 
 
 def user_login(request):
@@ -1780,7 +1789,7 @@ def network_edit(request, pk):
             network = form.save(commit=False)
             network.save()
             #cria log
-            addlog(network.name, "network edit", datetime.datetime.today(), user, network.id)
+            addlog(network.name, "network edit", datetime.datetime.today(), user, "network", network.id)
             return redirect('networkdetail', network.id)
         else:
             return render(request, 'forms/network_edit.html', {'form': form})
@@ -1967,7 +1976,7 @@ def phone_edit(request, pk):
         if form.is_valid():
             userpk = form['user'].value()
             if userpk:
-                user = User.objects.get(pk=userpk)
+                phoneuser = User.objects.get(pk=userpk)
                 phone = form.save(commit=False)
                 phone.active = True
                 phone.save()
@@ -1976,18 +1985,18 @@ def phone_edit(request, pk):
                     po = Phoneownership.objects.get(phone=phone, active=True)   
                                 
                     if po:
-                        if po.user == user:
+                        if po.user == phoneuser:
                             pass
                         else:
                             po.date_deactivation = phone_date
                             po.active = False
                             po.save()                        
-                            p = Phoneownership(active=True, phone=phone, user=user)
+                            p = Phoneownership(active=True, phone=phone, user=phoneuser)
                             p.save()
                             # envia notificação de cadastro de telefone
                             sendphone_notification(p.phone, p.user, phone_date, p)
                 except:
-                    p = Phoneownership(active=True, phone=phone, user=user)
+                    p = Phoneownership(active=True, phone=phone, user=phoneuser)
                     p.save()
                     # envia notificação de cadastro de telefone
                     sendphone_notification(p.phone, p.user, phone_date, p)

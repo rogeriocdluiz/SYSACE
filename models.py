@@ -22,6 +22,7 @@ import django_filters
 
 from django.contrib.auth.models import User, Group
 
+
 def findips(start, end):
     start = ip_address(start)
     end = ip_address(end)
@@ -35,7 +36,6 @@ def findips(start, end):
 Model AceConfig where is registered system configuration
 
 """
-
 
 class AceConfig(SingletonModel):
     org = models.TextField(u'Nome da organização/empresa.', max_length=2000, default='Empresa Exemplo', blank=True, null=True)
@@ -90,6 +90,18 @@ class Log(models.Model):
 
     def __unicode__(self):
         return self.record_name
+
+
+class Person(User):
+
+    class Meta:
+        proxy = True
+        ordering = ('first_name', )
+
+    def __unicode__(self):
+        return u'%s %s' % (self.first_name, self.last_name)
+
+
 
 
 
@@ -963,7 +975,7 @@ class Phone(models.Model):
         )
 
     num = models.CharField('Número', max_length=14, unique=True, help_text='Número do ramal ou código da senha')
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name=u'Usuário')
+    user = models.ForeignKey(Person, blank=True, null=True, verbose_name=u'Usuário')
     place = models.ForeignKey(Place, verbose_name=u'Local', blank=True, null=True)
     active = models.BooleanField(default=False, verbose_name='Ativo', help_text='Indica se número está em uso ou não')
     password = models.BooleanField(default=False, verbose_name='É senha',
@@ -1048,7 +1060,7 @@ class Phoneownership(models.Model):
 
     active = models.BooleanField(editable=False, default=True, verbose_name="Ativo(a)")
     phone = models.ForeignKey(Phone, blank=True, null=True, verbose_name='Telefone')
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name=u'Usuário')
+    user = models.ForeignKey(Person, blank=True, null=True, verbose_name=u'Usuário')
     date_activation = models.DateTimeField(u'Data de ativação', blank=True, null=True, editable=False,
                                            auto_now_add=True)
     date_deactivation = models.DateTimeField(u'Data de desativação', blank=True, null=True, editable=False)

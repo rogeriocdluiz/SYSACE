@@ -331,7 +331,7 @@ class UserAutocomplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_authenticated():
             return User.objects.none()
 
-        qs = User.objects.all().order_by('username')
+        qs = Person.objects.all().order_by('username')
 
         if self.q:
             #qs = qs.filter(first_name__istartswith=self.q)

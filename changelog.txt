@@ -1,3 +1,9 @@
+1.2.3
+- Adicionada notificação de associação de ramais
+- Listagem de associações de ramais/senhas com exportação
+- Adicionado proxymodel para objeto User para exibição de nome completo do usuário
+- Corrigido problema em busca de serviços e ips em host
+
 1.2.2
 - ajustes diversos em views e reports de hosts
 

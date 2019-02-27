@@ -3,28 +3,20 @@
 # TODO - relatório de senhas desativadas
 # TODO  - criar menu global de edição
 # TODO  - verificar senha salva em host atualmente salva em texto claro
-# TODO  - adicionar forms de vlans
-# TODO  - remover campo vlan antigo em portas de switch e redes e substituir por campo novo.
-# TODO  - inserir gateway na rede (ou calcular automaticamente)
-# TODO  - lista de hosts atualizados recentemnte
-# TODO  - incluir botão de exportação em listagem de telefones
-# TODO  - criar template e view exclusivos para senhas 
-# TODO  - Exportação de telefones/senhas
-# TODO  - Relatorio impressoras PDF
+# TODO  - criar template e view exclusivos para senhas
 # TODO  - botão para desativar ponto de rede
 # TODO  - listar devices em view de local
 # TODO  - ajustar listagem de grupos em view de usuários
 # TODO  - incluir link de telefone em view de usuário.
 # TODO  - incluir paginação de endereços ip fixos em view de redes ou mudar exibição para algo semelhante à listagem de ips disponíveis
-# TODO  - incluir quantidade de ips fixos cadastrados.
 # TODO  - adicionar campo de observações em phoneownership
 # TODO  - substituir views por generic views
 # TODO  - utilizar json em forms (https://simpleisbetterthancomplex.com/tutorial/2016/11/15/how-to-implement-a-crud-using-ajax-and-json.html)
 # TODO  - incluir criptografia em campos de senha (https://docs.djangoproject.com/pt-br/2.1/topics/signing/)
 # TODO  - remover categoria de serviço e incluir tags (https://github.com/alex/django-taggit)
-# TODO  - modificar model user para exibir nome completo proxy model (https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html)
-# TODO  - listagem de associações de ramais com csv - Novos ramais x usuários
-# TODO  - notificação de associação de ramais
+
+
+
 
 
 

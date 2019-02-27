@@ -451,7 +451,7 @@
 {% if logs or host_modificados or switch_modificados or service_modificados or ip_modificados or senha_modificados or ramal_modificados or pontodados_modificados %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <i class="fa fa-clock-o fa-fw"></i> Altera&ccedil;&otilde;es recentes<i class="align-right fa fa-chevron-up fa-fw"></i>
+        <i class="fa fa-clock-o fa-fw"></i> Altera&ccedil;&otilde;es recentes
     </div>
     <!-- /.panel-heading -->
     <div id="collapse1" class="panel-collapse">
@@ -464,30 +464,25 @@
                     <tr>
                         {% if log.record_type == "host"%}
                             <td><i class="fa fa-desktop"></i></td>
-                            <td><a href="{% url 'hostdetail' log.object_id %}">{{ log.record_name }}</a></td>
-                            <td><small class="text-muted">{{ log.event}} </small></td>
-                            <td><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ log.event_date}}</small></td>
                         {% elif log.record_type == "phone" %}
                             <td><i class="fa fa-phone"></i></td>
-                            <td><a href="{% url 'phonedetail' log.object_id %}">{{ log.record_name }}</a></td>
-                            <td><small class="text-muted">{{ log.event}} </small></td>
-                            <td><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ log.event_date}}</small></td>
                         {% elif log.record_type == "password" %}
                             <td><i class="fa fa-lock"></i></td>
-                            <td><a href="{% url 'phonedetail' log.object_id %}">{{ log.record_name }}</a></td>
-                            <td><small class="text-muted">{{ log.event}} </small></td>
-                            <td><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ log.event_date}}</small></td>
                         {% elif log.record_type == "printer" %}
                             <td><i class="fa fa-printer"></i></td>
-                            <td>< href="{% url 'printerdetail' log.object_id %}">{{ log.record_name }}</a></td>
-                            <td><small class="text-muted">{{ log.event}} </small></td>
-                            <td><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ log.event_date}}</small></td>
+                        {% elif log.record_type == "network" %}
+                            <td><i class="fa fa-cloud"></i></td>
+                        {% elif log.record_type == "ip" %}
+                            <td><i class="fa fa-globe"></i></td>
+                        {% elif log.record_type == "switch" %}
+                            <td><i class="fa fa-tasks"></i></td>
                         {% else %}
                             <td><i class="fa fa-wrench"></i></td>
                             <td>{{ log.record_name }}</td>
-                            <td><small class="text-muted">{{ log.event}} </small></td>
-                            <td><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ log.event_date}}</small></td>
                         {% endif %}
+                            <td>{{ log.record_name }}</td>
+                            <td><small class="text-muted">{{ log.event}} </small></td>
+                            <td><small class="text-muted"><i class="fa fa-clock-o"></i> Modificado em {{ log.event_date}} por &nbsp;<i class="fa fa-user"></i> {{ log.actor }}</small></td>
                     </tr>
 
                     {% endfor %}
