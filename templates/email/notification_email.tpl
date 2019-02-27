@@ -57,5 +57,7 @@ Novo ramal/senha modificado
 
 <p>Esta mensagem foi enviada automaticamente, por favor n&atilde;o  responda<p>
 
+<p> ACE - Administração de Cabeamento Estruturado e Infraestrutura de Redes </p>
+
 {% endblock %}
 
