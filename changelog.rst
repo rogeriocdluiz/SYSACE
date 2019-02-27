@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2.4
+-----
+- Corrida a geração de log de printer
+
+
 1.2.3
 -----
 - Adicionada notificação de associação de ramais

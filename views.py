@@ -97,6 +97,7 @@ def addlog(h, e, d, a, t, i):
 
 def sendphone_notification(p, u, d, o):
 
+    erro = ""
     try:
         config = AceConfig.objects.get()
         from_email = config.email_from
@@ -104,9 +105,7 @@ def sendphone_notification(p, u, d, o):
         to_email = config.email_to
 
     except:
-        from_email = "no-reply@localhost"
-        co_email = "no-reply@localhost"
-        to_email = "no-reply@localhost"
+        erro="erro"
 
     if p.password==True:
         pwd = "ok"
@@ -132,8 +131,12 @@ def sendphone_notification(p, u, d, o):
             c = "do"
             d = o.date_deactivation
 
-    message = EmailMessage('email/notification_email.tpl', {'p': p, 'u': u, 'd': d,'m':m, 'c':c, 'pwd':pwd }, from_email, to=[to_email], bcc=[co_email])
-    message.send()
+    if erro!="erro":
+        message = EmailMessage('email/notification_email.tpl', {'p': p, 'u': u, 'd': d,'m':m, 'c':c, 'pwd':pwd }, from_email, to=[to_email], bcc=[co_email])
+        message.send()
+    else:
+        pass
+
 
     return message
 
@@ -263,7 +266,6 @@ def config(request):
 
     title = "Configurações"
 
-    print config.email_to
     return render ( request, 'config.html',
         {'title':title,
          'config':config,
@@ -501,7 +503,6 @@ def swport(request, portaswitch_id):
                 host = Host.objects.get(device_ptr_id=device.id)
                 if host:
                     t = "host"
-                    print t
             except:
                 pass
             
@@ -509,7 +510,6 @@ def swport(request, portaswitch_id):
                 switch = Switch.objects.get(device_ptr_id=device.id)
                 if switch:
                     t = "switch"
-                    print t
             except:
                 pass
 
@@ -517,7 +517,6 @@ def swport(request, portaswitch_id):
                 stack = Stack.objects.get(device_ptr_id=device.id)
                 if stack:
                     t = "stack"
-                    print t
             except:
                 pass
 
@@ -525,12 +524,10 @@ def swport(request, portaswitch_id):
                 printer = Printer.objects.get(device_ptr_id=device.id)
                 if printer:
                     t = "printer"
-                    print t
             except:
                 pass                
 
         else:
-            print "YYYY device nok YYYYY"
             t = ""
 
         # vlan = subprocess.check_output(['aux/snmpport.sh', portaswitch.num])
@@ -1084,8 +1081,6 @@ def hostdetail(request, host_id):
     except Host.DoesNotExist:
         raise Http404
 
-    print "swport", swport
-
     return render(request, 'hostdetail.html',
                   {'host': host, 's': s, 'i': i, 'swport': swport, 'n': n, 'u': u, 'title': title, 'history':history})
 
@@ -1436,8 +1431,6 @@ def host_new(request):
             config = ""
             default_host_group = ""
 
-        print default_host_group
-
         if form.is_valid():
             host = form.save()
             host.save()
@@ -1521,7 +1514,6 @@ def host_edit(request, pk):
 
     # get objects present in both groups
     same_group = set(user_group).intersection(set(host_group))
-    # print same_group
 
     if same_group or user.is_superuser:
 
@@ -1575,7 +1567,6 @@ def host_delete(request, pk, template_name='host_confirm_delete.html'):
             #cria log
             addlog(host.name, "host delete", datetime.datetime.today(), user, "host", host.id)
             return redirect('hostlist')
-        print title
         return render(request, template_name, {'host': host, 'title': title})
     else:
         return render(request, '403.html')
@@ -1651,7 +1642,7 @@ def printer_edit(request, pk):
                 host = form.save()
                 host.save()
                 #cria log
-                addlog(host.name, "printer edit", datetime.datetime.today(), user, "printer", printer.id)
+                addlog(host.name, "printer edit", datetime.datetime.today(), user, "printer", host.id)
                 if default_printer_group:
                     host.groups.add(default_printer_group.id)  
                 return redirect('printerdetail', host.id)
