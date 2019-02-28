@@ -57,8 +57,13 @@
                                     {% endif  %}
 
                                     <div class="form-group">
-                                        <label for="{{ filter.form.user__first_name.id_for_label }}">Usu&aacute;rio:</label>
+                                        <label for="{{ filter.form.user__first_name.id_for_label }}">Nome do usu&aacute;rio:</label>
                                         {{ filter.form.user__first_name|add_class:"form-control"}}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.user__last_name.id_for_label }}">Sobrenome:</label>
+                                        {{ filter.form.user__last_name|add_class:"form-control"}}
                                     </div>
 
                                     <!-- <div class="form-group">
@@ -126,17 +131,27 @@
                             </div>
 
                             </br>
+                            {% endif %}
 
 
                             {% if filter.qs %}
 
-
                                 {% render_table table 'django_tables2/bootstrap.html' %}
 
+                            {% else %}
+
+                                <div class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+
+                                    Nenhum resultado encontrado.
+                                </div>
+
+                                <input class="btn btn-default" type="button" value="Voltar    " onclick="history.back()">
+
                             {% endif %}
 
 
-                            {% endif %}
+
 
                         </div>
                         <!-- /.panel-body -->

@@ -57,9 +57,13 @@
                                         {{ filter.form.user__username|add_class:"form-control"}}
                                     </div> -->
                                     <div class="form-group">
-                                        <label for="{{ filter.form.user__first_name.id_for_label }}">Usu&aacute;rio:</label> 
+                                        <label for="{{ filter.form.user__first_name.id_for_label }}">Nome do usu&aacute;rio:</label>
                                         {{ filter.form.user__first_name|add_class:"form-control"}}
                                     </div>                  
+                                    <div class="form-group">
+                                        <label for="{{ filter.form.user__last_name.id_for_label }}">Sobrenome:</label>
+                                        {{ filter.form.user__last_name|add_class:"form-control"}}
+                                    </div>
 
                                     {% if not passwords %}
                                     <div class="form-group">
@@ -71,7 +75,9 @@
                                     <div class="form-group">
                                         <label for="{{ filter.form.phonecategory.id_for_label }}">Categoria:</label>
                                         {{ filter.form.phonecategory|add_class:"form-control" }}
-                                    </div> 
+                                    </div>
+
+                                                                    </br></br>
 
                                     {% if not passwords %}
                                     <div class="form-group">
@@ -79,8 +85,6 @@
                                         {{ filter.form.phonehw|add_class:"form-control" }}
                                     </div>     
                                     
-                                    </br></br>
-
                                     <div class="form-group">
                                         <label for="{{ filter.form.place__name.id_for_label }}">Local:</label>
                                         {{ filter.form.place__name|add_class:"form-control" }}    

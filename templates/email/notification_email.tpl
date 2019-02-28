@@ -46,7 +46,7 @@ Novo ramal/senha modificado
 
     <p> O usu&aacute;rio <b> {{ u.get_full_name }} </b> ({{ u }}),</b> </p>
 
-    <p> foi {{ m }} {{ c }} telefone  <b>{{ p }}</b> na data de <b> {{ d }} </b> </p>
+    <p> foi <b><font color="red">{{ m }}</font></b> {{ c }} telefone  <b>{{ p }}</b> na data de <b> {{ d }} </b> </p>
 
 
 {% endif %}

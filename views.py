@@ -415,7 +415,7 @@ def userdetail(request, user_id):
         phones = Phone.objects.filter(user=usr)
         po = Phoneownership.objects.filter(user=usr)
         totalpo = po.count()
-        phoneownership = po.order_by('-active')
+        phoneownership = po.order_by('-active')[:10]
 
     except User.DoesNotExist:
         raise Http404
@@ -1926,10 +1926,10 @@ def phone_new(request):
         if form.is_valid():
             userpk = form['user'].value()
             if userpk:
-                user = User.objects.get(pk=userpk)
+                phoneuser = User.objects.get(pk=userpk)
                 phone = form.save(commit=True)
                 phone.save()                
-                p = Phoneownership(active=True, phone=phone, user=user)
+                p = Phoneownership(active=True, phone=phone, user=phoneuser)
                 p.save()
                 phone.active = True
                 phone.save()
@@ -2047,6 +2047,8 @@ def phone_delete(request, pk, template_name='phone_confirm_delete.html'):
     user = request.user    
     phone = get_object_or_404(Phone, pk=pk)
     itens = Netpoint.objects.filter(phone_id=pk)
+    phone_date = datetime.datetime.today()
+
 
     if itens:
         template = 'delete_error.html'

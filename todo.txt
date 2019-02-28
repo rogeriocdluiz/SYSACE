@@ -14,6 +14,8 @@
 # TODO  - utilizar json em forms (https://simpleisbetterthancomplex.com/tutorial/2016/11/15/how-to-implement-a-crud-using-ajax-and-json.html)
 # TODO  - incluir criptografia em campos de senha (https://docs.djangoproject.com/pt-br/2.1/topics/signing/)
 # TODO  - remover categoria de serviço e incluir tags (https://github.com/alex/django-taggit)
+# TODO  - adicioanr campos primeiro nome e sobrenome no filtro de telefones e senhas
+
 
 
 
