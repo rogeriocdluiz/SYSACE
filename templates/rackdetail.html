@@ -4,7 +4,7 @@
 
 
 {% block title %}
-	<title>Detalhes do switch</title>
+	{{ title }}
 {% endblock %}
 
 
@@ -81,28 +81,27 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default">   
-                    <h4>&nbsp;&nbsp;<i class="fa  fa-tasks fa-fw"></i> Switches</h4>                        
+                    <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa  fa-tasks fa-fw"></i> Switches</div>
                         {% if s %}
-                                                        
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <th>Nome</th>
-                                        <th>Fabricante</th>
-                                        <th>Modelo</th>
-                                        <th>Rack</th>
-                                    </thead>
-                                    <tbody>
-                                    {% for switch in s %}
-                                    <tr>
-                                        <td><a href="{% url 'switchdetail' switch.id %}">{{ switch.name }}</a></td>
-                                        <td>{{ switch.manufactorer }}</td>
-                                        <td>{{ switch.devicemodel }}</td>
-                                        <td>{{ switch.rack }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <th class="text-center">Nome</th>
+                                <th class="text-center">Fabricante</th>
+                                <th class="text-center">Modelo</th>
+                                <th class="text-center">Rack</th>
+                            </thead>
+                            <tbody>
+                            {% for switch in s %}
+                            <tr>
+                                <td class="text-center"><a href="{% url 'switchdetail' switch.id %}">{{ switch.name }}</a></td>
+                                <td class="text-center">{{ switch.manufactorer }}</td>
+                                <td class="text-center">{{ switch.devicemodel | default_if_none:"---" }}</td>
+                                <td class="text-center">{{ switch.rack }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                             
                         {% else %}
                         <br>
@@ -136,23 +135,21 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <h4>&nbsp;&nbsp;<i class="fa  fa-tasks fa-fw"></i> Patchpanels</h4>
-
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <th>Num</th>
-                                        <th>Portas</th>
-                                    </thead>
-                                    <tbody>
-                                    {% for patchpanel in p %}
-                                    <tr>
-                                        <td><a href="{% url 'patchpaneldetail' patchpanel.id %}">{{ patchpanel.num }}</a></td>
-                                        <td>{{ patchpanel.ports }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>            
-            
+                    <div class="panel-heading"><i class="fa  fa-tasks fa-fw"></i> Patchpanels</div>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <th class="text-center">Num</th>
+                                <th class="text-center">Portas</th>
+                            </thead>
+                            <tbody>
+                            {% for patchpanel in p %}
+                            <tr>
+                                <td class="text-center"><a href="{% url 'patchpaneldetail' patchpanel.id %}">{{ patchpanel.num }}</a></td>
+                                <td class="text-center">{{ patchpanel.ports }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                     <!-- /.panel -->
                 </div>
@@ -167,41 +164,41 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <h4>&nbsp;&nbsp;<i class="fa  fa-sitemap fa-fw"></i> Pontos de rede</h4>
-                            <table class="table table-striped table-bordered table-hover">
-                                  <thead>
-                                    <tr>
-                                        <th>N&uacute;mero do Ponto de rede</th>
-                                        <th>Tipo do ponto de rede</th>
-                                        <th>Patchpanel</th> 
-                                        <th>Porta do patchpanel</th> 
-                                        <th>Switch</th> 
-                                        <th>Porta do switch</th> 
-                                        <th>Local</th> 
-                                    </tr>
-                                  </thead>
-                                <tbody>
-                                {% for point in points %}
-                                <tr>
-                                   <td><a href="{% url 'pointdetail' point.id %}">{{ point.num }}</a></td>
-                                   <td>{{ point.pointtype }}</td>
-                                   <td>{{ point.patchpanel| default_if_none:"" }}</td>
-                                   <td>{{ point.patchpanelport| default_if_none:"" }}</td>
-                                   {% if point.switch %}
-                                   <td><a href="{% url 'switchdetail' point.switch.id %}">{{ point.switch| default_if_none:"" }}</a></td>
-                                   {% else %}
-                                   <td></td>
-                                   {% endif %}
-                                   {% if point.swport %}
-                                   <td><a href="{% url 'swport' point.swport.id %}">{{ point.swport| default_if_none:"" }}</a></td>
-                                   {% else %}
-                                   <td></td>
-                                   {% endif %}                                   
-                                   <td><a href="{% url 'placedetail' point.place.id %}">{{ point.place }}</a></td>
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>           
+                    <div class="panel-heading"><i class="fa  fa-sitemap fa-fw"></i> Pontos de rede</div>
+                        <table class="table table-striped table-bordered table-hover">
+                          <thead>
+                            <tr>
+                                <th class="text-center">N&uacute;mero do Ponto de rede</th>
+                                <th class="text-center">Tipo do ponto de rede</th>
+                                <th class="text-center">Patchpanel</th>
+                                <th class="text-center">Porta do patchpanel</th>
+                                <th class="text-center">Switch</th>
+                                <th class="text-center">Porta do switch</th>
+                                <th class="text-center">Local</th>
+                            </tr>
+                          </thead>
+                            <tbody>
+                            {% for point in points %}
+                            <tr>
+                               <td class="text-center"><a href="{% url 'pointdetail' point.id %}">{{ point.num }}</a></td>
+                               <td class="text-center">{{ point.pointtype }}</td>
+                               <td class="text-center">{{ point.patchpanel| default_if_none:"" }}</td>
+                               <td class="text-center">{{ point.patchpanelport| default_if_none:"" }}</td>
+                               {% if point.switch %}
+                               <td class="text-center"><a href="{% url 'switchdetail' point.switch.id %}">{{ point.switch| default_if_none:"" }}</a></td>
+                               {% else %}
+                               <td></td>
+                               {% endif %}
+                               {% if point.swport %}
+                               <td class="text-center"><a href="{% url 'swport' point.swport.id %}">{{ point.swport| default_if_none:"" }}</a></td>
+                               {% else %}
+                               <td></td>
+                               {% endif %}
+                               <td class="text-center"><a href="{% url 'placedetail' point.place.id %}">{{ point.place }}</a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
             
                     </div>
                     <!-- /.panel -->

@@ -120,11 +120,11 @@
                                             {% endif %}
 
                                             {% if history %}
-                                            <br>
+                                            <!-- <br>
                                             <small class="text-muted">
                                                 <em><i class="fa fa-clock-o "></i>&nbsp;&Uacute;ltima altera&ccedil;&atilde;o em: {{ history.0.history_date }} realizada por {{ history.0.history_user }}</em>
                                             </small>
-                                            <br>
+                                            <br> -->
                                             {% endif %}                                            
 
                                         </div>
@@ -172,20 +172,20 @@
                                     <div>                             
                                         <table class="table table-striped table-bordered table-hover" id="lista">
                                             <thead>
-                                                <th>Porta</th>
-                                                <th>Tipo</th>
-                                                <th>VLANs</th>   
-                                                <th>Equipamento (host)</th>
-                                                <th>Obs</th>                                        
+                                                <th class="text-center">Porta</th>
+                                                <th class="text-center">Tipo</th>
+                                                <th class="text-center">VLANs</th>
+                                                <th class="text-center">Equipamento (host)</th>
+                                                <th class="text-center">Obs</th>
                                             </thead>
                                             <tbody>
                                             {% for porta in p %}
                                             <tr>
-                                                <td><a href="{% url 'swport' porta.id %}">{{ porta.num }}</a></td> 
+                                                <td class="text-center"><a href="{% url 'swport' porta.id %}">{{ porta.num }}</a></td>
                                                 <!-- <td><a>{{ porta.num }}</a></td> -->
-                                                <td>{{ porta.tipo }}</td>
+                                                <td class="text-center">{{ porta.tipo }}</td>
                                                 {% if porta.vlans %}
-                                                <td>
+                                                <td class="text-center">
                                                     {% for v in porta.vlans.all %}   
                                                     <p>
                                                         <a href="{% url 'vlandetail' v.pk %}">{{ v }} </a>
@@ -196,9 +196,9 @@
                                                 <td></td>
                                                 {% endif %}
 
-                                                <td>{{ porta.host |default_if_none:"" }}</td> 
+                                                <td class="text-center">{{ porta.host |default_if_none:"" }}</td>
 
-                                                <td>{{ porta.obs|default_if_none:"" }}</td>                                        
+                                                <td class="text-center">{{ porta.obs|default_if_none:"" }}</td>
                                             </tr>
                                             {% endfor %}
                                             </tbody>

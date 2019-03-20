@@ -161,7 +161,7 @@
                 </div>
                 <div class="modal-body">
                       A desvinculação permite que o número fique livre para ser utilizado
-                      por outro usuário.
+                      por outro usu&aacute;rio.
                       <br>
                       As datas de vinculação e desvinculação ficam registradas nos
                       históricos do usuário e do telefone.<br>
@@ -308,33 +308,33 @@
               
                   <table class="table table-striped table-bordered table-hover">
                       <thead>
-                          <th>Usu&aacute;rio</th>                                            
-                          <th>Ativa&ccedil;&atilde;o em</th> 
-                          <th>Desativa&ccedil;&atilde;o em</th>                                    
+                          <th  class="text-center">Usu&aacute;rio</th>
+                          <th class="text-center">Ativa&ccedil;&atilde;o em</th>
+                          <th class="text-center">Desativa&ccedil;&atilde;o em</th>
                       </thead>
                       <tbody>
                       {% for item in phoneownership %}
                           {% if item.date_deactivation %}
                           <tr class="text-muted">
                               {% if item.user %}
-                              <td>{{ item.user.get_full_name |default_if_none:"" |upper }}</td>
+                              <td class="text-center">{{ item.user.get_full_name |default_if_none:"" |upper }}</td>
                               {% else %}
                               <td> </td>
                               {% endif %}
 
-                              <td>{{ item.date_activation |default_if_none:"---"}}</td>
-                              <td>{{ item.date_deactivation |default_if_none:"---"}}</td>
+                              <td class="text-center">{{ item.date_activation |default_if_none:"---"}}</td>
+                              <td class="text-center">{{ item.date_deactivation |default_if_none:"---"}}</td>
                           </tr>
                           {% else %}
                           <tr>
                               {% if item.user %}
-                              <td><a href="{% url 'userdetail' item.user.id %}">{{ item.user.get_full_name |default_if_none:"" |upper }}</a></td>
+                              <td class="text-center"><a href="{% url 'userdetail' item.user.id %}">{{ item.user.get_full_name |default_if_none:"" |upper }}</a></td>
                               {% else %}
                               <td> </td>
                               {% endif %}
 
-                              <td>{{ item.date_activation |default_if_none:"---"}}</td>
-                              <td>{{ item.date_deactivation |default_if_none:"---"}}</td>
+                              <td class="text-center">{{ item.date_activation |default_if_none:"---"}}</td>
+                              <td class="text-center">{{ item.date_deactivation |default_if_none:"---"}}</td>
                           </tr>                          
                           {% endif %}
 

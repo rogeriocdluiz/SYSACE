@@ -916,6 +916,7 @@ def patchpanellist(request):
 
 @login_required(login_url='/ace/login/')
 def rackdetail(request, rack_id):
+    title = "Detalhe do rack"
     try:
         rack = Rack.objects.get(pk=rack_id)
         s = Switch.objects.all().filter(rack=rack)
@@ -925,7 +926,7 @@ def rackdetail(request, rack_id):
     except Rack.DoesNotExist:
         raise Http404
 
-    return render(request, 'rackdetail.html', {'rack': rack, 's': s, 'p': p, 'points': points})
+    return render(request, 'rackdetail.html', {'rack': rack, 's': s, 'p': p, 'points': points, 'title':title})
 
 
 # hosts
@@ -1043,7 +1044,8 @@ def hostdetail(request, host_id):
         i = Ip.objects.filter(device=host_id)
         u = host.hostupdate_set.all()
         # u = host.hostupdate_set.all().order_by('aplication_date')
-        s = Service.objects.filter(ip=i)
+        #s = Service.objects.filter(ip=i)
+        s = Service.objects.filter(ip__in=i)
         n = []
 
         for swp in swport:
@@ -1080,6 +1082,7 @@ def hostdetail(request, host_id):
 
     except Host.DoesNotExist:
         raise Http404
+
 
     return render(request, 'hostdetail.html',
                   {'host': host, 's': s, 'i': i, 'swport': swport, 'n': n, 'u': u, 'title': title, 'history':history})
