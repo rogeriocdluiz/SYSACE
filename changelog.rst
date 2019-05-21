@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2.8
+-----
+
+- Ajustes em arquivos readme
+
 1.2.7
 -----
 - Inseridos modais em views de host e phone
