@@ -39,47 +39,47 @@ Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamen
 
 * 1 - Instale o ACE com o comando a seguir:
 
-
-    pip install django-sysace
-
+```
+pip install django-sysace
+```
 
 
 
 * 2 - Adicione **django.contrib.admin**, **ace** e os outros apps necessários à seção **INSTALLED_APPS** do arquivos **settings.py**.  ::
 
-
-	INSTALLED_APPS = [
-	    ...
-	    'django.contrib.admin',    
-	    ...
-	    'ace',
-	    'simple_history',
-	    'django_modalview',
-	    'dal',
-	    'dal_select2',
-	    'solo',
-	    'tinymce',
-	    'widget_tweaks',
-	    'django_modalview',
-	    'django_cron',
-	    'mail_templated',
-	    'django_extensions',
-	    'django_tables2',
-	    'import_export',
-	    'massadmin',
-
+```
+INSTALLED_APPS = [
+    ...
+    'django.contrib.admin',    
+    ...
+    'ace',
+    'simple_history',
+    'django_modalview',
+    'dal',
+    'dal_select2',
+    'solo',
+    'tinymce',
+    'widget_tweaks',
+    'django_modalview',
+    'django_cron',
+    'mail_templated',
+    'django_extensions',
+    'django_tables2',
+    'import_export',
+    'massadmin',
+```
 
 * 3 - Inclua no arquivo urls.py do projeto URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
 
-
-	url(r'^ace/', include('ace.urls')),
-
+```
+    url(r'^ace/', include('ace.urls')),
+```
 
 * 4 - Rode o comando abaixo para criar os modelos do ace::
 
-
-	python manage.py migrate
-
+```
+python manage.py migrate
+```
 
 
 * 5 -  Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
