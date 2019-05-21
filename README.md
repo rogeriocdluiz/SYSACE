@@ -72,7 +72,7 @@ INSTALLED_APPS = [
 * 3 - Inclua no arquivo urls.py do projeto URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
 
 ```
-    url(r'^ace/', include('ace.urls')),
+url(r'^ace/', include('ace.urls')),
 ```
 
 * 4 - Rode o comando abaixo para criar os modelos do ace::
