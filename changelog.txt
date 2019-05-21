@@ -1,6 +1,10 @@
+1.2.7
+- Inseridos modais em views de host e phone
+
+
 1.2.4
 -----
-- Corrida a geração de log de printer
+- Corrigida a geração de log de printer
 
 
 1.2.3

@@ -1083,7 +1083,6 @@ def hostdetail(request, host_id):
     except Host.DoesNotExist:
         raise Http404
 
-
     return render(request, 'hostdetail.html',
                   {'host': host, 's': s, 'i': i, 'swport': swport, 'n': n, 'u': u, 'title': title, 'history':history})
 
