@@ -37,17 +37,16 @@ A documentação está disponível no [Readthedocs](http://django-sysace.readthe
 
 Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamente pacotes de desenvolvimento como gcc, make e outros (o pacote build-essential no Debian e Ubuntu) além do python-dev.
 
-* 1 - Instale o ACE com o comando a seguir::
+* 1 - Instale o ACE com o comando a seguir:
 
-```
+
     pip install django-sysace
-```
+
 
 
 
 * 2 - Adicione **django.contrib.admin**, **ace** e os outros apps necessários à seção **INSTALLED_APPS** do arquivos **settings.py**.  ::
 
-```
 
 	INSTALLED_APPS = [
 	    ...
@@ -68,19 +67,19 @@ Caso esteja utilizando um sistema GNU-Linux será necessário instalar previamen
 	    'django_tables2',
 	    'import_export',
 	    'massadmin',
-```
+
 
 * 3 - Inclua no arquivo urls.py do projeto URLconf do ace no arquivo urls.py do projeto como mostrado a seguir::
 
-```
+
 	url(r'^ace/', include('ace.urls')),
-```
+
 
 * 4 - Rode o comando abaixo para criar os modelos do ace::
 
-```
+
 	python manage.py migrate
-```
+
 
 
 * 5 -  Inicie o servidor e acesse pelo endereço http://127.0.0.1:8000/admin/
