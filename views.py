@@ -96,6 +96,7 @@ def addlog(h, e, d, a, t, i):
 
 
 def sendphone_notification(p, u, d, o):
+    #sendphone_notification(p.phone, p.user, phone_date, p)
 
     erro = ""
     try:
@@ -106,6 +107,10 @@ def sendphone_notification(p, u, d, o):
 
     except:
         erro="erro"
+
+    category = p.phonecategory
+    phonetype = p.telephonetype
+    place = p.place
 
     if p.password==True:
         pwd = "ok"
@@ -132,7 +137,7 @@ def sendphone_notification(p, u, d, o):
             d = o.date_deactivation
 
     if erro!="erro":
-        message = EmailMessage('email/notification_email.tpl', {'p': p, 'u': u, 'd': d,'m':m, 'c':c, 'pwd':pwd }, from_email, to=[to_email], bcc=[co_email])
+        message = EmailMessage('email/notification_email.tpl', {'p': p, 'u': u, 'd': d,'m':m, 'c':c, 'category':category, 'phonetype':phonetype, 'place':place, 'pwd':pwd }, from_email, to=[to_email], bcc=[co_email])
         message.send()
     else:
         pass

@@ -7,26 +7,30 @@ Novo ramal/senha modificado
 
 {% block body %}
 
-    {% if pwd == "ok" %}
     ==================================================
+    {% if pwd == "ok" %}
+    
     O usuario  {{ u.get_full_name }}  ({{ u }}),
 
-    foi {{ m }} {{ c }} senha ******
+    foi {{ m }} {{ c }} senha telefônica
 
-     na data de {{ d }}
-    ==================================================
+    na data de {{ d }}
+   
 
     {% else %}
-    ==================================================
+    
     O usuario  {{ u.get_full_name }}  ({{ u }}),
 
     foi {{ m }} {{ c }} telefone  {{ p }}
 
      na data de {{ d }}
-    ==================================================
+    
     {% endif %}
+    ==================================================
 
-
+    {% if category %} Categoria: {{ category}}  {% endif %}
+    {% if phonetype %} Tipo {{ phonetype }}  {% endif %}
+    {% if place %} Local {{ place }} - {{ place.sector | default_if_none:""}}  {% endif %}
 
 {% endblock %}
 
@@ -39,8 +43,7 @@ Novo ramal/senha modificado
 
     <p> O usu&aacute;rio <b> {{ u.get_full_name }} </b> ({{ u }}),</b> </p>
 
-    <p> foi {{ m }} {{ c }} senha  <b>******</b> na data de <b> {{ d }} </b> </p>
-
+    <p> foi <b><font color="red">{{ m }}</font></b> {{ c }} <b> senha telef&ocirc;nica</b> na data de <b> {{ d }} </b> </p>
 
 {% else %}
 
@@ -48,10 +51,11 @@ Novo ramal/senha modificado
 
     <p> foi <b><font color="red">{{ m }}</font></b> {{ c }} telefone  <b>{{ p }}</b> na data de <b> {{ d }} </b> </p>
 
-
 {% endif %}
 
-
+    {% if category %} <p> Categoria: {{category}} </p> {% endif %}
+    {% if phonetype %} <p> Tipo: {{ phonetype }}</p> {% endif %}
+    {% if place %} <p> Local: {{ place }} - {{ place.sector | default_if_none:""}} </p> {% endif %}
 
 <hr>
 
