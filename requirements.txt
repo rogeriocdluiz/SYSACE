@@ -3,7 +3,7 @@
 BeautifulSoup==3.2.1
 chardet==2.3.0
 html5lib==1.0b3
-Pillow==2.6.1
+Pillow==6.2.0
 pisa==3.0.33
 py2-ipaddress==3.4
 pyPdf==1.13
